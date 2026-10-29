@@ -2,7 +2,7 @@
 
 ## 0.0.2 — 2026-10-30
 
-**Rename: every project now has a short English name.**
+### English names for all 19 projects
 
 Previously the naming was inconsistent — nine entries used an English title with a Chinese subtitle
 (A01 `Twin Peaks · Black Lodge` / 黑色旅舍), nine used the reverse (A03 `极光星海 · 倒置沙漏天文台` /
@@ -29,12 +29,26 @@ directory slug so the archive, the zips and the repo all line up.
 | A16 | Route 66 · Desert Diner | Route 66 Diner |
 | A17 | Glastonbury Grove · The Red Room | The Red Room |
 | A18 | 晚霞织梦染坊 | Sunset Dream Loom |
-| A19 | 怪奇物语 · 双世界镜像场景 | Hawkins / Upside Down |
+| A19 | 怪物语 · 双世界镜像场景 | Hawkins / Upside Down |
 
 Applied to `index.html` (card titles), `catalog.md` (总表), `profiles.md` (headings) and `README.md`.
 
-**English homepage.** `README.md` rewritten in English: collection table with per-entry live links,
-repository layout, local-run instructions, and the measured draw-call baseline.
+### Online preview
+
+- **Site** — every card now carries a `在线预览 ↗` link, and the detail modal has an
+  **在线预览** block with *▶ 在页面内运行*: the live scene loads in an iframe on demand rather than
+  on page load, so nineteen WebGL contexts never run at once. Closing the modal unmounts the iframe
+  and stops its render loop.
+- **Homepage** — `README.md` rewritten in English and rebuilt as a visual gallery: all 19 entries
+  are linked thumbnails, each with its draw-call / three.js / size line underneath.
+- **Thumbnails** — `previews/thumbs/Axx.jpg`, 720×450, 0.8 MB for all 19, generated from the
+  full-size renders.
+
+### Verified
+
+- All 19 live URLs return 200 on GitHub Pages.
+- Card → modal → iframe → close round-trip tested in headless Chrome: 19 links, no JS errors,
+  iframe unloaded on close.
 
 ## 0.0.1 — 2026-10-30
 

@@ -93,7 +93,26 @@
   .path{margin-top:11px;padding-top:10px;border-top:1px solid var(--line);
     font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     font-size:10.5px;color:var(--dim2);letter-spacing:.01em;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    display:flex;align-items:center;gap:8px}
+  .path span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .golive{flex:none;font-family:inherit;font-size:10.5px;padding:3px 8px;border-radius:6px;
+    border:1px solid rgba(255,180,107,.35);background:var(--amber-dim);color:var(--amber);
+    transition:.15s;white-space:nowrap}
+  .golive:hover{background:rgba(255,180,107,.24);border-color:rgba(255,180,107,.62)}
+
+  /* ---------- live preview ---------- */
+  .pv{margin-top:2px}
+  .pvstart{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .pvbtn{font-family:inherit;font-size:12.5px;padding:9px 16px;border-radius:9px;cursor:pointer;
+    border:1px solid rgba(255,180,107,.45);background:var(--amber-dim);color:var(--amber);transition:.15s}
+  .pvbtn:hover{background:rgba(255,180,107,.24);border-color:rgba(255,180,107,.7)}
+  .pvlink{font-size:12px;color:var(--dim);border-bottom:1px dashed var(--dim2);padding-bottom:1px}
+  .pvlink:hover{color:var(--text);border-color:var(--dim)}
+  .pvhint{font-size:11px;color:var(--dim2);margin-top:10px;line-height:1.6}
+  .pvframe{width:100%;aspect-ratio:16/9;border:1px solid var(--line2);border-radius:10px;
+    background:#000;display:block}
+  .pvbar{display:flex;align-items:center;gap:14px;margin-top:10px}
+  .pvbar .pvclose{padding:5px 12px;font-size:11.5px}
 
   /* ---------- modal ---------- */
   .overlay{position:fixed;inset:0;background:rgba(4,6,10,.78);backdrop-filter:blur(8px);
@@ -413,6 +432,29 @@ const EDITS = [
   {k:"locked",t:"成品锁死"}
 ];
 const OPEN_LABEL = {direct:"双击即看", server:"需本地服务", net:"需联网"};
+const LIVE_BASE = "https://cl0ud-99.github.io/diorama-archive/_extracted/";
+const LIVE_PATH = {
+  A01:"a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html",
+  A02:"a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html",
+  A03:"a03-aurora-hourglass/aurora-hourglass/index.html",
+  A04:"a04-autumn-farm/index.html",
+  A05:"a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html",
+  A06:"a06-cloud-post-office/cloud-post-office/index.html",
+  A07:"a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html",
+  A08:"a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html",
+  A09:"a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html",
+  A10:"a10-lighthouse/lighthouse-scene/lighthouse.html",
+  A11:"a11-lunar-outpost/lunar-outpost/index-offline.html",
+  A12:"a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html",
+  A13:"a13-mori-mart/mori-mart/index.html",
+  A14:"a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html",
+  A15:"a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html",
+  A16:"a16-route66-diner/route66-diner/index.html",
+  A17:"a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html",
+  A18:"a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html",
+  A19:"a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"
+};
+const liveUrl = d => LIVE_BASE + LIVE_PATH[d.code].split("/").map(encodeURIComponent).join("/");
 const EDIT_LABEL = {module:"模块化源码", readable:"单文件可读", locked:"已压缩·不可改"};
 
 let state = {q:"", theme:"全部", edit:"all"};
@@ -473,7 +515,7 @@ function render(){
         <div class="sub">${d.cn} · ${d.theme}</div>
         <div class="meta"><span>${d.size}</span><span>·</span><span><i>${d.loc.toLocaleString()}</i> 行</span><span>·</span><span>${d.three}</span></div>
         <div class="tags">${editTag}${d.tags.slice(0,2).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
-        <div class="path">${slugOf(d)}</div>
+        <div class="path"><span>${slugOf(d)}</span><a class="golive" href="${liveUrl(d)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">在线预览 ↗</a></div>
       </div>
     </article>`;
   }).join("") || `<div class="empty">没有匹配的作品</div>`;
@@ -505,6 +547,9 @@ function openModal(code){
       <dt>构建</dt><dd>${d.build==="—" ? "无构建链，直接改 HTML" : `<code>${d.build}</code>`}</dd>
       <dt>形态</dt><dd>${EDIT_LABEL[d.edit]} · ${OPEN_LABEL[d.open]} · 源码 ${d.loc.toLocaleString()} 行</dd>
     </dl>
+    <div class="sec"><h4>在线预览</h4>
+      <div class="pv" data-url="${liveUrl(d)}"></div>
+    </div>
     <div class="sec"><h4>打开方式</h4><p>${d.entryNote}</p></div>
     <div class="sec"><h4>技术实现</h4><p>${d.tech}</p></div>
     <div class="sec"><h4>优化切入点</h4><p>${d.points}</p></div>
@@ -512,9 +557,33 @@ function openModal(code){
   </div>`;
   ov.classList.add("on");
   m.querySelector(".mclose").onclick=closeModal;
+  const pv=m.querySelector(".pv");
+  if(pv) mountPreview(pv);
   m.scrollTop=0;
 }
-function closeModal(){ document.getElementById("overlay").classList.remove("on"); }
+
+/* 在线预览：默认不加载 iframe，点一下才挂上去，避免 19 个 WebGL 上下文同时在跑 */
+function mountPreview(pv){
+  const url=pv.dataset.url;
+  pv.innerHTML = `<div class="pvstart">
+      <button class="pvbtn" type="button">▶ 在页面内运行</button>
+      <a class="pvlink" href="${url}" target="_blank" rel="noopener">在新标签打开 ↗</a>
+    </div>
+    <p class="pvhint">直接加载线上版本，首次约 1–3 秒；需要 WebGL2 与网络。关闭弹窗即释放。</p>`;
+  pv.querySelector(".pvbtn").onclick=()=>{
+    pv.innerHTML = `<iframe class="pvframe" src="${url}" loading="lazy" allow="fullscreen; xr-spatial-tracking"></iframe>
+      <div class="pvbar">
+        <a class="pvlink" href="${url}" target="_blank" rel="noopener">在新标签打开 ↗</a>
+        <button class="pvbtn pvclose" type="button">关闭预览</button>
+      </div>`;
+    pv.querySelector(".pvclose").onclick=()=>mountPreview(pv);
+  };
+}
+
+function closeModal(){
+  document.getElementById("overlay").classList.remove("on");
+  document.getElementById("modal").innerHTML="";   /* 卸载 iframe，停掉渲染循环 */
+}
 
 document.getElementById("q").addEventListener("input", e=>{
   state.q=e.target.value.trim(); render();
