@@ -1,69 +1,119 @@
-# 归档入口
+# Diorama Archive
 
-19 件 Three.js 程序化微缩场景。三个文件按用途分：
+Nineteen procedural Three.js dioramas. No Blender, no model files, no image assets — every mesh,
+material, canvas texture, GLSL shader and animation is generated in the browser at runtime.
 
-| 文件 | 用途 |
-|---|---|
-| **index.html** | 可视化清单。双击打开，带缩略图，可按题材 / 可改性 / 关键词筛选，点卡片看详档 |
-| **catalog.md** | 纯文本总表 + 4 个筛选视图 + 横向结论。适合在编辑器里快速扫 |
-| **profiles.md** | 逐件详档：是什么 / 里面有什么 / 技术实现 / 怎么打开 / 已知坑 / 优化切入点 |
+**[Open the archive →](https://cl0ud-99.github.io/diorama-archive/)**
 
-目录：
+![Sunset Dream Loom](previews/A18.png)
+
+Every entry below runs live in the browser — click a name to open it.
+
+## Collection
+
+| # | Diorama | Theme | three.js | Draw calls | Size | Code |
+|---|---|---|---|---:|---:|---|
+| A01 | [Black Lodge](https://cl0ud-99.github.io/diorama-archive/_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html) | Film homage | r169 | 3,574 | 516K | module src/ |
+| A02 | [Ashtray Maze](https://cl0ud-99.github.io/diorama-archive/_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html) | Film homage | r152 | 3,218 | 4.8M | module src/ |
+| A03 | [Aurora Hourglass](https://cl0ud-99.github.io/diorama-archive/_extracted/a03-aurora-hourglass/aurora-hourglass/index.html) | Original fantasy | r160 | 721 | 456K | module src/ |
+| A04 | [Autumn Farm](https://cl0ud-99.github.io/diorama-archive/_extracted/a04-autumn-farm/index.html) | Pastoral | r169 | 2,123 | 1.8M | single file |
+| A05 | [Cliff Lighthouse Café](https://cl0ud-99.github.io/diorama-archive/_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html) | Retro | inline | 2,155 | 152K | minified |
+| A06 | [Cloud Post Office](https://cl0ud-99.github.io/diorama-archive/_extracted/a06-cloud-post-office/cloud-post-office/index.html) | Original fantasy | inline UMD | 1,154 | 2.9M | module src/ |
+| A07 | [FBC Quarry 07](https://cl0ud-99.github.io/diorama-archive/_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html) | Film homage | r150 | 3,043 | 15M | module src/ |
+| A08 | [Redshift Archive](https://cl0ud-99.github.io/diorama-archive/_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html) | Film homage | r186 | 1,502 | 12M | module src/ |
+| A09 | [Grand Hotel](https://cl0ud-99.github.io/diorama-archive/_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html) | Film style | r160 | 7,047 | 468K | module src/ |
+| A10 | [The Lighthouse](https://cl0ud-99.github.io/diorama-archive/_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html) | Retro | r160.1 | 864 | 1.6M | module src/ |
+| A11 | [Lunar Outpost](https://cl0ud-99.github.io/diorama-archive/_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html) | Sci-fi | r169 | 889 | 896K | single file |
+| A12 | [Stutter Lab](https://cl0ud-99.github.io/diorama-archive/_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html) | Sci-fi | r160 | 1,530 | 296K | single file |
+| A13 | [Mori Mart](https://cl0ud-99.github.io/diorama-archive/_extracted/a13-mori-mart/mori-mart/index.html) | Original fantasy | r160 | 1,776 | 1.3M | single file |
+| A14 | [Polar Icebreaker](https://cl0ud-99.github.io/diorama-archive/_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html) | Retro | r169 | 1,249 | 568K | single file |
+| A15 | [Qipao Diorama](https://cl0ud-99.github.io/diorama-archive/_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html) | Retro | r150 | 944 | 17M | module src/ |
+| A16 | [Route 66 Diner](https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html) | Retro | inline | 2,345 | 156K | minified |
+| A17 | [The Red Room](https://cl0ud-99.github.io/diorama-archive/_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html) | Film homage | r150 | 1,754 | 15M | module src/ |
+| A18 | [Sunset Dream Loom](https://cl0ud-99.github.io/diorama-archive/_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html) | Original fantasy | r186.1 | 2,606 | 15M | module src/ |
+| A19 | [Hawkins / Upside Down](https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html) | Film homage | inline | 2,237 | 188K | single file |
+
+`Draw calls` are measured, not estimated — see [Performance baseline](#performance-baseline).
+A05 and A16 ship minified only: three.js and the scene code are fused into one IIFE, so there is no
+readable source to edit.
+
+## Repository layout
 
 ```
-_packages/   19 个原始压缩包，统一 aNN-slug.zip 命名
-_extracted/  解压后的源码工作副本，与 zip 同名（aNN-slug/）
-previews/    19 张实拍预览图，1440×900，本机 Chrome + SwiftShader 逐件渲染
-  └ _pkg_originals/  A01/A02 包内自带的成品图（备查，未用于清单）
-_tools/      shot.mjs —— 截图脚本，改完作品可重出图
+archive/
+├─ index.html        visual index — thumbnails, filters, detail modals
+├─ catalog.md        flat table + four filtered views          (Chinese)
+├─ profiles.md       per-project dossier: what / how / pitfalls / where to optimise   (Chinese)
+├─ README.md         this file
+├─ CHANGELOG.md      what changed in each version
+├─ VERSION           current version
+├─ _packages/        19 original zip archives, named aNN-slug.zip
+├─ _extracted/       unpacked working copies, same names
+├─ previews/         19 screenshots, 1440×900, rendered from the running scenes
+└─ _tools/
+   ├─ shot.mjs       renders previews/Axx.png from the live scenes
+   └─ probe.mjs      measures draw calls / triangles / fps for every entry
 ```
 
-合计约 245MB（zip 87MB + 解压 135MB + 预览图 24MB）。
+Each archive keeps its own internal layout; `_extracted/aNN-slug/aNN-slug/` is that project's root.
 
-## 重新出预览图
+## Running locally
 
-19 张图不是包内素材，是打开程序实拍的。想更新某几件：
+Most entries open by double-clicking their built HTML file. Exceptions:
+
+- **A11, A12** need a local server — they use ES modules, which `file://` blocks.
+- **A04** imports three.js from a CDN, so it needs network access.
 
 ```bash
-node archive/_tools/shot.mjs            # 全部重截（约 7 分钟）
-node archive/_tools/shot.mjs A15,A17    # 只重截指定编号
+# any static server works; the archive is plain files
+python -m http.server 8080
+# then open http://localhost:8080/index.html
 ```
 
-需要 `npm install puppeteer-core`（在本目录的上一级，已有 node_modules 则跳过）。脚本会起本地静态服务器
-`127.0.0.1:8899` 再驱动无头 Chrome —— 走 http 而不是 `file://`，是因为 A03/A11/A12 等用 ES Module 与
-importmap，`file://` 下会被 CORS 挡住。软件渲染（SwiftShader）保证没有独显也能出图。
+Entries with a build step rebuild like this:
 
-## 编号对照
+```bash
+cd _extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge
+npm install && npm run build      # -> single inlined HTML
+```
 
-| | | | |
-|---|---|---|---|
-| A01 双峰黑色旅舍 | A02 烟灰缸迷宫 | A03 极光沙漏 | A04 秋日农场 |
-| A05 海崖咖啡馆 | A06 云端飞艇邮局 | A07 倒悬采石场 | A08 红移档案 |
-| A09 阿尔卑斯大酒店 | A10 灯塔 | A11 月球前哨 | A12 时间断裂实验舱 |
-| A13 森之便利店 | A14 破冰船 | A15 1936 上海 | A16 66 号公路餐厅 |
-| A17 双峰红房间 | A18 晚霞织梦染坊 | A19 怪奇物语双世界 | |
+`_extracted/` does not ship `node_modules/` — A18's offline bundle included them, so run
+`npm install` there before building.
 
-## 命名规则
+## Performance baseline
 
-统一 `aNN-slug` 全英文小写短名，zip 与解压目录同名：
+`_tools/probe.mjs` instruments the WebGL context and counts real `drawElements` / `drawArrays`
+calls per frame. It needs no debug handle from the project, so the same measurement applies to all
+nineteen:
 
-| | |
-|---|---|
-| `a01-twin-peaks-lodge` | `a11-lunar-outpost` |
-| `a02-ashtray-maze` | `a12-monach-stutter-lab` |
-| `a03-aurora-hourglass` | `a13-mori-mart` |
-| `a04-autumn-farm` | `a14-polar-icebreaker` |
-| `a05-cliff-lighthouse-cafe` | `a15-qipao-diorama` |
-| `a06-cloud-post-office` | `a16-route66-diner` |
-| `a07-fbc-quarry` | `a17-twin-peaks-red-room` |
-| `a08-fbc-redshift` | `a18-whale-dream-atelier` |
-| `a09-grand-hotel` | `a19-stranger-things` |
-| `a10-lighthouse` | |
+```bash
+node _tools/probe.mjs            # all 19  (~8 min under software rendering)
+node _tools/probe.mjs A09,A01    # selected
+```
 
-## 重命名时修掉的三处
+Measured at 1280×800 in headless Chrome on SwiftShader. Counts include the shadow pass and
+post-processing, which is why they run higher than the figures quoted inside individual projects.
+Frame-rate numbers from software rendering are only meaningful relative to each other.
 
-- `a13-mori-mart/mori-mart/readme.txt` —— 原包文件名是乱码（zip 用了非 UTF-8 编码），内容未改。
-- `a19-stranger-things/stranger-things/readme.txt` —— 同上。
-- `a18-whale-dream-atelier/…/dist/sunset-dream-loom.html` —— 原为中文名，改为英文短名；同目录的乱码重复副本已删（与 `dream-weaver-atelier.html` 内容完全一致）。
+Three findings worth knowing before optimising anything:
 
-压缩包内容未做任何修改，只改了归档层的文件名。
+1. **Draw calls, not triangles, are the bottleneck.** The heaviest scene renders 1.17M triangles and
+   holds up; the worst offender renders 345k and does not, because it issues ~7,000 calls per frame.
+2. **A09 Grand Hotel is the outlier.** Its frame does three full scene traversals — a normal prepass
+   for outline extraction, a shadow pass, then the colour pass. Its own documentation never says so.
+3. **A11 Lunar Outpost measures 889 calls**, one of the cheapest entries, despite carrying by far the
+   most detailed optimisation notes. Documentation quality and runtime cost are unrelated here.
+
+## Versioning
+
+Releases are tagged `vX.Y.Z`. The archive is kept byte-identical: `.gitattributes` sets `* -text`
+and `core.autocrlf` is off, so no file is newline-converted on checkout.
+
+See [CHANGELOG.md](CHANGELOG.md).
+
+## Notes
+
+- Roughly 87 MB of zip archives, 134 MB unpacked, 24 MB of previews.
+- `catalog.md` and `profiles.md` are written in Chinese; everything else here is in English.
+- Three filenames had to be repaired during archiving because their zips used a non-UTF-8 encoding
+  (`a13-mori-mart`, `a19-stranger-things`, `a18-whale-dream-atelier`). File contents are untouched.

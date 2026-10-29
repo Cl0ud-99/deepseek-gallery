@@ -5,7 +5,7 @@
 
 ---
 
-## A01 · Twin Peaks · Black Lodge 黑色旅舍
+## A01 · Black Lodge（双峰 · 黑色旅舍）
 
 **包** `a01-twin-peaks-lodge.zip` ｜ 516K ｜ 17 文件 ｜ 源码 4939 行 ｜ three r169
 
@@ -36,7 +36,7 @@ v1.0 初版 → v1.1 屋顶霓虹板换成经典美式路边餐厅立牌（红 T
 
 ---
 
-## A02 · ASHTRAY MAZE / A-07 烟灰缸迷宫
+## A02 · Ashtray Maze（烟灰缸迷宫）
 
 **包** `a02-ashtray-maze.zip` ｜ 4.8M ｜ 26 文件 ｜ 源码 7644 行 ｜ three r152（UMD vendor）
 
@@ -64,7 +64,7 @@ v1.0 初版 → v1.1 屋顶霓虹板换成经典美式路边餐厅立牌（红 T
 
 ---
 
-## A03 · 极光星海 · 倒置沙漏天文台
+## A03 · Aurora Hourglass（极光星海 · 倒置沙漏天文台）
 
 **包** `a03-aurora-hourglass.zip` ｜ 456K ｜ 21 文件 ｜ 源码 2132 行 ｜ three r160
 
@@ -87,7 +87,7 @@ v1.0 初版 → v1.1 屋顶霓虹板换成经典美式路边餐厅立牌（红 T
 
 ---
 
-## A04 · 秋日农场微缩场景
+## A04 · Autumn Farm（秋日农场）
 
 **包** `a04-autumn-farm.zip` ｜ 1.8M ｜ 3 文件 ｜ 单文件 2299 行 ｜ three r169（unpkg CDN）
 
@@ -116,7 +116,7 @@ v1.0 初版 → v1.1 屋顶霓虹板换成经典美式路边餐厅立牌（红 T
 
 ---
 
-## A05 · Cliff Lighthouse Café · 海崖灯塔咖啡馆
+## A05 · Cliff Lighthouse Café（海崖灯塔咖啡馆）
 
 **包** `a05-cliff-lighthouse-cafe.zip` ｜ 152K ｜ 2 文件 ｜ 单文件 3964 行（**已 minify**）
 
@@ -136,7 +136,7 @@ v1.0 初版 → v1.1 屋顶霓虹板换成经典美式路边餐厅立牌（红 T
 
 ---
 
-## A06 · 云端蒸汽飞艇邮政局 Cloud Post Office
+## A06 · Cloud Post Office（云端蒸汽飞艇邮政局）
 
 **包** `a06-cloud-post-office.zip` ｜ 2.9M ｜ 11 文件 ｜ 源码 3268 行 ｜ three（UMD vendor）
 
@@ -161,7 +161,7 @@ v1.0 初版 → v1.1 屋顶霓虹板换成经典美式路边餐厅立牌（红 T
 
 ---
 
-## A07 · FBC QUARRY 07 · 倒悬巨构采石场
+## A07 · FBC Quarry 07（倒悬巨构采石场）
 
 **包** `a07-fbc-quarry.zip` ｜ 15M ｜ 23 文件 ｜ 源码 5309 行 ｜ three r150（vendor）
 
@@ -190,7 +190,7 @@ Three.js r150 本地 vendored，无 CDN；自研 5 阶 MeshToon + 菲涅耳边�
 
 ---
 
-## A08 · FBC / RED SHIFT ARCHIVE 悬浮档案大厅
+## A08 · Redshift Archive（悬浮档案大厅）
 
 **包** `a08-fbc-redshift.zip` ｜ 12M ｜ 23 文件 ｜ 源码 3418 行 ｜ three r186
 
@@ -215,7 +215,7 @@ three r186 离线打包；手写 CRT shader、体积感光晕、断裂几何；�
 
 ---
 
-## A09 · GRAND HOTEL · 阿尔卑斯缆车站酒店
+## A09 · Grand Hotel（阿尔卑斯缆车站酒店）
 
 **包** `a09-grand-hotel.zip` ｜ 468K ｜ 25 文件 ｜ 源码 3169 行 ｜ three r160
 
@@ -240,7 +240,7 @@ Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋（cut-away doll
 
 ---
 
-## A10 · 灯塔 THE LIGHTHOUSE
+## A10 · The Lighthouse（灯塔）
 
 **包** `a10-lighthouse.zip` ｜ 1.6M ｜ 22 文件 ｜ 源码 2245 行 ｜ three 0.160.1
 
@@ -270,7 +270,7 @@ Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋（cut-away doll
 
 ---
 
-## A11 · 月球前哨站
+## A11 · Lunar Outpost（月球前哨站）
 
 **包** `a11-lunar-outpost.zip` ｜ 896K ｜ 9 文件 ｜ 单文件 2177 行 ｜ three r169（lib/）
 
@@ -302,7 +302,7 @@ Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋（cut-away doll
 
 ---
 
-## A12 · 莫纳奇 · 时间断裂（Stutter）实验舱
+## A12 · Stutter Lab（时间断裂实验舱）
 
 **包** `a12-monach-stutter-lab.zip` ｜ 296K ｜ 15 文件 ｜ 单文件 1778 行 ｜ three r160
 
@@ -328,7 +328,7 @@ Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋（cut-away doll
 
 ---
 
-## A13 · 森のコンビニ · 萤火雨夜便利店
+## A13 · Mori Mart（萤火雨夜便利店）
 
 **包** `a13-mori-mart.zip` ｜ 1.3M ｜ 4 文件 ｜ 离线版 3795 行 / source 版 2575 行 ｜ three r160（CDN）
 
@@ -351,7 +351,7 @@ Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋（cut-away doll
 
 ---
 
-## A14 · 极地科考破冰船
+## A14 · Polar Icebreaker（极地科考破冰船）
 
 **包** `a14-polar-icebreaker.zip` ｜ 568K ｜ 6 文件 ｜ source 版 1830 行 ｜ three r169
 
@@ -375,7 +375,7 @@ Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋（cut-away doll
 
 ---
 
-## A15 · 綺羅弄 · 旗袍與留聲（1936 上海）
+## A15 · Qipao Diorama（1936 上海 · 旗袍与留声）
 
 **包** `a15-qipao-diorama.zip` ｜ 17M ｜ 25 文件 ｜ 源码 5883 行 ｜ three r150
 
@@ -401,7 +401,7 @@ three r150；自定义 5 段 toon ramp + fresnel 边缘光 + 反向外壳描边�
 
 ---
 
-## A16 · Route 66 · Desert Diner Diorama
+## A16 · Route 66 Diner（66 号公路复古餐厅）
 
 **包** `a16-route66-diner.zip` ｜ 156K ｜ 2 文件 ｜ 单文件 3929 行（**已 minify**）
 
@@ -419,7 +419,7 @@ three r150；自定义 5 段 toon ramp + fresnel 边缘光 + 反向外壳描边�
 
 ---
 
-## A17 · Glastonbury Grove · The Red Room
+## A17 · The Red Room（双峰 · 红房间）
 
 **包** `a17-twin-peaks-red-room.zip` ｜ 15M ｜ 25 文件 ｜ 源码 5871 行 ｜ three r150
 
@@ -442,7 +442,7 @@ three r150；自定义 5 段 toon ramp + fresnel 边缘光 + 反向外壳描边�
 
 ---
 
-## A18 · 晚霞织梦染坊 Sunset Dream Loom
+## A18 · Sunset Dream Loom（晚霞织梦染坊）
 
 **包** `a18-whale-dream-atelier.zip` ｜ 15M ｜ 31 文件 ｜ 源码 11595 行（**全库最大**）｜ three r186.1
 
@@ -478,7 +478,7 @@ three r186；MeshToon + 自定义 6 级柔和明暗渐变 + 柔和倒模轮廓�
 
 ---
 
-## A19 · 怪奇物语 · 双世界镜像场景
+## A19 · Hawkins / Upside Down（怪奇物语 · 双世界镜像）
 
 **包** `a19-stranger-things.zip` ｜ 188K ｜ 2 文件 ｜ 单文件 2363 行（可读）｜ three（内联）
 

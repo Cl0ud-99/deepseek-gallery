@@ -1,26 +1,57 @@
-# 变更记录
+# Changelog
+
+## 0.0.2 — 2026-10-30
+
+**Rename: every project now has a short English name.**
+
+Previously the naming was inconsistent — nine entries used an English title with a Chinese subtitle
+(A01 `Twin Peaks · Black Lodge` / 黑色旅舍), nine used the reverse (A03 `极光星海 · 倒置沙漏天文台` /
+`Aurora Hourglass`). All nineteen are now `English name（中文名）`, and the English name matches the
+directory slug so the archive, the zips and the repo all line up.
+
+| # | was | now |
+|---|---|---|
+| A01 | Twin Peaks · Black Lodge | Black Lodge |
+| A02 | ASHTRAY MAZE / A-07 | Ashtray Maze |
+| A03 | 极光星海 · 倒置沙漏天文台 | Aurora Hourglass |
+| A04 | 秋日农场 | Autumn Farm |
+| A05 | Cliff Lighthouse Café | Cliff Lighthouse Café (unchanged) |
+| A06 | 云端蒸汽飞艇邮政局 | Cloud Post Office |
+| A07 | FBC QUARRY 07 | FBC Quarry 07 |
+| A08 | FBC / RED SHIFT ARCHIVE | Redshift Archive |
+| A09 | GRAND HOTEL | Grand Hotel |
+| A10 | THE LIGHTHOUSE | The Lighthouse |
+| A11 | 月球前哨站 | Lunar Outpost |
+| A12 | 莫纳奇 · 时间断裂实验舱 | Stutter Lab |
+| A13 | 森のコンビニ | Mori Mart |
+| A14 | 极地科考破冰船 | Polar Icebreaker |
+| A15 | 綺羅弄 · 旗袍與留聲 | Qipao Diorama |
+| A16 | Route 66 · Desert Diner | Route 66 Diner |
+| A17 | Glastonbury Grove · The Red Room | The Red Room |
+| A18 | 晚霞织梦染坊 | Sunset Dream Loom |
+| A19 | 怪奇物语 · 双世界镜像场景 | Hawkins / Upside Down |
+
+Applied to `index.html` (card titles), `catalog.md` (总表), `profiles.md` (headings) and `README.md`.
+
+**English homepage.** `README.md` rewritten in English: collection table with per-entry live links,
+repository layout, local-run instructions, and the measured draw-call baseline.
 
 ## 0.0.1 — 2026-10-30
 
-首个归档快照，内容定格于归档整理完成时的状态。
+First snapshot of the archive.
 
-**收录内容**
+- 19 procedural Three.js dioramas, original zips plus unpacked working copies
+- Three layers of documentation: `README.md`, `catalog.md` (Chinese), `profiles.md` (Chinese)
+- `index.html` visual index — thumbnails, theme/editable/keyword filters, detail modals
+- `previews/` — 19 screenshots, 1440×900, rendered from the running scenes
+- `_tools/shot.mjs` — preview renderer (pre-existing)
+- `_tools/probe.mjs` — **new**: instruments the WebGL context and measures draw calls per frame for
+  every entry without needing a debug handle. Results in `_tools/probe-result.json`.
 
-- 19 件 Three.js 程序化微缩场景（A01–A19），原始压缩包 + 解压工作副本
-- 三层文档：`README.md`（入口与命名）、`catalog.md`（总表与筛选视图）、`profiles.md`（逐件详档）
-- `index.html` 可视化清单（缩略图 + 题材/可改性/关键词筛选 + 模态详档）
-- `previews/` 19 张实拍预览图，1440×900，本机 Chrome + SwiftShader 渲染
+Findings from that first measurement, which corrected the archive's own conclusions:
 
-**工具**
-
-- `_tools/shot.mjs` — 逐件截图脚本（本次归档原有）
-- `_tools/probe.mjs` — 逐件性能测量脚本（本版新增）
-  注入式 WebGL 计数器，不需要作品暴露调试句柄，统一测量每帧 draw call 与三角面，
-  结果见 `_tools/probe-result.json`。
-  实测结论：A09 阿尔卑斯大酒店 7047 calls 为全库最高（文档原判为「无性能数据」），
-  A11 月球前哨站 889 calls 实际处于较低一档，与原「建议优先优化 A11」的排序相反。
-
-**说明**
-
-- 压缩包内容未做任何修改，只调整了归档层的文件名（见 README「重命名时修掉的三处」）。
-- 本仓库不包含各项目内的 `node_modules/`（A18 离线包自带），构建前请自行 `npm install`。
+- A09 Grand Hotel issues ~7,047 draw calls per frame — the highest in the collection, and the entry
+  whose documentation said "no performance data".
+- A11 Lunar Outpost measures 889 — one of the cheapest — despite being recommended first for
+  optimisation on the strength of its (excellent) notes.
+- A09 does three full scene traversals per frame: normal prepass + shadow pass + colour pass.
