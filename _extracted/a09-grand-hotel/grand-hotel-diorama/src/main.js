@@ -10,6 +10,7 @@ import { createBase } from './base.js';
 import { createHotel } from './hotel.js';
 import { createProps } from './props.js';
 import { createSky, createSnow, SteamSystem } from './atmosphere.js';
+import { batchStatic } from './batch.js';
 
 /* ================================================================== *
  *  renderer / scene / camera
@@ -114,6 +115,23 @@ scene.add(snow.points);
 
 const steam = new SteamSystem(54);
 for (const p of steam.pool) scene.add(p.s);
+
+/* ================================================================== *
+ *  静态合批
+ *
+ *  这一件每帧要渲三遍场景：法线预渲染（描边用）→ 阴影 → 颜色，
+ *  所以一个静态小件等于三次 draw call。把「不会动的」全部合掉，
+ *  收益是三倍于其他作品。动画对象逐个登记进 skip 名单。
+ * ================================================================== */
+const batchSkip = [];
+const batchSkipMats = [];
+for (const e of hotel.anim.elevators) batchSkip.push(e.obj);
+if (hotel.anim.door) batchSkip.push(hotel.anim.door);
+if (hotel.anim.flag) batchSkip.push(hotel.anim.flag);
+for (const l of hotel.anim.switchLights || []) { batchSkip.push(l.mesh); batchSkipMats.push(l.mat); }
+if (props.cable && props.cable.sway) batchSkip.push(props.cable.sway);
+const batchStats = batchStatic(scene, { skip: batchSkip, skipMaterials: batchSkipMats });
+if (location.hash === '#stats') console.log('[A09] static batch', batchStats);
 
 /* ================================================================== *
  *  post processing — cel outline / bloom / film

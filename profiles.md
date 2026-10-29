@@ -235,8 +235,24 @@ Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋（cut-away doll
 **注意**
 `controls.enablePan = false`——**不支持平移**，只能绕目标旋转缩放，缩放范围 70–430。这是刻意的构图约束，改的时候注意别把娃娃屋转出画面。静置 7 秒恢复自动环绕。
 
-**优化切入点**
-无性能数据。3169 行分 7 个模块（main/base/hotel/props/atmosphere/textures/lib），模块边界清楚，适合先测再改。室内三层陈设是主要 draw call 来源。
+**性能（归档实测）**
+原始构建 **7047 draw calls / 344k 三角面**——全库最高。原因不在零件数量，而在渲染结构：每帧要跑
+三遍场景（法线预渲染给描边用 → 阴影贴图 → 颜色），一个静态小件实际等于三次 draw call。
+
+**已做的优化（本归档）**
+新增 `src/batch.js`：按 material.uuid + castShadow/receiveShadow + renderOrder 分组，烘焙世界矩阵后
+合并成静态大网格。动画对象逐个登记进跳过名单——电梯轿厢、旋转门、旗帜、电话总机指示灯、缆车吊厢；
+透明件（`userData.glass`）、ShaderMaterial、InstancedMesh、属性集合不一致的几何体一律不动。
+
+- 7047 → **1009 calls**（-86%），三角面 344,551 → 344,552（不变）
+- 画面：与原构建逐像素比对，差异只剩边缘 1px 抖动（相机自转时间差）、雪粒与旗帜；**没有成块区域**，
+  说明没有零件丢失或错位
+- URL 加 `#stats` 可在控制台看合批统计
+
+**还能再往下**
+- 阴影 pass 仍占约三分之一：`castShadow` 只留建筑主体与山体，小件全关可再少 200+
+- 法线预渲染可降到半分辨率（只省 GPU，不省 draw call）
+- 改完 `npm run build`（`node build.mjs`，只依赖 esbuild）重出 `grand-hotel-diorama.html`
 
 ---
 

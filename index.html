@@ -171,7 +171,7 @@
       <div class="stat"><b>11</b><span>模块化可维护</span></div>
       <div class="stat"><b>16</b><span>双击即看</span></div>
       <div class="stat"><b>r150–r186</b><span>three.js 跨度</span></div>
-      <div class="stat"><b>7,047</b><span>最高 draw call / 帧</span></div>
+      <div class="stat"><b>3,523</b><span>最高 draw call / 帧</span></div>
     </div>
   </div>
 </header>
@@ -203,7 +203,7 @@ const DATA = [
 {
   code:"A01", name:"Black Lodge", cn:"双峰 · 黑色旅舍",
   theme:"影视同人", tags:["双峰","雨夜","丝绒红房间","平面反射"],
-  size:"516K", zip:"a01-twin-peaks-lodge.zip", loc:4939, three:"r169", calls:3574, tris:128461,
+  size:"516K", zip:"a01-twin-peaks-lodge.zip", loc:4939, three:"r169", calls:3523, tris:126752,
   entry:"TwinPeaks-BlackLodge.html", build:"npm run build", open:"direct", edit:"module",
   preview:"previews/A01.png", pal:["#5c1a24","#12090c"],
   lede:"华盛顿州雨夜松林里的街角黑色旅舍：深红丝绒幕墙、弧形玻璃橱窗、Twede's Cafe 立牌、黑白人字纹湿地面、会倒映星空的机油水洼。",
@@ -251,7 +251,7 @@ const DATA = [
 {
   code:"A05", name:"Cliff Lighthouse Café", cn:"海崖灯塔咖啡馆",
   theme:"现实复古", tags:["灯塔","咖啡馆","夏日黄昏","成品锁死"],
-  size:"152K", zip:"a05-cliff-lighthouse-cafe.zip", loc:3964, three:"内联", calls:2155, tris:265632,
+  size:"152K", zip:"a05-cliff-lighthouse-cafe.zip", loc:3964, three:"内联", calls:2154, tris:264952,
   entry:"index.html", build:"—", open:"direct", edit:"locked",
   preview:"previews/A05.png", pal:["#7a5a3a","#140f0a"],
   lede:"海崖上的灯塔咖啡馆，夏日黄昏。完全自包含单文件，体积第二小。",
@@ -298,15 +298,15 @@ const DATA = [
 },
 {
   code:"A09", name:"Grand Hotel", cn:"阿尔卑斯缆车站酒店",
-  theme:"影视风格", tags:["Wes Anderson","剖面娃娃屋","雪山","无文档"],
-  size:"468K", zip:"a09-grand-hotel.zip", loc:3169, three:"r160", calls:7047, tris:344551,
+  theme:"影视风格", tags:["Wes Anderson","剖面娃娃屋","雪山","已合批 7047→1009"],
+  size:"468K", zip:"a09-grand-hotel.zip", loc:3169, three:"r160", calls:1009, tris:344551,
   entry:"grand-hotel-diorama.html", build:"npm run build", open:"direct", edit:"module",
   preview:"previews/A09.png", pal:["#7a3a52","#150a10"],
   lede:"Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋：粉调黄昏天穹、飘雪、岩石山体、缆车隧道。三层室内一览无余。",
   entryNote:"602KB 单文件。开发 npm run dev（node tools/serve.mjs），重打包 npm run build。",
   tech:"拱形玻璃正立面即剖面开口；室内 1F 大堂（地毯）/ 2F Mendl's 甜品沙龙（棋盘格地面）/ 3F 土耳其浴 + 电话总机（木地板）/ 屋顶 mansard 折面；粉色黄昏天穹 shader + 飘雪粒子 + 蒸汽系统。",
-  points:"无性能数据、无截图。3169 行分 7 个模块，模块边界清楚；室内三层陈设是主要 draw call 来源。",
-  note:"controls.enablePan = false——不支持平移，只能绕目标旋转缩放（70–430），是刻意的构图约束。静置 7 秒恢复自动环绕。包内完全没有 README。"
+  points:"实测原为 7047 calls/帧——全库最高的三倍。原因是每帧三遍场景：法线预渲染（描边）+ 阴影 + 颜色。已加静态合批（src/batch.js，按材质/阴影/renderOrder 分组，跳过电梯、旋转门、旗帜、指示灯、缆车吊厢），降到 1009 calls，三角面不变。",
+  note:"controls.enablePan = false——不支持平移，只能绕目标旋转缩放（70–430），是刻意的构图约束。静置 7 秒恢复自动环绕。包内完全没有 README，也没有任何性能数据——7047 这个数字是归档时测出来的。"
 },
 {
   code:"A10", name:"The Lighthouse", cn:"灯塔",
@@ -335,7 +335,7 @@ const DATA = [
 {
   code:"A12", name:"Stutter Lab", cn:"时间断裂实验舱",
   theme:"科幻", tags:["定格粒子","白瓷","量子核心","体积最小"],
-  size:"296K", zip:"a12-monach-stutter-lab.zip", loc:1778, three:"r160", calls:1530, tris:120569,
+  size:"296K", zip:"a12-monach-stutter-lab.zip", loc:1778, three:"r160", calls:1529, tris:120557,
   entry:"monach_stutter_lab.html", build:"—", open:"server", edit:"readable",
   preview:"previews/A12.png", pal:["#2b3444","#080a0e"],
   lede:"白瓷台面上的量子实验舱，时间被定格的一瞬：2400 颗悬浮水珠、250 片碎玻璃、74 张档案纸静止在空中。体积最小、概念最锋利。",
@@ -347,7 +347,7 @@ const DATA = [
 {
   code:"A13", name:"Mori Mart", cn:"萤火雨夜便利店",
   theme:"原创奇幻", tags:["树屋","便利店","萤火虫","日式"],
-  size:"1.3M", zip:"a13-mori-mart.zip", loc:2575, three:"r160", calls:1776, tris:230826,
+  size:"1.3M", zip:"a13-mori-mart.zip", loc:2575, three:"r160", calls:1775, tris:230862,
   entry:"index.html（离线）/ source/index.html（可读）", build:"—", open:"direct", edit:"readable",
   preview:"previews/A13.png", pal:["#2c3f2a","#080c08"],
   lede:"森林里的树屋便利店，萤火雨夜。年轮底座、千年古树板根、松果贩卖机、甲虫坐骑、铃兰萤火虫路灯、蘑菇电线杆。",
@@ -383,7 +383,7 @@ const DATA = [
 {
   code:"A16", name:"Route 66 Diner", cn:"66 号公路复古餐厅",
   theme:"现实复古", tags:["66号公路","加油站","沙漠","成品锁死"],
-  size:"156K", zip:"a16-route66-diner.zip", loc:3929, three:"内联", calls:2345, tris:203053,
+  size:"156K", zip:"a16-route66-diner.zip", loc:3929, three:"内联", calls:2355, tris:203253,
   entry:"index.html", build:"—", open:"direct", edit:"locked",
   preview:"previews/A16.png", pal:["#6b3a24","#120a06"],
   lede:"66 号公路旁的沙漠复古加油站 / 餐厅。全库体积最小。",
@@ -419,7 +419,7 @@ const DATA = [
 {
   code:"A19", name:"Hawkins / Upside Down", cn:"怪奇物语 · 双世界镜像",
   theme:"影视同人", tags:["怪奇物语","上下镜像","霓虹","单文件可读"],
-  size:"188K", zip:"a19-stranger-things.zip", loc:2363, three:"内联", calls:2237, tris:124077,
+  size:"188K", zip:"a19-stranger-things.zip", loc:2363, three:"内联", calls:2239, tris:124041,
   entry:"stranger-things-hawkins-diorama.html", build:"—", open:"direct", edit:"readable",
   preview:"previews/A19.png", pal:["#5c1a1a","#0a0608"],
   lede:"霍金斯 / 颠倒世界的双层镜像：上层现实世界（街机厅、拜尔斯老屋、BMX、电话亭），下层同款建筑 180° 倒悬、被藤蔓吞噬。",

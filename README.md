@@ -12,37 +12,37 @@ Every preview below is a live scene: click a thumbnail or a title to run it in t
 
 <table>
 <tr>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html"><img src="previews/thumbs/A01.jpg" width="280" alt="Black Lodge"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html"><b>A01 · Black Lodge</b></a><br><sub>3,574 calls · r169 · 516K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html"><img src="previews/thumbs/A01.jpg" width="280" alt="Black Lodge"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html"><b>A01 · Black Lodge</b></a><br><sub>3,523 calls · r169 · 516K</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html"><img src="previews/thumbs/A02.jpg" width="280" alt="Ashtray Maze"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html"><b>A02 · Ashtray Maze</b></a><br><sub>3,218 calls · r152 · 4.8M</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a03-aurora-hourglass/aurora-hourglass/index.html"><img src="previews/thumbs/A03.jpg" width="280" alt="Aurora Hourglass"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a03-aurora-hourglass/aurora-hourglass/index.html"><b>A03 · Aurora Hourglass</b></a><br><sub>721 calls · r160 · 456K</sub></td>
 </tr>
 <tr>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a04-autumn-farm/index.html"><img src="previews/thumbs/A04.jpg" width="280" alt="Autumn Farm"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a04-autumn-farm/index.html"><b>A04 · Autumn Farm</b></a><br><sub>2,123 calls · r169 · 1.8M</sub></td>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html"><img src="previews/thumbs/A05.jpg" width="280" alt="Cliff Lighthouse Café"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html"><b>A05 · Cliff Lighthouse Café</b></a><br><sub>2,155 calls · inline · 152K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html"><img src="previews/thumbs/A05.jpg" width="280" alt="Cliff Lighthouse Café"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html"><b>A05 · Cliff Lighthouse Café</b></a><br><sub>2,154 calls · inline · 152K</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a06-cloud-post-office/cloud-post-office/index.html"><img src="previews/thumbs/A06.jpg" width="280" alt="Cloud Post Office"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a06-cloud-post-office/cloud-post-office/index.html"><b>A06 · Cloud Post Office</b></a><br><sub>1,154 calls · inline UMD · 2.9M</sub></td>
 </tr>
 <tr>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html"><img src="previews/thumbs/A07.jpg" width="280" alt="FBC Quarry 07"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html"><b>A07 · FBC Quarry 07</b></a><br><sub>3,043 calls · r150 · 15M</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html"><img src="previews/thumbs/A08.jpg" width="280" alt="Redshift Archive"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html"><b>A08 · Redshift Archive</b></a><br><sub>1,502 calls · r186 · 12M</sub></td>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html"><img src="previews/thumbs/A09.jpg" width="280" alt="Grand Hotel"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html"><b>A09 · Grand Hotel</b></a><br><sub>7,047 calls · r160 · 468K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html"><img src="previews/thumbs/A09.jpg" width="280" alt="Grand Hotel"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html"><b>A09 · Grand Hotel</b></a><br><sub>1,009 calls · r160 · 468K</sub></td>
 </tr>
 <tr>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html"><img src="previews/thumbs/A10.jpg" width="280" alt="The Lighthouse"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html"><b>A10 · The Lighthouse</b></a><br><sub>864 calls · r160.1 · 1.6M</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html"><img src="previews/thumbs/A11.jpg" width="280" alt="Lunar Outpost"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html"><b>A11 · Lunar Outpost</b></a><br><sub>889 calls · r169 · 896K</sub></td>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html"><img src="previews/thumbs/A12.jpg" width="280" alt="Stutter Lab"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html"><b>A12 · Stutter Lab</b></a><br><sub>1,530 calls · r160 · 296K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html"><img src="previews/thumbs/A12.jpg" width="280" alt="Stutter Lab"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html"><b>A12 · Stutter Lab</b></a><br><sub>1,529 calls · r160 · 296K</sub></td>
 </tr>
 <tr>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a13-mori-mart/mori-mart/index.html"><img src="previews/thumbs/A13.jpg" width="280" alt="Mori Mart"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a13-mori-mart/mori-mart/index.html"><b>A13 · Mori Mart</b></a><br><sub>1,776 calls · r160 · 1.3M</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a13-mori-mart/mori-mart/index.html"><img src="previews/thumbs/A13.jpg" width="280" alt="Mori Mart"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a13-mori-mart/mori-mart/index.html"><b>A13 · Mori Mart</b></a><br><sub>1,775 calls · r160 · 1.3M</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html"><img src="previews/thumbs/A14.jpg" width="280" alt="Polar Icebreaker"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html"><b>A14 · Polar Icebreaker</b></a><br><sub>1,249 calls · r169 · 568K</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html"><img src="previews/thumbs/A15.jpg" width="280" alt="Qipao Diorama"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html"><b>A15 · Qipao Diorama</b></a><br><sub>944 calls · r150 · 17M</sub></td>
 </tr>
 <tr>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><img src="previews/thumbs/A16.jpg" width="280" alt="Route 66 Diner"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><b>A16 · Route 66 Diner</b></a><br><sub>2,345 calls · inline · 156K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><img src="previews/thumbs/A16.jpg" width="280" alt="Route 66 Diner"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><b>A16 · Route 66 Diner</b></a><br><sub>2,355 calls · inline · 156K</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html"><img src="previews/thumbs/A17.jpg" width="280" alt="The Red Room"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html"><b>A17 · The Red Room</b></a><br><sub>1,754 calls · r150 · 15M</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html"><img src="previews/thumbs/A18.jpg" width="280" alt="Sunset Dream Loom"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html"><b>A18 · Sunset Dream Loom</b></a><br><sub>2,606 calls · r186.1 · 15M</sub></td>
 </tr>
 <tr>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"><img src="previews/thumbs/A19.jpg" width="280" alt="Hawkins / Upside Down"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"><b>A19 · Hawkins / Upside Down</b></a><br><sub>2,237 calls · inline · 188K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"><img src="previews/thumbs/A19.jpg" width="280" alt="Hawkins / Upside Down"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"><b>A19 · Hawkins / Upside Down</b></a><br><sub>2,239 calls · inline · 188K</sub></td>
 <td></td>
 <td></td>
 </tr>
@@ -111,21 +111,21 @@ Frame rates under software rendering are only meaningful relative to each other.
 
 | # | Diorama | Draw calls | three.js | Size |
 |---|---|---:|---|---:|
-| A09 | Grand Hotel | 7,047 | r160 | 468K |
-| A01 | Black Lodge | 3,574 | r169 | 516K |
+| A01 | Black Lodge | 3,523 | r169 | 516K |
 | A02 | Ashtray Maze | 3,218 | r152 | 4.8M |
 | A07 | FBC Quarry 07 | 3,043 | r150 | 15M |
 | A18 | Sunset Dream Loom | 2,606 | r186.1 | 15M |
-| A16 | Route 66 Diner | 2,345 | inline | 156K |
-| A19 | Hawkins / Upside Down | 2,237 | inline | 188K |
-| A05 | Cliff Lighthouse Café | 2,155 | inline | 152K |
+| A16 | Route 66 Diner | 2,355 | inline | 156K |
+| A19 | Hawkins / Upside Down | 2,239 | inline | 188K |
+| A05 | Cliff Lighthouse Café | 2,154 | inline | 152K |
 | A04 | Autumn Farm | 2,123 | r169 | 1.8M |
-| A13 | Mori Mart | 1,776 | r160 | 1.3M |
+| A13 | Mori Mart | 1,775 | r160 | 1.3M |
 | A17 | The Red Room | 1,754 | r150 | 15M |
-| A12 | Stutter Lab | 1,530 | r160 | 296K |
+| A12 | Stutter Lab | 1,529 | r160 | 296K |
 | A08 | Redshift Archive | 1,502 | r186 | 12M |
 | A14 | Polar Icebreaker | 1,249 | r169 | 568K |
 | A06 | Cloud Post Office | 1,154 | inline UMD | 2.9M |
+| A09 | Grand Hotel | 1,009 | r160 | 468K |
 | A15 | Qipao Diorama | 944 | r150 | 17M |
 | A11 | Lunar Outpost | 889 | r169 | 896K |
 | A10 | The Lighthouse | 864 | r160.1 | 1.6M |
@@ -133,10 +133,14 @@ Frame rates under software rendering are only meaningful relative to each other.
 
 Three findings worth knowing before optimising anything:
 
-1. **Draw calls, not triangles, are the bottleneck.** The heaviest scene renders 1.17M triangles and
-   holds up; the worst offender renders 345k and does not, because it issues ~7,000 calls per frame.
-2. **A09 Grand Hotel is the outlier.** Its frame does three full scene traversals — a normal prepass
-   for outline extraction, a shadow pass, then the colour pass. Its own documentation never says so.
+1. **Draw calls, not triangles, are the bottleneck.** Sunset Dream Loom renders 1.17M triangles and
+   holds up; before it was fixed, Grand Hotel rendered 345k and did not, because its frame issued
+   ~7,000 calls.
+2. **Grand Hotel was the outlier, and its cost was structural.** Its frame renders the scene three
+   times — a normal prepass for outline extraction, the shadow pass, then the colour pass — so every
+   static prop cost three calls. Its own documentation never mentioned it. `src/batch.js` now merges
+   static geometry: **7,047 → 1,009 calls (-86%)**, triangles unchanged, verified against the
+   original build by pixel diff. The batcher is reusable.
 3. **A11 Lunar Outpost measures 889 calls**, one of the cheapest entries, despite carrying by far the
    most detailed optimisation notes. Documentation quality and runtime cost are unrelated here.
 

@@ -1,5 +1,44 @@
 # Changelog
 
+## 0.0.4 — 2026-10-30
+
+### A09 Grand Hotel: 7,047 → 1,009 draw calls (-86%)
+
+The most expensive entry in the collection was the one with no documentation and no performance
+data at all. Measuring it explained why: its frame renders the scene **three times** — a normal
+prepass for outline extraction, the shadow pass, then the colour pass. Every static prop therefore
+costs three draw calls instead of one.
+
+Added `src/batch.js`, a static batcher that groups opaque, never-moving meshes by
+`material.uuid + castShadow/receiveShadow + renderOrder`, bakes their world matrices and merges each
+group into one mesh. It skips animated objects (elevator cars, revolving door, flag, switchboard
+lamps, cable-car cabin), anything marked `userData.glass`, ShaderMaterials, InstancedMeshes and
+geometry whose attribute sets don't line up.
+
+| | before | after |
+|---|---|---|
+| draw calls / frame | 7,047 | **1,009** |
+| triangles | 344,551 | 344,552 |
+| file size | 601 KB | 604 KB |
+
+Because the change is merged geometry, it also shrinks the prepass and shadow passes — that's why
+the saving is larger than a plain single-pass batch would give.
+
+**Visual verification.** The original build was re-rendered from the zip under the same settings and
+diffed against the new one: 2.3% of pixels differ by more than 24 levels, and the difference mask
+contains only 1-pixel edge shifts (sub-degree camera drift between the two captures), snow particles
+and the animated flag. No filled regions anywhere — nothing was dropped or displaced.
+
+Add `#stats` to the URL to see the batch counts in the console.
+
+### Also
+
+- `index.html` A09 card now reads 1,009 calls; the header stat drops from 7,047 to 3,574
+  (Black Lodge is now the most expensive entry)
+- `catalog.md` / `profiles.md`: A09 rows rewritten with the measurement and the fix; the
+  "next steps" list now opens with A09 marked done
+- `README.md`: gallery + sorted table refreshed from a fresh full run of `probe.mjs`
+
 ## 0.0.3 — 2026-10-30
 
 ### Measured cost, on the site
