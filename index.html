@@ -85,6 +85,9 @@
   .meta{display:flex;gap:10px;margin-top:11px;font-size:11px;color:var(--dim2);
     font-variant-numeric:tabular-nums;flex-wrap:wrap}
   .meta i{font-style:normal;color:var(--dim)}
+  .meta .cost{font-variant-numeric:tabular-nums}
+  .meta .cost.hot{color:#ffb46b}
+  .meta .cost.mid{color:#ffd479}
   .tags{display:flex;gap:5px;margin-top:11px;flex-wrap:wrap}
   .tag{font-size:10.5px;padding:2.5px 7px;border-radius:4px;background:rgba(255,255,255,.045);
     color:var(--dim);border:1px solid transparent}
@@ -168,6 +171,7 @@
       <div class="stat"><b>11</b><span>模块化可维护</span></div>
       <div class="stat"><b>16</b><span>双击即看</span></div>
       <div class="stat"><b>r150–r186</b><span>three.js 跨度</span></div>
+      <div class="stat"><b>7,047</b><span>最高 draw call / 帧</span></div>
     </div>
   </div>
 </header>
@@ -182,6 +186,8 @@
     <div class="chips" id="fTheme"></div>
     <div class="sep"></div>
     <div class="chips" id="fEdit"></div>
+    <div class="sep"></div>
+    <div class="chips" id="fSort"></div>
     <div class="count" id="count"></div>
   </div>
 </div>
@@ -197,7 +203,7 @@ const DATA = [
 {
   code:"A01", name:"Black Lodge", cn:"双峰 · 黑色旅舍",
   theme:"影视同人", tags:["双峰","雨夜","丝绒红房间","平面反射"],
-  size:"516K", zip:"a01-twin-peaks-lodge.zip", loc:4939, three:"r169",
+  size:"516K", zip:"a01-twin-peaks-lodge.zip", loc:4939, three:"r169", calls:3574, tris:128461,
   entry:"TwinPeaks-BlackLodge.html", build:"npm run build", open:"direct", edit:"module",
   preview:"previews/A01.png", pal:["#5c1a24","#12090c"],
   lede:"华盛顿州雨夜松林里的街角黑色旅舍：深红丝绒幕墙、弧形玻璃橱窗、Twede's Cafe 立牌、黑白人字纹湿地面、会倒映星空的机油水洼。",
@@ -209,7 +215,7 @@ const DATA = [
 {
   code:"A02", name:"Ashtray Maze", cn:"烟灰缸迷宫",
   theme:"影视同人", tags:["控制","粗野主义","迷宫","源码量第二"],
-  size:"4.8M", zip:"a02-ashtray-maze.zip", loc:7644, three:"r152",
+  size:"4.8M", zip:"a02-ashtray-maze.zip", loc:7644, three:"r152", calls:3218, tris:85486,
   entry:"standalone/ashtray-maze.html", build:"python tools/build_standalone.py", open:"direct", edit:"module",
   preview:"previews/A02.png", pal:["#3d4a3a","#0e120f"],
   lede:"《控制》烟灰缸迷宫的收藏级模型：18.5×18.5 粗野主义混凝土基座、中央厚玻璃观测控制室、可重组的混凝土墙体、头顶钢梁与老式荧光灯。",
@@ -221,7 +227,7 @@ const DATA = [
 {
   code:"A03", name:"Aurora Hourglass", cn:"极光星海 · 倒置沙漏天文台",
   theme:"原创奇幻", tags:["极光","沙漏","星图","单 main.js"],
-  size:"456K", zip:"a03-aurora-hourglass.zip", loc:2132, three:"r160",
+  size:"456K", zip:"a03-aurora-hourglass.zip", loc:2132, three:"r160", calls:721, tris:138739,
   entry:"index.html", build:"npm run build", open:"direct", edit:"module",
   preview:"previews/A03.png", pal:["#1d2f4d","#080d18"],
   lede:"双层方形底座 + 倒置沙漏形水晶天文台 + 星座连线玻璃捕星花房。镜面浅滩倒映极光，四道黄铜浑天仪星环多轴自转。",
@@ -233,7 +239,7 @@ const DATA = [
 {
   code:"A04", name:"Autumn Farm", cn:"秋日农场",
   theme:"现实田园", tags:["农场","谷仓","溪流水车","唯一需联网"],
-  size:"1.8M", zip:"a04-autumn-farm.zip", loc:2299, three:"r169",
+  size:"1.8M", zip:"a04-autumn-farm.zip", loc:2299, three:"r169", calls:2123, tris:93892,
   entry:"index.html", build:"—", open:"net", edit:"readable",
   preview:"previews/A04.png", pal:["#6b4a22","#1a1208"],
   lede:"28×28 方台秋日农场：谷仓 + 玻璃工坊 + 溪流水车 + 皮卡 + 南瓜田，落叶与炊烟。全库唯一需要联网的作品。",
@@ -245,7 +251,7 @@ const DATA = [
 {
   code:"A05", name:"Cliff Lighthouse Café", cn:"海崖灯塔咖啡馆",
   theme:"现实复古", tags:["灯塔","咖啡馆","夏日黄昏","成品锁死"],
-  size:"152K", zip:"a05-cliff-lighthouse-cafe.zip", loc:3964, three:"内联",
+  size:"152K", zip:"a05-cliff-lighthouse-cafe.zip", loc:3964, three:"内联", calls:2155, tris:265632,
   entry:"index.html", build:"—", open:"direct", edit:"locked",
   preview:"previews/A05.png", pal:["#7a5a3a","#140f0a"],
   lede:"海崖上的灯塔咖啡馆，夏日黄昏。完全自包含单文件，体积第二小。",
@@ -257,7 +263,7 @@ const DATA = [
 {
   code:"A06", name:"Cloud Post Office", cn:"云端蒸汽飞艇邮政局",
   theme:"原创奇幻", tags:["飞艇","云海","邮政局","无构建链"],
-  size:"2.9M", zip:"a06-cloud-post-office.zip", loc:3268, three:"内联 UMD",
+  size:"2.9M", zip:"a06-cloud-post-office.zip", loc:3268, three:"内联 UMD", calls:1154, tris:204820,
   entry:"index.html", build:"—", open:"direct", edit:"module",
   preview:"previews/A06.png", pal:["#243a5e","#080d16"],
   lede:"云海之上，一艘蒸汽飞艇托着一座邮政局。一层信件分拣大厅、二层领航室，甲板上有机械信天翁与升降吊篮。",
@@ -269,7 +275,7 @@ const DATA = [
 {
   code:"A07", name:"FBC Quarry 07", cn:"倒悬巨构采石场",
   theme:"影视同人", tags:["控制","倒三角","采石场","重工业"],
-  size:"15M", zip:"a07-fbc-quarry.zip", loc:5309, three:"r150",
+  size:"15M", zip:"a07-fbc-quarry.zip", loc:5309, three:"r150", calls:3043, tris:80044,
   entry:"standalone/fbc-quarry-07.html", build:"npm run bundle", open:"direct", edit:"module",
   preview:"previews/A07.png", pal:["#4a2b22","#0c0806"],
   lede:"悬浮在黑色采石场上的倒三角巨构：联邦控制局的混凝土纪念碑、失控的重力井，藏在倒三角内部的一间琥珀色控制室。",
@@ -281,7 +287,7 @@ const DATA = [
 {
   code:"A08", name:"Redshift Archive", cn:"悬浮档案大厅",
   theme:"影视同人", tags:["控制","档案大厅","悬浮巨石","已有合批"],
-  size:"12M", zip:"a08-fbc-redshift.zip", loc:3418, three:"r186",
+  size:"12M", zip:"a08-fbc-redshift.zip", loc:3418, three:"r186", calls:1502, tris:246052,
   entry:"dist/FBC-Redshift-Archive.html", build:"npm run build", open:"direct", edit:"module",
   preview:"previews/A08.png", pal:["#3a1f2a","#0a0709"],
   lede:"粗野主义档案大厅 + 违反重力的巨型黑色悬浮巨石 + 三十余套失重浮游的 1970 年代办公桌椅 + 两千余张如静止雪幕的档案纸页。",
@@ -293,7 +299,7 @@ const DATA = [
 {
   code:"A09", name:"Grand Hotel", cn:"阿尔卑斯缆车站酒店",
   theme:"影视风格", tags:["Wes Anderson","剖面娃娃屋","雪山","无文档"],
-  size:"468K", zip:"a09-grand-hotel.zip", loc:3169, three:"r160",
+  size:"468K", zip:"a09-grand-hotel.zip", loc:3169, three:"r160", calls:7047, tris:344551,
   entry:"grand-hotel-diorama.html", build:"npm run build", open:"direct", edit:"module",
   preview:"previews/A09.png", pal:["#7a3a52","#150a10"],
   lede:"Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋：粉调黄昏天穹、飘雪、岩石山体、缆车隧道。三层室内一览无余。",
@@ -305,7 +311,7 @@ const DATA = [
 {
   code:"A10", name:"The Lighthouse", cn:"灯塔",
   theme:"现实复古", tags:["黑白胶片","剖面","雨夜海面","自定义后处理"],
-  size:"1.6M", zip:"a10-lighthouse.zip", loc:2245, three:"r160.1",
+  size:"1.6M", zip:"a10-lighthouse.zip", loc:2245, three:"r160.1", calls:864, tris:157116,
   entry:"lighthouse.html", build:"npm run build", open:"direct", edit:"module",
   preview:"previews/A10.png", pal:["#3b434d","#0a0c0f"],
   lede:"可交互的灯塔微缩剖面：方形礁石基座 + 泥土剖面酒箱 + 半剖铸铁塔身 + 62 级螺旋楼梯 + 菲涅尔水晶透镜室，雨夜海面。全库唯一黑白胶片风格。",
@@ -317,7 +323,7 @@ const DATA = [
 {
   code:"A11", name:"Lunar Outpost", cn:"月球前哨站",
   theme:"科幻", tags:["月球","穹顶","月球车","优化笔记最详细"],
-  size:"896K", zip:"a11-lunar-outpost.zip", loc:2177, three:"r169",
+  size:"896K", zip:"a11-lunar-outpost.zip", loc:2177, three:"r169", calls:889, tris:173550,
   entry:"index.html（CDN）/ index-offline.html（需服务）", build:"—", open:"server", edit:"readable",
   preview:"previews/A11.png", pal:["#3a4152","#0a0c10"],
   lede:"月球科考前哨站沙盘：生活舱 + 生态穹顶 + 追日太阳能帆板 + 深空天线 + 信标塔 + 六轮月球车。README 基本就是一份性能优化方案书。",
@@ -329,7 +335,7 @@ const DATA = [
 {
   code:"A12", name:"Stutter Lab", cn:"时间断裂实验舱",
   theme:"科幻", tags:["定格粒子","白瓷","量子核心","体积最小"],
-  size:"296K", zip:"a12-monach-stutter-lab.zip", loc:1778, three:"r160",
+  size:"296K", zip:"a12-monach-stutter-lab.zip", loc:1778, three:"r160", calls:1530, tris:120569,
   entry:"monach_stutter_lab.html", build:"—", open:"server", edit:"readable",
   preview:"previews/A12.png", pal:["#2b3444","#080a0e"],
   lede:"白瓷台面上的量子实验舱，时间被定格的一瞬：2400 颗悬浮水珠、250 片碎玻璃、74 张档案纸静止在空中。体积最小、概念最锋利。",
@@ -341,7 +347,7 @@ const DATA = [
 {
   code:"A13", name:"Mori Mart", cn:"萤火雨夜便利店",
   theme:"原创奇幻", tags:["树屋","便利店","萤火虫","日式"],
-  size:"1.3M", zip:"a13-mori-mart.zip", loc:2575, three:"r160",
+  size:"1.3M", zip:"a13-mori-mart.zip", loc:2575, three:"r160", calls:1776, tris:230826,
   entry:"index.html（离线）/ source/index.html（可读）", build:"—", open:"direct", edit:"readable",
   preview:"previews/A13.png", pal:["#2c3f2a","#080c08"],
   lede:"森林里的树屋便利店，萤火雨夜。年轮底座、千年古树板根、松果贩卖机、甲虫坐骑、铃兰萤火虫路灯、蘑菇电线杆。",
@@ -353,7 +359,7 @@ const DATA = [
 {
   code:"A14", name:"Polar Icebreaker", cn:"极地科考破冰船",
   theme:"现实复古", tags:["破冰船","冰盖剖面","独角鲸","Python 打包"],
-  size:"568K", zip:"a14-polar-icebreaker.zip", loc:1830, three:"r169",
+  size:"568K", zip:"a14-polar-icebreaker.zip", loc:1830, three:"r169", calls:1249, tris:51251,
   entry:"polar-icebreaker.html", build:"python build.py", open:"direct", edit:"readable",
   preview:"previews/A14.png", pal:["#2f4a5c","#070c10"],
   lede:"极地科考破冰船三维微缩景观：双层截面底座（上层冰盖带裂口 + 下层玻璃水箱）+ 程序化放样船体 + 水下独角鲸与磷虾群。",
@@ -365,7 +371,7 @@ const DATA = [
 {
   code:"A15", name:"Qipao Diorama", cn:"1936 上海 · 旗袍与留声",
   theme:"现实复古", tags:["上海","旗袍","留声机","合批 2758→850"],
-  size:"17M", zip:"a15-qipao-diorama.zip", loc:5883, three:"r150",
+  size:"17M", zip:"a15-qipao-diorama.zip", loc:5883, three:"r150", calls:944, tris:132892,
   entry:"standalone/qipao-diorama.html", build:"node tools/bundle.mjs", open:"direct", edit:"module",
   preview:"previews/A15.png", pal:["#5a2420","#0f0806"],
   lede:"1936 年上海街角：转角红砖洋房，一楼「綺羅旗袍」与「百代留聲」，二楼蒂芙尼灯映在彩色花玻璃上，门外秋雨、电车、黄包车、流动霓虹。",
@@ -377,7 +383,7 @@ const DATA = [
 {
   code:"A16", name:"Route 66 Diner", cn:"66 号公路复古餐厅",
   theme:"现实复古", tags:["66号公路","加油站","沙漠","成品锁死"],
-  size:"156K", zip:"a16-route66-diner.zip", loc:3929, three:"内联",
+  size:"156K", zip:"a16-route66-diner.zip", loc:3929, three:"内联", calls:2345, tris:203053,
   entry:"index.html", build:"—", open:"direct", edit:"locked",
   preview:"previews/A16.png", pal:["#6b3a24","#120a06"],
   lede:"66 号公路旁的沙漠复古加油站 / 餐厅。全库体积最小。",
@@ -389,7 +395,7 @@ const DATA = [
 {
   code:"A17", name:"The Red Room", cn:"双峰 · 红房间",
   theme:"影视同人", tags:["双峰","红房间","雨林","人字纹地板"],
-  size:"15M", zip:"a17-twin-peaks-red-room.zip", loc:5871, three:"r150",
+  size:"15M", zip:"a17-twin-peaks-red-room.zip", loc:5871, three:"r150", calls:1754, tris:396617,
   entry:"standalone/twin-peaks-red-room.html", build:"npm run bundle", open:"direct", edit:"module",
   preview:"previews/A17.png", pal:["#5e1620","#0d0608"],
   lede:"被半剖开的红房间 + 外部 Glastonbury Grove 十二棵环形成圈的悬铃木。黑白人字纹地板、四面高耸深红天鹅绒帷幕、被拉开的厚帷幕与金色束带。",
@@ -401,7 +407,7 @@ const DATA = [
 {
   code:"A18", name:"Sunset Dream Loom", cn:"晚霞织梦染坊",
   theme:"原创奇幻", tags:["飞空鲸","云海","染坊","有 OPTIMIZATION.md"],
-  size:"15M", zip:"a18-whale-dream-atelier.zip", loc:11595, three:"r186.1",
+  size:"15M", zip:"a18-whale-dream-atelier.zip", loc:11595, three:"r186.1", calls:2606, tris:1174655,
   entry:"dist/dream-weaver-atelier.html", build:"npm run build:single", open:"direct", edit:"module",
   preview:"previews/A18.png", pal:["#6b3a52","#120810"],
   lede:"粉霞云海上的飞空鲸，鲸背托着一间晚霞织梦染坊：幻彩天池、丝绸瀑布、会呼吸的粉色空水母灯、自动织出星空的木织机。",
@@ -413,7 +419,7 @@ const DATA = [
 {
   code:"A19", name:"Hawkins / Upside Down", cn:"怪奇物语 · 双世界镜像",
   theme:"影视同人", tags:["怪奇物语","上下镜像","霓虹","单文件可读"],
-  size:"188K", zip:"a19-stranger-things.zip", loc:2363, three:"内联",
+  size:"188K", zip:"a19-stranger-things.zip", loc:2363, three:"内联", calls:2237, tris:124077,
   entry:"stranger-things-hawkins-diorama.html", build:"—", open:"direct", edit:"readable",
   preview:"previews/A19.png", pal:["#5c1a1a","#0a0608"],
   lede:"霍金斯 / 颠倒世界的双层镜像：上层现实世界（街机厅、拜尔斯老屋、BMX、电话亭），下层同款建筑 180° 倒悬、被藤蔓吞噬。",
@@ -425,6 +431,11 @@ const DATA = [
 ];
 
 const THEMES = ["全部","影视同人","影视风格","原创奇幻","科幻","现实复古","现实田园"];
+const SORTS = [
+  {k:"default", t:"默认顺序"},
+  {k:"cost",    t:"开销 ↓"},
+  {k:"costup",  t:"开销 ↑"}
+];
 const EDITS = [
   {k:"all",   t:"全部形态"},
   {k:"module",t:"模块化可改"},
@@ -457,10 +468,12 @@ const LIVE_PATH = {
 const liveUrl = d => LIVE_BASE + LIVE_PATH[d.code].split("/").map(encodeURIComponent).join("/");
 const EDIT_LABEL = {module:"模块化源码", readable:"单文件可读", locked:"已压缩·不可改"};
 
-let state = {q:"", theme:"全部", edit:"all"};
+let state = {q:"", theme:"全部", edit:"all", sort:"default"};
 
 function buildChips(){
   const ft = document.getElementById("fTheme");
+  /* 每次重建前必须清空，否则点一次筛选项就复制一整排 chip（原版遗留 bug） */
+  ft.innerHTML=""; document.getElementById("fEdit").innerHTML=""; document.getElementById("fSort").innerHTML="";
   THEMES.forEach(t=>{
     const b=document.createElement("button");
     b.className="chip"+(t===state.theme?" on":"");
@@ -476,6 +489,21 @@ function buildChips(){
     b.onclick=()=>{state.edit=e.k; buildChips(); render();};
     fe.appendChild(b);
   });
+  const fs = document.getElementById("fSort");
+  SORTS.forEach(s=>{
+    const b=document.createElement("button");
+    b.className="chip"+(s.k===state.sort?" on":"");
+    b.textContent=s.t; b.dataset.v=s.k;
+    b.onclick=()=>{state.sort=s.k; buildChips(); render();};
+    fs.appendChild(b);
+  });
+}
+
+/* 卡片上的开销读数：>2500 标红，>1800 标黄 */
+function costHtml(d){
+  const n = d.calls || 0;
+  const cls = n >= 2500 ? " hot" : n >= 1800 ? " mid" : "";
+  return '<span class="cost' + cls + '"><i>' + n.toLocaleString() + '</i> calls</span>';
 }
 
 function matches(d){
@@ -496,6 +524,8 @@ function phStyle(d){
 function render(){
   const grid=document.getElementById("grid");
   const list=DATA.filter(matches);
+  if(state.sort==="cost")   list.sort((a,b)=>(b.calls||0)-(a.calls||0));
+  if(state.sort==="costup") list.sort((a,b)=>(a.calls||0)-(b.calls||0));
   grid.innerHTML = list.map(d=>{
     const thumb = d.preview
       ? `<img src="${d.preview}" alt="${d.cn}" loading="lazy">`
@@ -513,7 +543,7 @@ function render(){
       <div class="body">
         <div class="name">${d.name}</div>
         <div class="sub">${d.cn} · ${d.theme}</div>
-        <div class="meta"><span>${d.size}</span><span>·</span><span><i>${d.loc.toLocaleString()}</i> 行</span><span>·</span><span>${d.three}</span></div>
+        <div class="meta"><span>${d.size}</span><span>·</span>${costHtml(d)}<span>·</span><span>${d.three}</span></div>
         <div class="tags">${editTag}${d.tags.slice(0,2).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
         <div class="path"><span>${slugOf(d)}</span><a class="golive" href="${liveUrl(d)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">在线预览 ↗</a></div>
       </div>
@@ -546,6 +576,7 @@ function openModal(code){
       <dt>入口</dt><dd><code>${d.entry}</code></dd>
       <dt>构建</dt><dd>${d.build==="—" ? "无构建链，直接改 HTML" : `<code>${d.build}</code>`}</dd>
       <dt>形态</dt><dd>${EDIT_LABEL[d.edit]} · ${OPEN_LABEL[d.open]} · 源码 ${d.loc.toLocaleString()} 行</dd>
+      <dt>实测开销</dt><dd><code>${(d.calls||0).toLocaleString()} calls</code> / 帧 · ${((d.tris||0)/1000).toFixed(1)}k 三角面 <span style="color:var(--dim2)">（1280×800 软渲染，含阴影与后处理）</span></dd>
     </dl>
     <div class="sec"><h4>在线预览</h4>
       <div class="pv" data-url="${liveUrl(d)}"></div>

@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.0.3 — 2026-10-30
+
+### Measured cost, on the site
+
+The probe results from 0.0.1 were sitting in a JSON file. They are now part of the index:
+
+- every card shows its measured **draw calls per frame** — amber above 2,500, yellow above 1,800
+- a new sort group in the toolbar: **默认顺序 / 开销 ↓ / 开销 ↑**
+- the detail modal adds an **实测开销** row: calls per frame plus triangle count, with the
+  measurement conditions stated
+- the header stat block gains **7,047 — 最高 draw call / 帧**
+
+These are the same 1280×800 SwiftShader measurements described in the README's performance
+section, so the site and the repo now agree.
+
+### Fixed: duplicated filter chips
+
+The original `buildChips()` appended into `#fTheme` and `#fEdit` without clearing them first, so
+every click on a filter chip rendered a *second* full row of chips on top of the existing one —
+after two clicks the toolbar showed three copies of every chip. `buildChips()` now clears all three
+containers before rebuilding.
+
 ## 0.0.2 — 2026-10-30
 
 ### English names for all 19 projects
