@@ -1,0 +1,14 @@
+GLASTONBURY GROVE · THE RED ROOM
+================================
+
+直接双击 standalone/twin-peaks-red-room.html 观看。
+单文件离线场景，无需安装、无需联网、无需 Blender。
+
+操作
+- 左键拖拽 / 单指拖动：旋转环绕
+- 滚轮 / 双指捏合：缩放
+- 右键拖拽 / Shift+拖拽：平移
+- 双击 / 按 R：回到初始视角
+
+画面内没有任何 UI 元素。
+建议使用 Chrome / Edge 全屏观看。

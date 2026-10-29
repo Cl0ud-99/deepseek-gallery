@@ -1,0 +1,11 @@
+{
+  "name": "fbc-quarry-07",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "An interactive toon-shaded Control-inspired miniature of an inverted pyramid over a brutalist quarry",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "bundle": "node tools/bundle.mjs"
+  }
+}

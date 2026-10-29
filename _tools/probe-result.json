@@ -1,0 +1,211 @@
+[
+  {
+    "id": "A01",
+    "frames": 5,
+    "draws": 17869,
+    "tris": 642307,
+    "callsPerFrame": 3573.8,
+    "trisPerFrame": 128461,
+    "fps": 2,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A02",
+    "frames": 3,
+    "draws": 9654,
+    "tris": 256458,
+    "callsPerFrame": 3218,
+    "trisPerFrame": 85486,
+    "fps": 1.1,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A03",
+    "frames": 8,
+    "draws": 5768,
+    "tris": 1109912,
+    "callsPerFrame": 721,
+    "trisPerFrame": 138739,
+    "fps": 3.2,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A04",
+    "frames": 16,
+    "draws": 33968,
+    "tris": 1502272,
+    "callsPerFrame": 2123,
+    "trisPerFrame": 93892,
+    "fps": 6.3,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A05",
+    "frames": 14,
+    "draws": 30170,
+    "tris": 3718848,
+    "callsPerFrame": 2155,
+    "trisPerFrame": 265632,
+    "fps": 4.8,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A06",
+    "frames": 10,
+    "draws": 11540,
+    "tris": 2048200,
+    "callsPerFrame": 1154,
+    "trisPerFrame": 204820,
+    "fps": 3.8,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A07",
+    "frames": 3,
+    "draws": 9129,
+    "tris": 240132,
+    "callsPerFrame": 3043,
+    "trisPerFrame": 80044,
+    "fps": 1.2,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A08",
+    "frames": 3,
+    "draws": 4506,
+    "tris": 738156,
+    "callsPerFrame": 1502,
+    "trisPerFrame": 246052,
+    "fps": 0.7,
+    "canvas": "1587x992",
+    "errs": []
+  },
+  {
+    "id": "A09",
+    "frames": 7,
+    "draws": 49327,
+    "tris": 2411860,
+    "callsPerFrame": 7046.7,
+    "trisPerFrame": 344551,
+    "fps": 2.4,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A10",
+    "frames": 8,
+    "draws": 6912,
+    "tris": 1256928,
+    "callsPerFrame": 864,
+    "trisPerFrame": 157116,
+    "fps": 3.2,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A11",
+    "frames": 4,
+    "draws": 3556,
+    "tris": 694200,
+    "callsPerFrame": 889,
+    "trisPerFrame": 173550,
+    "fps": 1.5,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A12",
+    "frames": 3,
+    "draws": 4590,
+    "tris": 361707,
+    "callsPerFrame": 1530,
+    "trisPerFrame": 120569,
+    "fps": 1.2,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A13",
+    "frames": 7,
+    "draws": 12432,
+    "tris": 1615782,
+    "callsPerFrame": 1776,
+    "trisPerFrame": 230826,
+    "fps": 2.8,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A14",
+    "frames": 11,
+    "draws": 13739,
+    "tris": 563761,
+    "callsPerFrame": 1249,
+    "trisPerFrame": 51251,
+    "fps": 4.4,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A15",
+    "frames": 3,
+    "draws": 2832,
+    "tris": 398676,
+    "callsPerFrame": 944,
+    "trisPerFrame": 132892,
+    "fps": 1,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A16",
+    "frames": 14,
+    "draws": 32830,
+    "tris": 2842742,
+    "callsPerFrame": 2345,
+    "trisPerFrame": 203053,
+    "fps": 5.6,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A17",
+    "frames": 3,
+    "draws": 5262,
+    "tris": 1189851,
+    "callsPerFrame": 1754,
+    "trisPerFrame": 396617,
+    "fps": 0.6,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A18",
+    "frames": 3,
+    "draws": 7818,
+    "tris": 3523965,
+    "callsPerFrame": 2606,
+    "trisPerFrame": 1174655,
+    "fps": 0.7,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A19",
+    "frames": 6,
+    "draws": 13424,
+    "tris": 744460,
+    "callsPerFrame": 2237.3,
+    "trisPerFrame": 124077,
+    "fps": 2.3,
+    "canvas": "1280x800",
+    "errs": []
+  }
+]

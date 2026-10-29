@@ -1,0 +1,11 @@
+{
+  "name": "qipao-diorama",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A procedural 1936 Shanghai qipao atelier and tram-stop miniature diorama in Three.js",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "bundle": "node tools/bundle.mjs"
+  }
+}

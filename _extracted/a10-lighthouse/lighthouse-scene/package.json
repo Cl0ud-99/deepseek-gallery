@@ -1,0 +1,17 @@
+{
+  "name": "lighthouse-scene",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "《灯塔》可交互微缩剖面三维场景（Three.js 程序化建模 + 黑白胶片后处理）",
+  "scripts": {
+    "dev": "node server.mjs",
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "three": "0.160.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.20.2"
+  }
+}

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>微缩场景作品归档 · 19 件</title>
+<style>
+  :root{
+    --bg:#0a0c11;
+    --panel:#12161f;
+    --panel2:#171c27;
+    --line:rgba(255,255,255,.075);
+    --line2:rgba(255,255,255,.14);
+    --text:#e9ecf3;
+    --dim:#8a92a6;
+    --dim2:#5d6478;
+    --amber:#ffb46b;
+    --amber-dim:rgba(255,180,107,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  body{padding:0 0 80px}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- header ---------- */
+  header{position:relative;padding:64px 40px 40px;overflow:hidden;border-bottom:1px solid var(--line)}
+  header::before{content:"";position:absolute;inset:-40% -10% auto -10%;height:340px;
+    background:radial-gradient(60% 100% at 30% 0%,rgba(255,150,90,.16),transparent 70%),
+               radial-gradient(50% 100% at 78% 10%,rgba(90,140,255,.12),transparent 70%);
+    filter:blur(20px);pointer-events:none}
+  .hwrap{position:relative;max-width:1320px;margin:0 auto}
+  .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);margin-bottom:16px}
+  h1{font-size:40px;line-height:1.15;font-weight:650;letter-spacing:-.02em}
+  h1 span{color:var(--dim2);font-weight:400}
+  .lede{margin-top:14px;max-width:720px;font-size:14.5px;line-height:1.75;color:var(--dim)}
+  .stats{display:flex;gap:36px;margin-top:32px;flex-wrap:wrap}
+  .stat b{display:block;font-size:24px;font-weight:600;letter-spacing:-.01em}
+  .stat span{font-size:11.5px;color:var(--dim2);letter-spacing:.08em}
+
+  /* ---------- toolbar ---------- */
+  .toolbar{position:sticky;top:0;z-index:30;background:rgba(10,12,17,.86);
+    backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .tinner{max-width:1320px;margin:0 auto;padding:14px 40px;display:flex;gap:18px;
+    align-items:center;flex-wrap:wrap}
+  .search{position:relative;flex:1 1 240px;max-width:320px}
+  .search input{width:100%;background:var(--panel);border:1px solid var(--line2);border-radius:9px;
+    color:var(--text);font-size:13px;padding:9px 12px 9px 32px;outline:none;font-family:inherit}
+  .search input:focus{border-color:rgba(255,180,107,.45)}
+  .search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.45}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-size:12px;padding:6px 11px;border-radius:99px;border:1px solid var(--line2);
+    color:var(--dim);cursor:pointer;white-space:nowrap;transition:.15s;background:transparent;font-family:inherit}
+  .chip:hover{color:var(--text);border-color:rgba(255,255,255,.28)}
+  .chip.on{background:var(--amber-dim);border-color:rgba(255,180,107,.5);color:var(--amber)}
+  .sep{width:1px;height:20px;background:var(--line2)}
+  .count{font-size:12px;color:var(--dim2);margin-left:auto;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+  /* ---------- grid ---------- */
+  .grid{max-width:1320px;margin:0 auto;padding:32px 40px;display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    cursor:pointer;transition:transform .18s ease,border-color .18s,box-shadow .18s;position:relative}
+  .card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.2);
+    box-shadow:0 14px 40px -12px rgba(0,0,0,.8)}
+  .thumb{position:relative;aspect-ratio:4/3;background:var(--panel2);overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+  .card:hover .thumb img{transform:scale(1.04)}
+  .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    position:relative;flex-direction:column;gap:6px}
+  .ph .code{font-size:34px;font-weight:700;letter-spacing:.02em;opacity:.9}
+  .ph .nopic{font-size:10.5px;letter-spacing:.12em;opacity:.5}
+  .badge{position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:600;letter-spacing:.06em;
+    padding:3px 7px;border-radius:5px;background:rgba(6,8,12,.72);backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.12);color:#fff}
+  .flag{position:absolute;top:10px;right:10px;font-size:10.5px;padding:3px 7px;border-radius:5px;
+    background:rgba(6,8,12,.72);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.12)}
+  .flag.direct{color:#7ee0a8}
+  .flag.server{color:#ffd479}
+  .flag.net{color:#ff8f8f}
+  .body{padding:14px 15px 15px}
+  .name{font-size:15px;font-weight:600;line-height:1.35;letter-spacing:-.01em}
+  .sub{font-size:11.5px;color:var(--dim2);margin-top:4px;letter-spacing:.02em}
+  .meta{display:flex;gap:10px;margin-top:11px;font-size:11px;color:var(--dim2);
+    font-variant-numeric:tabular-nums;flex-wrap:wrap}
+  .meta i{font-style:normal;color:var(--dim)}
+  .tags{display:flex;gap:5px;margin-top:11px;flex-wrap:wrap}
+  .tag{font-size:10.5px;padding:2.5px 7px;border-radius:4px;background:rgba(255,255,255,.045);
+    color:var(--dim);border:1px solid transparent}
+  .tag.warn{color:#ffc48a;background:rgba(255,180,107,.1)}
+  .tag.good{color:#84dcae;background:rgba(90,220,150,.09)}
+  .path{margin-top:11px;padding-top:10px;border-top:1px solid var(--line);
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:10.5px;color:var(--dim2);letter-spacing:.01em;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ---------- modal ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(4,6,10,.78);backdrop-filter:blur(8px);
+    z-index:100;display:none;align-items:center;justify-content:center;padding:28px}
+  .overlay.on{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line2);border-radius:16px;
+    width:min(880px,100%);max-height:86vh;overflow:auto;position:relative;
+    box-shadow:0 40px 100px -30px #000}
+  .modal::-webkit-scrollbar{width:8px}
+  .modal::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:4px}
+  .mhead{position:relative;aspect-ratio:16/6;overflow:hidden;background:var(--panel2)}
+  .mhead img{width:100%;height:100%;object-fit:cover}
+  .mclose{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;
+    background:rgba(6,8,12,.7);border:1px solid rgba(255,255,255,.16);color:#fff;
+    cursor:pointer;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center}
+  .mbody{padding:24px 28px 30px}
+  .mbody h2{font-size:22px;font-weight:640;letter-spacing:-.01em;line-height:1.3}
+  .mbody .msub{font-size:12.5px;color:var(--dim2);margin-top:6px}
+  .mlede{font-size:13.5px;line-height:1.8;color:var(--dim);margin-top:16px}
+  .kv{display:grid;grid-template-columns:82px 1fr;gap:9px 16px;margin-top:22px;
+    padding-top:20px;border-top:1px solid var(--line);font-size:12.5px}
+  .kv dt{color:var(--dim2)}
+  .kv dd{color:var(--text);line-height:1.65}
+  .kv code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;
+    background:rgba(255,255,255,.06);padding:1.5px 5px;border-radius:4px;color:#d9dced}
+  .sec{margin-top:22px}
+  .sec h4{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:9px}
+  .sec p,.sec li{font-size:12.8px;line-height:1.78;color:var(--dim)}
+  .sec ul{padding-left:17px;display:flex;flex-direction:column;gap:5px}
+  .sec li::marker{color:var(--dim2)}
+
+  .empty{grid-column:1/-1;text-align:center;padding:80px 0;color:var(--dim2);font-size:13px}
+
+  @media (max-width:640px){
+    header{padding:40px 20px 28px}
+    h1{font-size:27px}
+    .tinner,.grid{padding-left:20px;padding-right:20px}
+    .count{margin-left:0}
+    .mbody{padding:20px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <div class="eyebrow">Archive · Three.js Diorama</div>
+    <h1>微缩场景作品归档 <span>/ 19 件</span></h1>
+    <p class="lede">全部为纯代码程序化生成的 Three.js 微缩立体场景——没有 Blender、没有外部模型、没有贴图文件。几何、材质、Canvas 贴图、GLSL 着色器与动效都在浏览器里实时构建。按「能不能改」和「怎么打开」筛选，挑下一件要继续优化的。</p>
+    <div class="stats">
+      <div class="stat"><b>19</b><span>作品</span></div>
+      <div class="stat"><b>87 MB</b><span>压缩包合计</span></div>
+      <div class="stat"><b>11</b><span>模块化可维护</span></div>
+      <div class="stat"><b>16</b><span>双击即看</span></div>
+      <div class="stat"><b>r150–r186</b><span>three.js 跨度</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="tinner">
+    <div class="search">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+        <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="搜作品名 / 编号 / 目录名 / 题材" autocomplete="off">
+    </div>
+    <div class="chips" id="fTheme"></div>
+    <div class="sep"></div>
+    <div class="chips" id="fEdit"></div>
+    <div class="count" id="count"></div>
+  </div>
+</div>
+
+<main class="grid" id="grid"></main>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const DATA = [
+{
+  code:"A01", name:"Twin Peaks · Black Lodge", cn:"黑色旅舍",
+  theme:"影视同人", tags:["双峰","雨夜","丝绒红房间","平面反射"],
+  size:"516K", zip:"a01-twin-peaks-lodge.zip", loc:4939, three:"r169",
+  entry:"TwinPeaks-BlackLodge.html", build:"npm run build", open:"direct", edit:"module",
+  preview:"previews/A01.png", pal:["#5c1a24","#12090c"],
+  lede:"华盛顿州雨夜松林里的街角黑色旅舍：深红丝绒幕墙、弧形玻璃橱窗、Twede's Cafe 立牌、黑白人字纹湿地面、会倒映星空的机油水洼。",
+  entryNote:"单文件 1.2MB 全内联，双击即开。开发用 index.html + npm run watch。",
+  tech:"MeshToon + 5 阶 gradientMap；反向壳描边；镜像相机渲到 768² RT 做平面反射并按菲涅尔混合；丝绒帷幕把褶皱明暗烘进顶点色 + onBeforeCompile 正弦位移；玻璃的菲涅尔/雨痕/双影/水滴全在 shader 里。",
+  points:"~1500 mesh。已做小物件不投影、阴影隔帧、反射 768。再快就把 addSceneOutlines 阈值 0.46 调大或反射降 512。",
+  note:"包内唯一有 changelog 的作品（v1.0 初版 → v1.1 换 Twede's 立牌 → v1.2 清穿模）。改 layout.js 建筑尺寸后 interior/props 要跟着挪。"
+},
+{
+  code:"A02", name:"ASHTRAY MAZE / A-07", cn:"烟灰缸迷宫",
+  theme:"影视同人", tags:["控制","粗野主义","迷宫","源码量第二"],
+  size:"4.8M", zip:"a02-ashtray-maze.zip", loc:7644, three:"r152",
+  entry:"standalone/ashtray-maze.html", build:"python tools/build_standalone.py", open:"direct", edit:"module",
+  preview:"previews/A02.png", pal:["#3d4a3a","#0e120f"],
+  lede:"《控制》烟灰缸迷宫的收藏级模型：18.5×18.5 粗野主义混凝土基座、中央厚玻璃观测控制室、可重组的混凝土墙体、头顶钢梁与老式荧光灯。",
+  entryNote:"990KB 单文件。开发：node tools/serve.mjs → :5401（无需装依赖）。",
+  tech:"全部基础几何 + 放样 + 管道 + 自定义 BufferGeometry + Canvas 贴花；MeshToon 5 段 + onBeforeCompile 边缘光；后处理 MSAA → Bloom → ACES → 调色 → 暗角 → 颗粒 → 色差。",
+  points:"实测 ~2950 draw calls / 79k 面。迷宫墙体与室内陈设的独立小件是合批重点。像素比上限 1.5。",
+  note:"刻意零 UI，17 秒无操作后极慢自动环绕。?capture=1 是自用截图模式。gallery/ 是归档里截图最全的一套（含 contact-sheet）。"
+},
+{
+  code:"A03", name:"极光星海 · 倒置沙漏天文台", cn:"Aurora Hourglass",
+  theme:"原创奇幻", tags:["极光","沙漏","星图","单 main.js"],
+  size:"456K", zip:"a03-aurora-hourglass.zip", loc:2132, three:"r160",
+  entry:"index.html", build:"npm run build", open:"direct", edit:"module",
+  preview:"previews/A03.png", pal:["#1d2f4d","#080d18"],
+  lede:"双层方形底座 + 倒置沙漏形水晶天文台 + 星座连线玻璃捕星花房。镜面浅滩倒映极光，四道黄铜浑天仪星环多轴自转。",
+  entryNote:"根目录 index.html 即 603KB 离线自包含版。改源码必须起服务（start-windows.bat / python -m http.server 8080 → /src/）。",
+  tech:"单 main.js 约 1900 行、分 10 个小节、带中文注释；动效统一用 onFrame((t,dt)=>{}) 注册；自研水面/极光 shader + 泛光/暗角/色散。",
+  points:"包内无性能数据。水面反射与四道星环可能是主要开销，先加 stats 实测再动。",
+  note:"注释结构是全库最规整的单文件之一，适合当「单文件怎么组织」的范本。包内无截图。"
+},
+{
+  code:"A04", name:"秋日农场", cn:"Autumn Farm",
+  theme:"现实田园", tags:["农场","谷仓","溪流水车","唯一需联网"],
+  size:"1.8M", zip:"a04-autumn-farm.zip", loc:2299, three:"r169",
+  entry:"index.html", build:"—", open:"net", edit:"readable",
+  preview:"previews/A04.png", pal:["#6b4a22","#1a1208"],
+  lede:"28×28 方台秋日农场：谷仓 + 玻璃工坊 + 溪流水车 + 皮卡 + 南瓜田，落叶与炊烟。全库唯一需要联网的作品。",
+  entryNote:"双击 index.html，three.js 从 unpkg CDN 拉取，必须联网。无构建链，改 HTML 里的 JS 即可。",
+  tech:"单文件 2299 行、9 大区块；README 带逐行区块索引表（0 渲染器 / 1 工具 / 2 纹理 / 3 材质 / 4 底座 / 5 谷仓 / 6 工坊 / 7 道具 / 8 动效 / 9 相机循环）。",
+  points:"~1670 draw call / 8 万面。静态道具 mergeGeometries 可砍一半以上；小物件关投影阈值 0.42 调大。",
+  note:"README 的 5 条踩坑含金量最高：ExtrudeGeometry 挖洞会让 earcut 失败、ribbon 索引顺序错会导致法线朝下全黑、Phong 手动挂 envMap 会整体发黑、shadow.camera 改完必须 updateProjectionMatrix、描边厚度要按物体尺寸分档。"
+},
+{
+  code:"A05", name:"Cliff Lighthouse Café", cn:"海崖灯塔咖啡馆",
+  theme:"现实复古", tags:["灯塔","咖啡馆","夏日黄昏","成品锁死"],
+  size:"152K", zip:"a05-cliff-lighthouse-cafe.zip", loc:3964, three:"内联",
+  entry:"index.html", build:"—", open:"direct", edit:"locked",
+  preview:"previews/A05.png", pal:["#7a5a3a","#140f0a"],
+  lede:"海崖上的灯塔咖啡馆，夏日黄昏。完全自包含单文件，体积第二小。",
+  entryNote:"双击 index.html。支持 ?nopost=1 关后处理、?cam=x,y,z,tx,ty,tz 指定机位。",
+  tech:"three.js 与场景代码一起 minify 成单行 IIFE，无可读源码。",
+  points:"无源码不可改。嫌卡就用 ?nopost=1 关后处理。",
+  note:"与 A16 是同一套模板的姊妹作（同样 README 文案、同样 URL 参数、几乎同样的行数）。要改只能照着重写。"
+},
+{
+  code:"A06", name:"云端蒸汽飞艇邮政局", cn:"Cloud Post Office",
+  theme:"原创奇幻", tags:["飞艇","云海","邮政局","无构建链"],
+  size:"2.9M", zip:"a06-cloud-post-office.zip", loc:3268, three:"内联 UMD",
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A06.png", pal:["#243a5e","#080d16"],
+  lede:"云海之上，一艘蒸汽飞艇托着一座邮政局。一层信件分拣大厅、二层领航室，甲板上有机械信天翁与升降吊篮。",
+  entryNote:"双击 index.html。经典 <script> + 本地 vendor，file:// 直接可跑，不需要服务器也不需要打包。",
+  tech:"7 个全局 js 模块（util / sky / base / airship / building / props / main）+ APP 命名空间，是全库唯一「无构建链的模块化工程」。",
+  points:"无文档无数据。云海用大量云团 mesh（InstancedMesh 候选），飞艇气囊与螺旋桨是独立小件。",
+  note:"隐藏调试参数（README 没写）：?only=sky,cloud,rock,dock,ship,building,props 只渲染指定模块；?skip= 跳过；?frames= 开 preserveDrawingBuffer。定位 draw call 来源很好用。"
+},
+{
+  code:"A07", name:"FBC QUARRY 07", cn:"倒悬巨构采石场",
+  theme:"影视同人", tags:["控制","倒三角","采石场","重工业"],
+  size:"15M", zip:"a07-fbc-quarry.zip", loc:5309, three:"r150",
+  entry:"standalone/fbc-quarry-07.html", build:"npm run bundle", open:"direct", edit:"module",
+  preview:"previews/A07.png", pal:["#4a2b22","#0c0806"],
+  lede:"悬浮在黑色采石场上的倒三角巨构：联邦控制局的混凝土纪念碑、失控的重力井，藏在倒三角内部的一间琥珀色控制室。",
+  entryNote:"904KB 单文件。开发 npm start → :5392。",
+  tech:"three r150 本地 vendored 无 CDN；自研 5 阶 MeshToon + 菲涅耳边缘 + 屏幕空间暗角/泛光/ACES/胶片颗粒；所有混凝土、锈蚀金属、警示牌、CRT 屏幕、机密文件都是 Canvas 2D 启动时绘制；描边用反向壳 + 材质边缘墨化，没用后期 Find Edges。",
+  points:"7.9 万面 / 2800–3000 draw calls，DPR ≤ 1.4，静态阴影只刷一次。三层台地 + 龙门吊 + 矿车轨道 + 管廊全是静态小件，合批空间明确。",
+  note:"零 UI，双击复位，静置 18 秒自动环绕。控制室对低机位/高机位都保留可读内容，是刻意约束，改的时候别破坏。shots/ 有 7 张成品图。"
+},
+{
+  code:"A08", name:"FBC / RED SHIFT ARCHIVE", cn:"悬浮档案大厅",
+  theme:"影视同人", tags:["控制","档案大厅","悬浮巨石","已有合批"],
+  size:"12M", zip:"a08-fbc-redshift.zip", loc:3418, three:"r186",
+  entry:"dist/FBC-Redshift-Archive.html", build:"npm run build", open:"direct", edit:"module",
+  preview:"previews/A08.png", pal:["#3a1f2a","#0a0709"],
+  lede:"粗野主义档案大厅 + 违反重力的巨型黑色悬浮巨石 + 三十余套失重浮游的 1970 年代办公桌椅 + 两千余张如静止雪幕的档案纸页。",
+  entryNote:"发布版 829KB；另有 debug 版 1.9MB（未压缩、能看控制台）。开发 npm run serve → :4174。",
+  tech:"three r186；手写 CRT shader、体积感光晕、断裂几何；纸张/碎屑/档案夹/尘埃用 instancing；载入时按材质和阴影状态批量合并静态几何与轮廓线（src/04b-batch.js）；自建 HDR 后处理 MSAA → 阈值 → 双向高斯 Bloom → ACES + 颗粒 + 暗角 + 色散。",
+  points:"1600×1000 / RTX 2070S 无头 Chrome 实测 54–68 FPS。04b-batch.js 是全库最成熟的合批器，可直接抽出来复用到其他作品。",
+  note:"唯一同时给发布版和未压缩调试版的作品。背面也完整（卸货口、封死长窗、局徽浮雕、管线）。"
+},
+{
+  code:"A09", name:"GRAND HOTEL", cn:"阿尔卑斯缆车站酒店",
+  theme:"影视风格", tags:["Wes Anderson","剖面娃娃屋","雪山","无文档"],
+  size:"468K", zip:"a09-grand-hotel.zip", loc:3169, three:"r160",
+  entry:"grand-hotel-diorama.html", build:"npm run build", open:"direct", edit:"module",
+  preview:"previews/A09.png", pal:["#7a3a52","#150a10"],
+  lede:"Wes Anderson 风格的阿尔卑斯缆车站酒店剖面娃娃屋：粉调黄昏天穹、飘雪、岩石山体、缆车隧道。三层室内一览无余。",
+  entryNote:"602KB 单文件。开发 npm run dev（node tools/serve.mjs），重打包 npm run build。",
+  tech:"拱形玻璃正立面即剖面开口；室内 1F 大堂（地毯）/ 2F Mendl's 甜品沙龙（棋盘格地面）/ 3F 土耳其浴 + 电话总机（木地板）/ 屋顶 mansard 折面；粉色黄昏天穹 shader + 飘雪粒子 + 蒸汽系统。",
+  points:"无性能数据、无截图。3169 行分 7 个模块，模块边界清楚；室内三层陈设是主要 draw call 来源。",
+  note:"controls.enablePan = false——不支持平移，只能绕目标旋转缩放（70–430），是刻意的构图约束。静置 7 秒恢复自动环绕。包内完全没有 README。"
+},
+{
+  code:"A10", name:"THE LIGHTHOUSE", cn:"灯塔",
+  theme:"现实复古", tags:["黑白胶片","剖面","雨夜海面","自定义后处理"],
+  size:"1.6M", zip:"a10-lighthouse.zip", loc:2245, three:"r160.1",
+  entry:"lighthouse.html", build:"npm run build", open:"direct", edit:"module",
+  preview:"previews/A10.png", pal:["#3b434d","#0a0c0f"],
+  lede:"可交互的灯塔微缩剖面：方形礁石基座 + 泥土剖面酒箱 + 半剖铸铁塔身 + 62 级螺旋楼梯 + 菲涅尔水晶透镜室，雨夜海面。全库唯一黑白胶片风格。",
+  entryNote:"603KB 单文件。开发 node server.mjs → localhost:5173/dev.html（改 src/ 不用重新打包）。",
+  tech:"自定义后处理管线：场景渲到带 DepthTexture 的 RT，SceneFilmPass 采样深度做描边，FinalShader 做黑白胶片（曝光/黑白场/颗粒/暗角/闪电提亮），再叠 UnrealBloom(0.62/0.62/0.80)。",
+  points:"三角面主要来自海面（200×200）与雨丝（5200 段线）。阴影 2048² × 2 盏方向光是第二大开销，可只保留 key 的阴影。",
+  note:"5 条硬坑：InstancedMesh 的 count 超构造值会整屏黑；带 DepthTexture 的 RT 不能同时挂到 EffectComposer 两个缓冲（反馈环）；depthWrite:false 的物体不出描边属正常；玻璃/光束的 renderOrder 别让光束被裁；改模型尺寸要同步 shadow.camera。"
+},
+{
+  code:"A11", name:"月球前哨站", cn:"Lunar Outpost",
+  theme:"科幻", tags:["月球","穹顶","月球车","优化笔记最详细"],
+  size:"896K", zip:"a11-lunar-outpost.zip", loc:2177, three:"r169",
+  entry:"index.html（CDN）/ index-offline.html（需服务）", build:"—", open:"server", edit:"readable",
+  preview:"previews/A11.png", pal:["#3a4152","#0a0c10"],
+  lede:"月球科考前哨站沙盘：生活舱 + 生态穹顶 + 追日太阳能帆板 + 深空天线 + 信标塔 + 六轮月球车。README 基本就是一份性能优化方案书。",
+  entryNote:"index.html 是 CDN 版（需联网）；index-offline.html 依赖 lib/，必须用 serve.bat / serve.sh 起服务（:8080）。加 #fps 才出现实时面板。",
+  tech:"17 章结构单文件：fbm 高度场 + 陨石坑剖面 + 1024² 月壤贴图（3 万碎石点）、反向壳描边（hull）、生态穹顶六边底座、updaters 数组统一驱动动效。",
+  points:"实测 843 draw calls / 154.8k 面（SwiftShader 1200×760）。7 条优先级：① 描边改后处理 Sobel 或只给大体块挂（省 ~400 calls）② 像素比降到 1.5 ③ 阴影 2048→1024 ④ 地形 SEG 190→120 ⑤ 8 个点光源减半 ⑥ 小零件按材质合批（再省 100+）⑦ 岩石换 InstancedMesh。",
+  note:"全库优化笔记写得最细的一件，路径已细到可执行。已知取舍：玻璃不用 transmission、舱内照明不投影、小零件全独立 mesh（为可读性牺牲合批）。"
+},
+{
+  code:"A12", name:"莫纳奇 · 时间断裂实验舱", cn:"Monach Stutter Lab",
+  theme:"科幻", tags:["定格粒子","白瓷","量子核心","体积最小"],
+  size:"296K", zip:"a12-monach-stutter-lab.zip", loc:1778, three:"r160",
+  entry:"monach_stutter_lab.html", build:"—", open:"server", edit:"readable",
+  preview:"previews/A12.png", pal:["#2b3444","#080a0e"],
+  lede:"白瓷台面上的量子实验舱，时间被定格的一瞬：2400 颗悬浮水珠、250 片碎玻璃、74 张档案纸静止在空中。体积最小、概念最锋利。",
+  entryNote:"双击可看但需联网（jsDelivr）。离线要把 importmap 换成随包的 lib/，然后必须起本地服务器。",
+  tech:"白瓷台面 + 三层网格剖面 + 三面玻璃幕墙 + 中央舱体（基座→机械环→玻璃筒→机械冠→量子核心→脉冲环）；粒子全部 InstancedMesh（水珠 2400 走 GPU 漂移）。",
+  points:"500–600 draw calls，已是全库最低一档。真正的问题不是性能，是只有 CDN 版能双击——补一个内联单文件版性价比最高。",
+  note:"两条后处理陷阱：Bloom 阈值工作在线性 HDR 空间（EffectComposer 渲 RT 时不应用 tone mapping），白瓷线性值可超 1.0，阈值 <1.5 会把白墙一起泛光；clearcoat:1 + 低 roughness 在弧形白件上会打出镜面峰值，所以压到 0.35–0.55。"
+},
+{
+  code:"A13", name:"森のコンビニ", cn:"萤火雨夜便利店",
+  theme:"原创奇幻", tags:["树屋","便利店","萤火虫","日式"],
+  size:"1.3M", zip:"a13-mori-mart.zip", loc:2575, three:"r160",
+  entry:"index.html（离线）/ source/index.html（可读）", build:"—", open:"direct", edit:"readable",
+  preview:"previews/A13.png", pal:["#2c3f2a","#080c08"],
+  lede:"森林里的树屋便利店，萤火雨夜。年轮底座、千年古树板根、松果贩卖机、甲虫坐骑、铃兰萤火虫路灯、蘑菇电线杆。",
+  entryNote:"双击 index.html（605KB 离线单文件，首次 1–2 秒生成贴图）。想改就改 source/index.html（109KB，走 CDN，结构可读）。",
+  tech:"全部程序化：年轮底座、板根、彩绘玻璃橱窗、芋头叶雨棚、石烟囱炊烟、屋顶风车；动效含细雨、叶檐滴水、涟漪、玻璃雨痕、灯笼摇曳、木门开合、金色孢子、萤火虫。",
+  points:"无文档无数据。source 版 2575 行比离线版好读得多，改这里更快。",
+  note:"原包说明文件名是乱码（zip 用了非 UTF-8 编码），已在解压副本里修正为 readme.txt。"
+},
+{
+  code:"A14", name:"极地科考破冰船", cn:"Polar Icebreaker",
+  theme:"现实复古", tags:["破冰船","冰盖剖面","独角鲸","Python 打包"],
+  size:"568K", zip:"a14-polar-icebreaker.zip", loc:1830, three:"r169",
+  entry:"polar-icebreaker.html", build:"python build.py", open:"direct", edit:"readable",
+  preview:"previews/A14.png", pal:["#2f4a5c","#070c10"],
+  lede:"极地科考破冰船三维微缩景观：双层截面底座（上层冰盖带裂口 + 下层玻璃水箱）+ 程序化放样船体 + 水下独角鲸与磷虾群。",
+  entryNote:"1.4MB 离线单文件。改 source/polar-icebreaker-cdn.html（58KB，编辑器不卡），改完 python build.py 重新内联。",
+  tech:"船体程序化放样 + 三段色带；三层玻璃幕舱室（餐厅/实验室/舰桥）；外部直升机、吊臂、雪地摩托、钻机、雷达罩；雪花 1700 段。",
+  points:"无性能数据。雪花 1700 是最容易的杠杆；船体放样与冰山碎块是几何大头。",
+  note:"全库唯一带 Python 打包脚本的作品（无需第三方库）。不想装 Python 也可以直接改离线版——场景代码在文件最末尾，搜「场景代码」定位。"
+},
+{
+  code:"A15", name:"綺羅弄 · 旗袍與留聲", cn:"1936 上海街角",
+  theme:"现实复古", tags:["上海","旗袍","留声机","合批 2758→850"],
+  size:"17M", zip:"a15-qipao-diorama.zip", loc:5883, three:"r150",
+  entry:"standalone/qipao-diorama.html", build:"node tools/bundle.mjs", open:"direct", edit:"module",
+  preview:"previews/A15.png", pal:["#5a2420","#0f0806"],
+  lede:"1936 年上海街角：转角红砖洋房，一楼「綺羅旗袍」与「百代留聲」，二楼蒂芙尼灯映在彩色花玻璃上，门外秋雨、电车、黄包车、流动霓虹。",
+  entryNote:"908KB 单文件。开发 node tools/serve.mjs → :5290（不需要 npm install）。",
+  tech:"three r150；5 段 toon ramp + fresnel 边缘 + 反向壳描边；共享材质的静态几何最后合批；砖墙/石板/织锦/花玻璃/月份牌/唱片封套/霓虹字形全是 Canvas 2D 绘制；3×+7× 双层 Bloom + ACES + 色差 + 颗粒；水洼霓虹倒影用动态 shader 生成流动色带。",
+  points:"11.4 万面；静态合批把 draw call 从 ~2758 降到 ~850；SwiftShader 1600×1000 约 119 FPS。src/optimize.js 是全库最值得抽出来复用的合批器。",
+  note:"README 用繁体中文写，包内 17M 主要是 shots/ 里的高清图。与 A17 同一套技术栈、同一套 src 结构，可以互相对照。"
+},
+{
+  code:"A16", name:"Route 66 · Desert Diner", cn:"66 号公路复古餐厅",
+  theme:"现实复古", tags:["66号公路","加油站","沙漠","成品锁死"],
+  size:"156K", zip:"a16-route66-diner.zip", loc:3929, three:"内联",
+  entry:"index.html", build:"—", open:"direct", edit:"locked",
+  preview:"previews/A16.png", pal:["#6b3a24","#120a06"],
+  lede:"66 号公路旁的沙漠复古加油站 / 餐厅。全库体积最小。",
+  entryNote:"双击 index.html。?nopost=1 关后处理；?cam=x,y,z,tx,ty,tz 指定机位。",
+  tech:"three.js 与场景代码一起 minify 成单行 IIFE，无可读源码。",
+  points:"同 A05，只能用 ?nopost=1。要改场景必须重写。",
+  note:"与 A05 是同一套模板的姊妹作（同样 README 文案、同样参数、3929 vs 3964 行）。"
+},
+{
+  code:"A17", name:"Glastonbury Grove · The Red Room", cn:"双峰红房间",
+  theme:"影视同人", tags:["双峰","红房间","雨林","人字纹地板"],
+  size:"15M", zip:"a17-twin-peaks-red-room.zip", loc:5871, three:"r150",
+  entry:"standalone/twin-peaks-red-room.html", build:"npm run bundle", open:"direct", edit:"module",
+  preview:"previews/A17.png", pal:["#5e1620","#0d0608"],
+  lede:"被半剖开的红房间 + 外部 Glastonbury Grove 十二棵环形成圈的悬铃木。黑白人字纹地板、四面高耸深红天鹅绒帷幕、被拉开的厚帷幕与金色束带。",
+  entryNote:"873KB 单文件。开发 npm start → :5292。双击或按 R 回初始视角（A15 没这个快捷键）。",
+  tech:"与 A15 同源：core / textures / ground / room / furniture / props / effects / main；cel-shading + 倒壳屏幕空间描边 + Toon 光栅阴影；自写 HDR bloom + ACES + 调色/暗角/颗粒。",
+  points:"与 A15 同规模同结构，可共享合批策略。包内 15M 主要也是 shots。",
+  note:"细节密度高：维纳斯与墨丘利雕像、金色土星摆件、黑咖啡液面颤动、机油水洼虹彩薄膜、猫头鹰眼睛偶尔微光、古钟秒针偶尔停滞又跳动。"
+},
+{
+  code:"A18", name:"晚霞织梦染坊", cn:"Sunset Dream Loom",
+  theme:"原创奇幻", tags:["飞空鲸","云海","染坊","有 OPTIMIZATION.md"],
+  size:"15M", zip:"a18-whale-dream-atelier.zip", loc:11595, three:"r186.1",
+  entry:"dist/dream-weaver-atelier.html", build:"npm run build:single", open:"direct", edit:"module",
+  preview:"previews/A18.png", pal:["#6b3a52","#120810"],
+  lede:"粉霞云海上的飞空鲸，鲸背托着一间晚霞织梦染坊：幻彩天池、丝绸瀑布、会呼吸的粉色空水母灯、自动织出星空的木织机。",
+  entryNote:"930KB 单文件。开发 npm run serve → :4173。Windows 离线包依赖已包含，可直接构建。",
+  tech:"three r186；MeshToon + 自定义 6 级柔和渐变 + 柔和倒模轮廓线；GLSL 覆盖天池水波/日落反射、丝绸渐变流动、白玉鲸半透明边缘与极光、水母呼吸外壳、肥皂泡薄膜干涉、云海棉花糖边缘；无实时阴影贴图（contact shadow 替代）；DPR ≤ 1.5 + 2x MSAA + UnrealBloom。",
+  points:"2000+ mesh，关阴影后主 pass 仍约 2000 draw calls——全库最大的合批空间。小件集中区：建筑墙体窗框、室内小陈设、空水母（每只约 25 mesh）、染缸木条、许愿树装饰、花箱。",
+  note:"唯一有独立 OPTIMIZATION.md 交接文档的作品，且暴露 window.__dream 调试句柄（可 __dream.jellies.group.visible=false 逐组排除定位开销）——动手前先用它量出各组真实占比。"
+},
+{
+  code:"A19", name:"怪奇物语 · 双世界镜像场景", cn:"Hawkins / Upside Down",
+  theme:"影视同人", tags:["怪奇物语","上下镜像","霓虹","单文件可读"],
+  size:"188K", zip:"a19-stranger-things.zip", loc:2363, three:"内联",
+  entry:"stranger-things-hawkins-diorama.html", build:"—", open:"direct", edit:"readable",
+  preview:"previews/A19.png", pal:["#5c1a1a","#0a0608"],
+  lede:"霍金斯 / 颠倒世界的双层镜像：上层现实世界（街机厅、拜尔斯老屋、BMX、电话亭），下层同款建筑 180° 倒悬、被藤蔓吞噬。",
+  entryNote:"双击 750KB 单文件，three.js 完整内联，首次 1–2 秒生成贴图。静止 7 秒自动环绕。",
+  tech:"2363 行可读单文件，逐层 layers 数组定义材质；上下两套建筑；程序化藤蔓、孢子、深渊红色雷电、夺心魔剪影、上下路灯同步频闪。",
+  points:"上下两套建筑意味着几何量约等于两份，是最直接的合批对象——下层可以复用上层几何做 180° 变换而非重建。",
+  note:"全库唯一用「上下镜像」做叙事结构的作品，也是唯一全中文命名。188K 做到这个密度，程序化程度很高。"
+}
+];
+
+const THEMES = ["全部","影视同人","影视风格","原创奇幻","科幻","现实复古","现实田园"];
+const EDITS = [
+  {k:"all",   t:"全部形态"},
+  {k:"module",t:"模块化可改"},
+  {k:"readable",t:"单文件可读"},
+  {k:"locked",t:"成品锁死"}
+];
+const OPEN_LABEL = {direct:"双击即看", server:"需本地服务", net:"需联网"};
+const EDIT_LABEL = {module:"模块化源码", readable:"单文件可读", locked:"已压缩·不可改"};
+
+let state = {q:"", theme:"全部", edit:"all"};
+
+function buildChips(){
+  const ft = document.getElementById("fTheme");
+  THEMES.forEach(t=>{
+    const b=document.createElement("button");
+    b.className="chip"+(t===state.theme?" on":"");
+    b.textContent=t; b.dataset.v=t;
+    b.onclick=()=>{state.theme=t; buildChips(); render();};
+    ft.appendChild(b);
+  });
+  const fe = document.getElementById("fEdit");
+  EDITS.forEach(e=>{
+    const b=document.createElement("button");
+    b.className="chip"+(e.k===state.edit?" on":"");
+    b.textContent=e.t; b.dataset.v=e.k;
+    b.onclick=()=>{state.edit=e.k; buildChips(); render();};
+    fe.appendChild(b);
+  });
+}
+
+function matches(d){
+  if(state.theme!=="全部" && d.theme!==state.theme) return false;
+  if(state.edit!=="all" && d.edit!==state.edit) return false;
+  if(!state.q) return true;
+  const q=state.q.toLowerCase();
+  return (d.code+" "+slugOf(d)+" "+d.name+" "+d.cn+" "+d.theme+" "+d.tags.join(" ")
+    +" "+d.lede+" "+d.note).toLowerCase().includes(q);
+}
+
+function slugOf(d){ return d.zip.replace(/\.zip$/,""); }
+
+function phStyle(d){
+  return `background:linear-gradient(150deg,${d.pal[0]} 0%,${d.pal[1]} 78%)`;
+}
+
+function render(){
+  const grid=document.getElementById("grid");
+  const list=DATA.filter(matches);
+  grid.innerHTML = list.map(d=>{
+    const thumb = d.preview
+      ? `<img src="${d.preview}" alt="${d.cn}" loading="lazy">`
+      : `<div class="ph" style="${phStyle(d)}"><div class="code">${d.code}</div><div class="nopic">包内无截图</div></div>`;
+    const editTag = d.edit==="locked"
+      ? `<span class="tag warn">成品锁死</span>`
+      : d.edit==="module"
+        ? `<span class="tag good">模块化源码</span>`
+        : `<span class="tag">单文件可读</span>`;
+    return `<article class="card" data-code="${d.code}">
+      <div class="thumb">${thumb}
+        <div class="badge">${d.code}</div>
+        <div class="flag ${d.open}">${OPEN_LABEL[d.open]}</div>
+      </div>
+      <div class="body">
+        <div class="name">${d.name}</div>
+        <div class="sub">${d.cn} · ${d.theme}</div>
+        <div class="meta"><span>${d.size}</span><span>·</span><span><i>${d.loc.toLocaleString()}</i> 行</span><span>·</span><span>${d.three}</span></div>
+        <div class="tags">${editTag}${d.tags.slice(0,2).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+        <div class="path">${slugOf(d)}</div>
+      </div>
+    </article>`;
+  }).join("") || `<div class="empty">没有匹配的作品</div>`;
+
+  document.getElementById("count").textContent = `${list.length} / ${DATA.length} 件`;
+  grid.querySelectorAll(".card").forEach(c=>{
+    c.onclick=()=>openModal(c.dataset.code);
+  });
+}
+
+function openModal(code){
+  const d=DATA.find(x=>x.code===code);
+  const ov=document.getElementById("overlay");
+  const m=document.getElementById("modal");
+  const head = d.preview
+    ? `<div class="mhead"><img src="${d.preview}" alt=""><button class="mclose" aria-label="关闭">✕</button></div>`
+    : `<div class="mhead" style="${phStyle(d)};display:flex;align-items:center;justify-content:center">
+         <div style="text-align:center"><div style="font-size:46px;font-weight:700;opacity:.85">${d.code}</div>
+         <div style="font-size:10.5px;letter-spacing:.14em;opacity:.5;margin-top:6px">包内无截图</div></div>
+         <button class="mclose" aria-label="关闭">✕</button></div>`;
+  m.innerHTML = head + `<div class="mbody">
+    <h2>${d.name}</h2>
+    <div class="msub">${d.cn} · ${d.theme} · three.js ${d.three}</div>
+    <p class="mlede">${d.lede}</p>
+    <dl class="kv">
+      <dt>归档包</dt><dd><code>_packages/${d.zip}</code> · ${d.size}</dd>
+      <dt>源码</dt><dd><code>_extracted/${slugOf(d)}/</code></dd>
+      <dt>入口</dt><dd><code>${d.entry}</code></dd>
+      <dt>构建</dt><dd>${d.build==="—" ? "无构建链，直接改 HTML" : `<code>${d.build}</code>`}</dd>
+      <dt>形态</dt><dd>${EDIT_LABEL[d.edit]} · ${OPEN_LABEL[d.open]} · 源码 ${d.loc.toLocaleString()} 行</dd>
+    </dl>
+    <div class="sec"><h4>打开方式</h4><p>${d.entryNote}</p></div>
+    <div class="sec"><h4>技术实现</h4><p>${d.tech}</p></div>
+    <div class="sec"><h4>优化切入点</h4><p>${d.points}</p></div>
+    <div class="sec"><h4>备注</h4><p>${d.note}</p></div>
+  </div>`;
+  ov.classList.add("on");
+  m.querySelector(".mclose").onclick=closeModal;
+  m.scrollTop=0;
+}
+function closeModal(){ document.getElementById("overlay").classList.remove("on"); }
+
+document.getElementById("q").addEventListener("input", e=>{
+  state.q=e.target.value.trim(); render();
+});
+document.getElementById("overlay").addEventListener("click", e=>{
+  if(e.target.id==="overlay") closeModal();
+});
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
+
+buildChips();
+render();
+</script>
+</body>
+</html>

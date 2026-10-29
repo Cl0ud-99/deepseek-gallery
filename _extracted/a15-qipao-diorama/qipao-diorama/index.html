@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>綺羅弄 · 旗袍與留聲</title>
+<link rel="icon" href="data:,">
+<style>
+  html, body {
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
+    background: radial-gradient(ellipse at 50% 42%, #0a1422 0%, #040912 54%, #010204 100%);
+    overscroll-behavior: none;
+  }
+  #scene {
+    display: block; width: 100vw; height: 100vh;
+    touch-action: none; cursor: grab; outline: none;
+    -webkit-tap-highlight-color: transparent; user-select: none;
+  }
+  #scene:active { cursor: grabbing; }
+  ::selection { background: transparent; }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<script src="vendor/three.min.js"></script>
+<script src="src/core.js"></script>
+<script src="src/textures.js"></script>
+<script src="src/ground.js"></script>
+<script src="src/building.js"></script>
+<script src="src/interiors.js"></script>
+<script src="src/street.js"></script>
+<script src="src/effects.js"></script>
+<script src="src/optimize.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>

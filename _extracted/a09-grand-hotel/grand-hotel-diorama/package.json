@@ -1,0 +1,14 @@
+{
+  "name": "grand-hotel-diorama",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Wes Anderson style alpine cable-car hotel — interactive 3D miniature diorama (three.js)",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.5"
+  }
+}

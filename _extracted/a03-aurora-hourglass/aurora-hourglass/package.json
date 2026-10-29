@@ -1,0 +1,14 @@
+{
+  "name": "aurora-hourglass-diorama",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Aurora star-sea inverted-hourglass observatory - procedural Three.js diorama",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "python -m http.server 8080"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

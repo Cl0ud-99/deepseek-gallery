@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Ashtray Maze — A-07</title>
+<link rel="icon" href="data:,">
+<meta name="theme-color" content="#050809">
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #050809; overscroll-behavior: none; }
+  #scene { display: block; width: 100vw; height: 100vh; outline: none; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; cursor: grab; }
+  #scene:active { cursor: grabbing; }
+  ::selection { background: transparent; }
+</style>
+</head>
+<body>
+<canvas id="scene" aria-label="互动式三维微缩模型：联邦局烟灰缸迷宫、粗野主义混凝土底座与内部观测控制室"></canvas>
+<script src="vendor/three.min.js"></script>
+<script src="src/core.js"></script>
+<script src="src/textures.js"></script>
+<script src="src/base.js"></script>
+<script src="src/maze.js"></script>
+<script src="src/interior.js"></script>
+<script src="src/effects.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>FBC QUARRY 07 — Inversion Monument</title>
+<link rel="icon" href="data:,">
+<meta name="theme-color" content="#030507">
+<style>
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #030507;
+    overscroll-behavior: none;
+  }
+  #scene {
+    display: block; width: 100vw; height: 100vh;
+    touch-action: none; cursor: grab; outline: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none; -webkit-user-select: none;
+  }
+  #scene:active { cursor: grabbing; }
+  #veil {
+    position: fixed; inset: 0; pointer-events: none; background: #030507;
+    opacity: 1; z-index: 2;
+    animation: veil-away 2.4s cubic-bezier(.19,1,.22,1) .12s forwards;
+  }
+  @keyframes veil-away { 0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+  ::selection { background: transparent; }
+</style>
+</head>
+<body>
+<canvas id="scene" aria-label="Interactive miniature diorama of a brutalist quarry, a floating inverted pyramid monument and an amber-lit Federal Bureau of Control operations room"></canvas>
+<div id="veil"></div>
+<script src="vendor/three.min.js"></script>
+<script src="src/core.js"></script>
+<script src="src/textures.js"></script>
+<script src="src/base.js"></script>
+<script src="src/pyramid.js"></script>
+<script src="src/interior.js"></script>
+<script src="src/industry.js"></script>
+<script src="src/effects.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>

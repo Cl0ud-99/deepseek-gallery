@@ -1,0 +1,66 @@
+:root {
+  color-scheme: light;
+  --ink: #694e63;
+}
+* { box-sizing: border-box; }
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 68% 34%, #fff1c7 0%, rgba(255,231,198,.75) 16%, rgba(255,211,199,.18) 42%, transparent 62%),
+    radial-gradient(ellipse at 22% 12%, #e7d6ff 0%, transparent 58%),
+    linear-gradient(160deg, #b9e7f7 0%, #dbd8fb 28%, #ffd5e3 55%, #ffc9b1 78%, #ffe3c8 100%);
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", "Nunito", "Yuanti SC", "PingFang SC", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  position: relative;
+  min-height: 100svh;
+  overscroll-behavior: none;
+}
+.stage-wrap {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+canvas#stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transform: scale(1.015);
+  transition: opacity 1.5s ease, transform 2.6s cubic-bezier(.16,.8,.25,1);
+  cursor: grab;
+  outline: none;
+  touch-action: none;
+}
+canvas#stage.is-ready {
+  opacity: 1;
+  transform: scale(1);
+}
+canvas#stage:active { cursor: grabbing; }
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background:
+    radial-gradient(ellipse at 50% 44%, transparent 48%, rgba(102,63,91,.11) 80%, rgba(88,53,82,.24) 110%),
+    linear-gradient(180deg, rgba(255,255,255,.06), transparent 24%, transparent 76%, rgba(149,97,121,.08));
+}
+.nojs {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  color: var(--ink); background: #ffe7e2; z-index: 9; font-size: 15px; letter-spacing: .06em;
+}
+@media (max-width: 720px) {
+  .vignette { background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(88,53,82,.18) 110%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  canvas#stage { transition: opacity .4s ease; transform: none; }
+}

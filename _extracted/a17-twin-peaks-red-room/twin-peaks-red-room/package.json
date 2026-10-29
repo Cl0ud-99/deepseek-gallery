@@ -1,0 +1,11 @@
+{
+  "name": "twin-peaks-red-room",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A procedural Twin Peaks Glastonbury Grove / Red Room miniature diorama in Three.js",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "bundle": "node tools/bundle.mjs"
+  }
+}

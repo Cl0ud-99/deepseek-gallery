@@ -1,0 +1,10 @@
+{
+  "name": "ashtray-maze-a07",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ASHTRAY MAZE / A-07 — an interactive Remedy-style brutalist diorama generated with Three.js.",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "build:standalone": "python tools/build_standalone.py"
+  }
+}
