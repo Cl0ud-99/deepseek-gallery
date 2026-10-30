@@ -579,16 +579,19 @@ track.addEventListener('wheel', function (e) {
   bounceTimer = setTimeout(endBounce, 90);
 }, { passive: false });
 
-/* ---------- 滚轮 → 横向 ---------- */
+/* ---------- 滚轮 → 翻页（一格一张，带吸附） ---------- */
+var wheelAt = 0;
 track.addEventListener('wheel', function (e) {
   if (overview) return;
   if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
   e.preventDefault();
-  var step = Math.sign(e.deltaY);
-  var atEdge = (step > 0 && track.scrollLeft >= track.scrollWidth - track.clientWidth - 2) ||
-               (step < 0 && track.scrollLeft <= 2);
-  if (atEdge) return;
-  track.scrollLeft += e.deltaY * 1.15;
+
+  var now = performance.now();
+  if (now - wheelAt < 320) return;      // 触控板一次滑动会产生大量事件，节流成一次翻页
+  wheelAt = now;
+
+  var i = nearestIndex() + (e.deltaY > 0 ? 1 : -1);
+  center(Math.max(0, Math.min(cards.length - 1, i)));
 }, { passive: false });
 
 /* ---------- 拖动 ---------- */
