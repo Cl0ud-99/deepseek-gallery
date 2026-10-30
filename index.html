@@ -507,7 +507,13 @@
     .head{ padding-top:calc(env(safe-area-inset-top) + 62px) }
     /* 竖屏用 4:3，卡片在手里有存在感 */
     .card{ aspect-ratio:4 / 3 }
-    .head{ display:none }          /* 移动端不要顶部文字 */
+    /* 顶部文字回到按钮那一行，居中，且压在毛玻璃之上 */
+    .head{ display:block; position:absolute; inset:0 0 auto 0; z-index:5; padding:0; pointer-events:none }
+    .head .eyebrow{
+      position:absolute; left:50%; top:calc(env(safe-area-inset-top) + 32px);
+      transform:translate(-50%, -50%);
+      font-size:10.5px; letter-spacing:.34em; white-space:nowrap;
+    }
     .lead{ font-size:11.5px; margin-top:8px; max-width:24em; margin-inline:auto }
     .title .en{ font-size:13px; letter-spacing:.26em; margin-right:-.26em }
     /* 作品名叠在卡片正中央 */
