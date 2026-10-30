@@ -737,13 +737,20 @@ function setMode(toGrid, focusIndex) {
           opacity: endOp, borderRadius: rv1 + 'px', offset: 1 }
       ];
     }
+    el.style.transform = frames[0].transform;          // 先把起点落到内联，避免中间帧闪一下
+    if (frames[0].opacity !== undefined) el.style.opacity = String(frames[0].opacity);
     anims.push(el.animate(frames, { duration: dur, delay: delay, easing: ease, fill: 'both' }));
   });
 
   Promise.all(anims.map(function (a) { return a.finished.catch(function () {}); })).then(function () {
     anims.forEach(function (a) { a.cancel(); });
     anims = [];
-    els.forEach(function (el) { el.style.willChange = ''; el.style.zIndex = ''; });
+    els.forEach(function (el) {
+      el.style.transform = '';        // 清掉为防闪而写的起点
+      el.style.opacity = '';
+      el.style.willChange = '';
+      el.style.zIndex = '';
+    });
     transitioning = false;                       // 必须先解锁，否则下面的 layout() 会被拦掉
     if (!toGrid) { track.style.scrollSnapType = ''; current = -1; layout(); }
     /* 等换字动画（.swap，140ms）在隐形状态下走完再淡入，
