@@ -492,8 +492,15 @@
     .title .en{ font-size:13px; letter-spacing:.26em; margin-right:-.26em }
     .caption{ padding-top:10px }
 
+    /* 移动端：去掉左右翻页按钮（竖屏主要靠滑动） */
+    .nav{ display:none !important }
+
+    /* 总览按钮只留图案 */
+    .ovbtn{ width:var(--btn-h); padding:0; justify-content:center; border-radius:50% }
+    .ovbtn #ovLabel{ display:none }
+
     /* 竖屏：轨道改为纵向，一屏一张 */
-    body.portrait .track{
+    body.portrait:not(.mode-grid) .track{
       flex-direction:column;
       height:100%; min-height:0;            /* 不固定高度的话它会撑到内容高度，就没有滚动 */
       overflow-x:hidden; overflow-y:auto;   /* 基础样式只开了横向滚动 */
@@ -502,11 +509,11 @@
       padding-inline:calc(50% - var(--cw)/2);
     }
     /* 上下相邻的卡片不能越过轨道盖住标题 */
-    body.portrait .wrap{ overflow:hidden }
+    body.portrait:not(.mode-grid) .wrap{ overflow:hidden }
 
     /* 竖向轨道里 flex-basis 作用于高度，宽度会撑满：
        必须显式给宽高，否则卡片会横跨整个屏宽 */
-    body.portrait .card{
+    body.portrait:not(.mode-grid) .card{
       flex:0 0 auto;
       width:var(--cw);
       height:calc(var(--cw) * .75);
@@ -1304,6 +1311,11 @@ var ovBtnEl = document.getElementById('ovBtn');
 var ovLabelEl = document.getElementById('ovLabel');
 
 function morphOvBtn(toGrid) {
+  /* 窄屏按钮是圆形只留图标，没有文字要过渡 */
+  if (!window.matchMedia('(min-width: 721px)').matches) {
+    ovLabelEl.textContent = toGrid ? 'Back' : 'All Works';
+    return;
+  }
   var start = ovBtnEl.offsetWidth;              // offsetWidth 不含 transform 缩放
   ovBtnEl.style.width = start + 'px';
 
