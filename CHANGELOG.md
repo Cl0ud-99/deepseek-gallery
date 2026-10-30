@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.0.5 — 2026-10-30
+
+### Scene-graph audit of all 19 entries
+
+New tool `_tools/audit.mjs` opens every entry in a headless browser and reaches into its scene graph
+through the `__THREE_DEVTOOLS__` observer that three.js dispatches from its own `Scene` and
+`WebGLRenderer` constructors. That works on all 19 including the fully minified A05/A16, with no
+debug handle and no source modifications.
+
+`_tools/overlap.mjs` then transforms every triangle into world space, sorts its three vertices into
+a key and looks for keys that repeat — surfaces sitting exactly on top of each other. Outline shells
+(`side: BackSide`, or a mesh sharing its parent's geometry instance) are excluded, because those
+are deliberately the same geometry drawn twice with a vertex-shader offset.
+
+### What it found
+
+- **23,313 meshes, 3.25M triangles**, of which **4,221 are outline shells** — 18% of all meshes,
+  each one costing an extra draw call. A07 has the most (639); A11, whose own README estimated 400,
+  actually has 105.
+- **No real z-fighting anywhere.** ~2,700 triangles (0.08%) coincide exactly with another triangle,
+  and all of them are props placed twice rather than modelling errors. Both copies share a material
+  in every case, so they cost triangles, not visible flicker. Worst: A09 424, A15 408, A19 384,
+  A03 354, A06 318. A11, A13, A14 and A16 are completely clean.
+- **13,132 meshes are still mergeable** by material (upper bound — animated objects are not yet
+  excluded). A02 2,128, A07 1,811, A18 1,159, A19 1,068 lead.
+- A13 carries 723 distinct materials for 1,095 meshes — the lowest material reuse in the archive.
+
+`AUDIT.md` (Chinese) holds the full per-entry table, the overlap ledger with world positions, and a
+per-project optimisation list. `README.md` gains an English summary plus tool references.
+
 ## 0.0.4 — 2026-10-30
 
 ### A09 Grand Hotel: 7,047 → 1,009 draw calls (-86%)

@@ -60,6 +60,7 @@ archive/
 ├─ catalog.md        flat table + four filtered views                        (Chinese)
 ├─ profiles.md       per-project dossier: what / how / pitfalls / where to optimise   (Chinese)
 ├─ README.md         this file
+├─ AUDIT.md          scene-graph audit: structure, batching headroom, overlapping faces   (Chinese)
 ├─ CHANGELOG.md      what changed in each version
 ├─ VERSION           current version
 ├─ _packages/        19 original zip archives, named aNN-slug.zip
@@ -68,7 +69,9 @@ archive/
 │  └─ thumbs/        720×450 JPEGs used by the gallery above
 └─ _tools/
    ├─ shot.mjs       renders previews/Axx.png from the live scenes
-   └─ probe.mjs      measures draw calls / triangles / fps for every entry
+   ├─ probe.mjs      measures draw calls / triangles / fps for every entry
+   ├─ audit.mjs      scene-graph audit: meshes, materials, batching headroom, duplicate faces
+   └─ overlap.mjs    traces every duplicate triangle back to the two objects that own it
 ```
 
 ## Running locally
@@ -143,6 +146,25 @@ Three findings worth knowing before optimising anything:
    original build by pixel diff. The batcher is reusable.
 3. **A11 Lunar Outpost measures 889 calls**, one of the cheapest entries, despite carrying by far the
    most detailed optimisation notes. Documentation quality and runtime cost are unrelated here.
+
+## Scene audit
+
+`_tools/audit.mjs` opens every entry in a headless browser and reads its scene graph through the
+`__THREE_DEVTOOLS__` observer that three.js dispatches itself — no debug handle, no source changes,
+and it works on the minified builds too. `_tools/overlap.mjs` then hashes every triangle in world
+space to find surfaces sitting exactly on top of each other.
+
+Collection-wide (full report: [AUDIT.md](AUDIT.md), Chinese):
+
+- 23,313 meshes and 3.25M triangles in total, of which **4,221 meshes are outline shells** — 18% of
+  everything, each one costing its own draw call.
+- **No real z-fighting.** About 2,700 triangles (0.08%) sit exactly on top of another, and every case
+  is a prop that was placed twice rather than a modelling mistake. Both copies always share a
+  material, so the cost is triangles, not visible flicker.
+- **13,132 meshes could still be merged** by material — an upper bound that still counts animated
+  objects. A02, A07, A18 and A19 alone account for roughly 6,200 of them.
+- A07 owns the most outline shells (639), not A11 as its own notes assumed (105).
+- A13 uses 723 distinct materials for 1,095 meshes — the lowest material reuse in the archive.
 
 ## Versioning
 

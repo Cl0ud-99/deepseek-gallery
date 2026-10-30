@@ -1,0 +1,252 @@
+[
+  {
+    "checked": 31774,
+    "meshes": 895,
+    "solidTotal": 15,
+    "fxTotal": 0,
+    "solidPairs": 2,
+    "fxPairs": 0,
+    "solidTop": [
+      {
+        "pair": "unnamed [MeshToonMaterial#c9c6bc]  <->  unnamed [MeshToonMaterial#c9c6bc]",
+        "tris": 12,
+        "at": "6.258, 1.155, 3.948",
+        "sameGeo": false,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "unnamed [MeshToonMaterial#b5893f]  (自身重复面)",
+        "tris": 3,
+        "at": "-1.320, 1.005, -0.520",
+        "sameGeo": true,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      }
+    ],
+    "fxTop": [],
+    "id": "A01"
+  },
+  {
+    "checked": 135686,
+    "meshes": 863,
+    "solidTotal": 318,
+    "fxTotal": 0,
+    "solidPairs": 2,
+    "fxPairs": 0,
+    "solidTop": [
+      {
+        "pair": "unnamed [MeshStandardMaterial#8a6a22]  <->  unnamed [MeshStandardMaterial#8a6a22]",
+        "tris": 270,
+        "at": "0.109, 0.000, 0.027",
+        "sameGeo": false,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "unnamed [MeshToonMaterial#7d4429]  <->  unnamed [MeshToonMaterial#7d4429]",
+        "tris": 48,
+        "at": "0.573, 11.853, 1.289",
+        "sameGeo": false,
+        "sameMat": true,
+        "sameMatrix": false,
+        "visible": true
+      }
+    ],
+    "fxTop": [],
+    "id": "A06"
+  },
+  {
+    "checked": 101067,
+    "meshes": 485,
+    "solidTotal": 32,
+    "fxTotal": 0,
+    "solidPairs": 3,
+    "fxPairs": 0,
+    "solidTop": [
+      {
+        "pair": "unnamed [MeshStandardMaterial#101313]  (自身重复面)",
+        "tris": 24,
+        "at": "11.073, 2.510, 2.089",
+        "sameGeo": true,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "unnamed [MeshBasicMaterial#ff4530]  <->  unnamed [MeshStandardMaterial#f1ddcd]",
+        "tris": 4,
+        "at": "-0.577, -0.577, 0.577",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "unnamed [MeshBasicMaterial#ff3521]  (自身重复面)",
+        "tris": 4,
+        "at": "4.292, -3.298, 15.045",
+        "sameGeo": true,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      }
+    ],
+    "fxTop": [],
+    "id": "A08"
+  },
+  {
+    "checked": 112038,
+    "meshes": 571,
+    "solidTotal": 408,
+    "fxTotal": 5562,
+    "solidPairs": 2,
+    "fxPairs": 75,
+    "solidTop": [
+      {
+        "pair": "batch-d1df88 [MeshStandardMaterial#272a2a]  (自身重复面)",
+        "tris": 240,
+        "at": "3.618, 0.166, 2.431",
+        "sameGeo": true,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "batch-07c04e [MeshStandardMaterial#fefefe]  (自身重复面)",
+        "tris": 168,
+        "at": "-6.712, 0.283, 0.625",
+        "sameGeo": true,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      }
+    ],
+    "fxTop": [
+      {
+        "pair": "batch-3d5d67 [ShaderMaterial]  <->  batch-8d018a [MeshStandardMaterial#4a2f1d]",
+        "tris": 336,
+        "at": "-4.746, 0.450, 0.178",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "batch-2bc076 [ShaderMaterial]  <->  batch-287ae7 [MeshToonMaterial#fefefe]",
+        "tris": 326,
+        "at": "-5.180, 7.180, 0.950",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "batch-365684 [ShaderMaterial]  <->  batch-80e877 [MeshStandardMaterial#40291a]",
+        "tris": 312,
+        "at": "-3.980, 3.000, 0.815",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "rain-ripples [ShaderMaterial]  (自身重复面)",
+        "tris": 298,
+        "at": "-0.500, 0.000, -0.500",
+        "sameGeo": true,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "batch-189b67 [ShaderMaterial]  <->  batch-101d07 [MeshStandardMaterial#785423]",
+        "tris": 280,
+        "at": "-4.620, 2.510, -0.750",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "unnamed [MeshToonMaterial#6e4c3e]  <->  batch-3d5d67 [ShaderMaterial]",
+        "tris": 240,
+        "at": "-4.800, 10.695, -3.310",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": false,
+        "visible": true
+      },
+      {
+        "pair": "batch-189b67 [ShaderMaterial]  <->  batch-957769 [MeshStandardMaterial#6b4a2c]",
+        "tris": 236,
+        "at": "1.175, 4.760, -3.985",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "batch-3d5d67 [ShaderMaterial]  <->  batch-d71631 [MeshStandardMaterial#7d5b25]",
+        "tris": 224,
+        "at": "-4.900, 2.785, 1.330",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "batch-2bc076 [ShaderMaterial]  <->  batch-d59a94 [MeshToonMaterial#c5baa5]",
+        "tris": 216,
+        "at": "1.670, 6.790, -2.220",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "batch-189b67 [ShaderMaterial]  <->  batch-8d018a [MeshStandardMaterial#4a2f1d]",
+        "tris": 208,
+        "at": "-4.854, 1.015, -1.795",
+        "sameGeo": false,
+        "sameMat": false,
+        "sameMatrix": true,
+        "visible": true
+      }
+    ],
+    "id": "A15"
+  },
+  {
+    "checked": 399952,
+    "meshes": 1504,
+    "solidTotal": 2,
+    "fxTotal": 0,
+    "solidPairs": 2,
+    "fxPairs": 0,
+    "solidTop": [
+      {
+        "pair": "unnamed [MeshToonMaterial#9b6551]  (自身重复面)",
+        "tris": 1,
+        "at": "0.517, 3.569, 3.034",
+        "sameGeo": true,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      },
+      {
+        "pair": "unnamed [MeshStandardMaterial#f2bf68]  (自身重复面)",
+        "tris": 1,
+        "at": "-1.902, 3.875, 2.293",
+        "sameGeo": true,
+        "sameMat": true,
+        "sameMatrix": true,
+        "visible": true
+      }
+    ],
+    "fxTop": [],
+    "id": "A18"
+  }
+]
