@@ -1,10 +1,24 @@
-# Diorama Archive
+# DeepSeek Gallery
 
-Twenty-one procedural Three.js dioramas. No Blender, no model files, no image assets — every mesh,
-material, canvas texture, GLSL shader and animation is generated in the browser at runtime.
+A community gallery of dioramas built entirely in code — no model files, no image assets.
+Every mesh, material, canvas texture, GLSL shader and animation is generated in the browser
+at runtime with Three.js.
 
-**[Open the archive →](https://cl0ud-99.github.io/diorama-archive/)** — filterable index with
-in-page live preview.
+**[Open the gallery →](https://cl0ud-99.github.io/diorama-archive/)** · **[Filterable archive →](https://cl0ud-99.github.io/diorama-archive/archive.html)**
+
+## Submit a piece
+
+Anyone can contribute a scene. What we look for: it runs in a browser from a single entry file,
+and it is built with code rather than imported assets.
+
+1. Put the scene under `_extracted/aXX-<slug>/` — a self-contained `index.html` is ideal.
+2. Render a 1440×900 preview with `node _tools/framed-shot.mjs AXX` (details in `_lab/ADDING.md`).
+3. Add one entry to `WORKS` and one to `SRC` in `index.html`.
+4. Open a PR, or [start an issue](https://github.com/Cl0ud-99/diorama-archive/issues/new) and
+   attach a zip — we will wire it in.
+
+The page self-checks on load: a missing source path, a duplicate id or a missing preview is
+reported in the console instead of failing silently.
 
 ## Collection
 
