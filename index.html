@@ -217,13 +217,11 @@
     background:var(--accent);
     box-shadow:none;
     transition:width .22s ease}
-  /* 进度头部的小倒三角，跟着走 */
+  /* 进度头部的蓝鲸，跟着走，与进度条留一段空隙 */
   .bar i::after{
-    content:""; position:absolute; left:100%; top:-6px;
-    width:0; height:0; margin-left:-5px;
-    border-left:5px solid transparent;
-    border-right:5px solid transparent;
-    border-top:6px solid var(--accent);
+    content:""; position:absolute; left:100%; bottom:9px;
+    width:26px; height:17px; margin-left:-12px;
+    background:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2044%2024'%3E%3Cpath%20d%3D'M2.5%2013.6c0-4.7%204.6-8.4%2010.6-8.4%205%200%208.3%202.3%2010.2%205.6l5.4-4.4-1.3%205.6%204.6%203.6-6.6.9c-1.7%203.2-5.1%205.3-9.9%205.3-6.2%200-11-3.5-11-8.2Z'%20fill%3D'%234d6bfe'%2F%3E%3Ccircle%20cx%3D'10.4'%20cy%3D'11.8'%20r%3D'1.5'%20fill%3D'%23fff'%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;
     pointer-events:none;
   }
 
