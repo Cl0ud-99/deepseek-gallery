@@ -589,11 +589,25 @@ function setMode(toGrid, focusIndex) {
        起始帧按缩放倍数反向补偿，视觉圆角才稳定。 */
     var sc0 = Math.max(Math.abs(sx), Math.abs(sy), 0.02);
     var cssR0 = Math.max(2, rv0 / sc0);
-    anims.push(el.animate([
-      { transform: compose(dx, dy, sx, sy, base), opacity: op, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
-      { transform: culled ? 'scale(0.88)' : (t1[i] === 'none' ? 'none' : t1[i]),
-        opacity: endOp, borderRadius: rv1 + 'px', offset: 1 }
-    ], { duration: dur, delay: delay, easing: ease, fill: 'both' }));
+    var frames;
+    if (toGrid && i !== sel) {
+      /* 飞入的卡片：前半程保持全透明，接近落位才显现。
+         否则 20 张半透明的卡同时在浅色背景上滑过，
+         会形成一片片"把画面割开"的淡色矩形。 */
+      var midTf = compose(dx * 0.3, dy * 0.3, sx + (1 - sx) * 0.7, sy + (1 - sy) * 0.7, base);
+      frames = [
+        { transform: compose(dx, dy, sx, sy, base), opacity: 0, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
+        { transform: midTf, opacity: 0, borderRadius: cssR0.toFixed(2) + 'px', offset: 0.68 },
+        { transform: 'none', opacity: 1, borderRadius: rv1 + 'px', offset: 1 }
+      ];
+    } else {
+      frames = [
+        { transform: compose(dx, dy, sx, sy, base), opacity: op, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
+        { transform: culled ? 'scale(0.88)' : (t1[i] === 'none' ? 'none' : t1[i]),
+          opacity: endOp, borderRadius: rv1 + 'px', offset: 1 }
+      ];
+    }
+    anims.push(el.animate(frames, { duration: dur, delay: delay, easing: ease, fill: 'both' }));
   });
 
   Promise.all(anims.map(function (a) { return a.finished.catch(function () {}); })).then(function () {
