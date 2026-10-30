@@ -40,8 +40,9 @@
   body.dark .themefade{opacity:1}
 
   /* 昼夜切换：以主题按钮为圆心的圆形擦除 */
-  .themewipe{position:fixed; inset:0; z-index:65; pointer-events:none; display:none; overflow:hidden;
-    opacity:1; transition:opacity .4s ease}
+  /* 放在 .stage(1) 之上、内容的背景层之下：只擦背景，不遮住卡片和文字 */
+  .themewipe{position:fixed; inset:0; z-index:1; pointer-events:none; display:none; overflow:hidden;
+    opacity:1; transition:opacity .45s ease}
   .themewipe.on{display:block}
   .themewipe::before{
     content:""; position:absolute;
