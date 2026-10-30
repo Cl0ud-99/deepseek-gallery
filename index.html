@@ -472,7 +472,10 @@
   }
 
   /* 竖屏翻页时，上下分界用毛玻璃虚化（只在移动端出现） */
-  .edge{ position:absolute; inset:0; pointer-events:none; z-index:3; display:none }
+  .edge{ position:absolute; inset:0; pointer-events:none; z-index:3; display:none;
+    transition:opacity .16s ease }
+  /* 滑动过程中隐藏：backdrop-filter 每帧都要重新采样背景，是掉帧的主因 */
+  body.scrolling .edge{ opacity:0 }
   @media (max-width:720px){
     body.portrait:not(.mode-grid) .edge{ display:block }
     .edge i{
@@ -731,6 +734,7 @@ var overview = false;
 var anims = [];
 var introAnims = [];   // 进场动画；转场开始前必须取消，否则会和 FLIP 抢同一张卡片
 var settleAt = 0;      // 转场结束后再屏蔽一段时间，手快时不会连着触发
+var scrollIdle = 0;
 var barPos = -1;      // 上一次停在的索引，用来定小鲸的朝向
 var lastFocus = 0;   // 进入总览前聚焦的那一张，返回时用
 
@@ -797,6 +801,11 @@ function layout() {
   if (best !== current) setCurrent(best);
   var p = cards.length > 1 ? best / (cards.length - 1) : 0;
   document.getElementById('bar').style.width = (p * 100).toFixed(2) + '%';
+
+  /* 滑动中暂时收掉毛玻璃，停稳后再出现 */
+  document.body.classList.add('scrolling');
+  clearTimeout(scrollIdle);
+  scrollIdle = setTimeout(function () { document.body.classList.remove('scrolling'); }, 160);
 
   /* 小鲸朝向跟着「前进 / 后退」翻转 */
   if (barPos >= 0 && best !== barPos) {
