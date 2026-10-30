@@ -486,8 +486,13 @@ function setMode(toGrid, focusIndex) {
 
   var els = cards.map(function (c) { return c.el; });
 
-  /* 1. 记录起点：视觉矩形 + 当前不透明度 */
-  var first = els.map(function (el) { return el.getBoundingClientRect(); });
+  /* 1. 记录起点：用 offsetLeft/Width —— 布局坐标，不含 3D 变换。
+      getBoundingClientRect() 拿到的是旋转+缩放后的外接矩形，宽高比已经变形，
+      sx≠sy 会把卡片压扁并飞到错误位置。 */
+  var g0 = els.map(function (el) {
+    return { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight };
+  });
+  var t0 = els.map(function (el) { return el.style.transform || 'none'; });
   var op0 = els.map(function (el) { return parseFloat(getComputedStyle(el).opacity) || 0; });
 
   document.body.classList.add('is-moving');
@@ -502,39 +507,53 @@ function setMode(toGrid, focusIndex) {
   document.getElementById('ovLabel').textContent = toGrid ? '返回' : '总览';
   els.forEach(function (el) { el.style.transform = ''; el.style.opacity = ''; });
 
-  /* 先强制回流，让 flex 布局真正生效——否则下面设置 scrollLeft 会被
-     "grid 模式没有可滚动溢出" 夹成 0，一返回就跳回第一张 */
   void track.offsetWidth;
 
   if (!toGrid) {
     jumpTo(focusIndex);
     void track.offsetWidth;
-    transitioning = false;          // 临时解锁，让 layout() 算出横向位姿
+    transitioning = false;
     current = -1;
     layout();
     transitioning = true;
   }
 
-  /* 3. 记录终点：目标变换用 layout() 留下的内联样式，最终位置一致 */
-  var last = els.map(function (el) { return el.getBoundingClientRect(); });
-  var tf1 = els.map(function (el) { return el.style.transform || 'none'; });
+  /* 3. 记录终点：布局矩形 + 目标变换 */
+  var g1 = els.map(function (el) {
+    return { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight };
+  });
+  var t1 = els.map(function (el) { return el.style.transform || 'none'; });
   var op1 = els.map(function (el) { return el.style.opacity ? parseFloat(el.style.opacity) : 1; });
 
-  /* 4. 动画：位移+缩放+圆角+透明度一起补，收尾与内联样式严格对齐，不会跳 */
+  function compose(dx, dy, sx, sy, base) {
+    var head = 'translate(' + dx.toFixed(2) + 'px,' + dy.toFixed(2) + 'px) scale(' + sx.toFixed(4) + ',' + sy.toFixed(4) + ')';
+    return (base && base !== 'none') ? head + ' ' + base : head;
+  }
+
+  /* 4. 动画 */
   var r0 = toGrid ? 46 : 18, r1 = toGrid ? 18 : 46;
   anims = [];
+  var vw = window.innerWidth, vh = window.innerHeight;
+  var scrolled = track.scrollLeft;
+
   els.forEach(function (el, i) {
-    var a0 = first[i], a1 = last[i];
-    var dx = a0.left - a1.left, dy = a0.top - a1.top;
-    var sx = a0.width / Math.max(a1.width, 1);
-    var sy = a0.height / Math.max(a1.height, 1);
-    var moved = Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5 || Math.abs(sx - 1) > 0.005;
+    var dx = g0[i].x - g1[i].x, dy = g0[i].y - g1[i].y;
+    var sx = g0[i].w / Math.max(g1[i].w, 1);
+    var sy = g0[i].h / Math.max(g1[i].h, 1);
+
+    /* 起点在画外的卡片不横穿整屏——它们只是淡入到位，
+       否则一次转场有十几张卡同时掠过，观感很乱 */
+    if (toGrid) {
+      var vx0 = g0[i].x - scrolled, vx1 = vx0 + g0[i].w;
+      if (vx1 < -40 || vx0 > vw + 40) { dx = 0; dy = 0; sx = 1; sy = 1; }
+    }
+    var moving = Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5 || Math.abs(sx - 1) > 0.004 || Math.abs(sy - 1) > 0.004;
+    var turn = t0[i] !== t1[i];
     var faded = Math.abs(op0[i] - op1[i]) > 0.01;
-    if (!moved && !faded) return;
+    if (!moving && !turn && !faded) return;
     anims.push(el.animate([
-      { transform: 'translate(' + dx.toFixed(2) + 'px,' + dy.toFixed(2) + 'px) scale(' + sx.toFixed(4) + ',' + sy.toFixed(4) + ')',
-        opacity: op0[i], borderRadius: r0 + 'px', offset: 0 },
-      { transform: tf1[i], opacity: op1[i], borderRadius: r1 + 'px', offset: 1 }
+      { transform: compose(dx, dy, sx, sy, t0[i]), opacity: op0[i], borderRadius: r0 + 'px', offset: 0 },
+      { transform: t1[i] === 'none' ? 'none' : t1[i], opacity: op1[i], borderRadius: r1 + 'px', offset: 1 }
     ], { duration: 720, easing: 'cubic-bezier(.2,.85,.25,1)', fill: 'both' }));
   });
 
