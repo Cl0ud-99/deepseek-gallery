@@ -775,7 +775,7 @@ function layout() {
     if (!reduce) {
       var rot = -Math.max(-1, Math.min(1, dd)) * 20;
       var sc = vertical
-        ? 1 - Math.min(1, Math.abs(j - best)) * 0.20
+        ? Math.max(0.22, 1 - Math.abs(j - best) * 0.20)   /* 越远越小：0.80 / 0.60 / 0.40 … */
         : 1 - ad * 0.13;
       if (vertical) {
         box.style.transform = 'rotateX(' + (-rot).toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + (ad * 6).toFixed(1) + 'px)';
