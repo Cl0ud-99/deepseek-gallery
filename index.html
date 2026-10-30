@@ -179,7 +179,7 @@
     max-height:100%; overflow-y:auto; overflow-x:hidden;
     /* 上下留出与移轴带等高的缓冲区：滚到顶/底时，
        首行与末行不会被毛玻璃整片盖住 */
-    padding:clamp(12px,2vh,22px) clamp(16px,3vw,46px);
+    padding:clamp(16px,3vw,46px);   /* 上下与左右同宽 */
     perspective:none; cursor:default;
     overflow-anchor:none;   /* 关掉滚动锚定：贴底时浏览器会为保持锚点偷偷改 scrollTop */
     scrollbar-width:none; -ms-overflow-style:none;
