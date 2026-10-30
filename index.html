@@ -355,6 +355,7 @@ var current = -1;   // -1 让首次 layout() 必定刷新标题（否则首屏�
 var overview = false;
 var anims = [];
 var introAnims = [];   // 进场动画；转场开始前必须取消，否则会和 FLIP 抢同一张卡片
+var settleAt = 0;      // 转场结束后再屏蔽一段时间，手快时不会连着触发
 var lastFocus = 0;   // 进入总览前聚焦的那一张，返回时用
 
 function layout() {
@@ -590,7 +591,8 @@ function jumpTo(i) {
 }
 
 function setMode(toGrid, focusIndex) {
-  if (transitioning) return;
+  /* 动画进行中 + 结束后 300ms 的冷却期，都忽略点击 */
+  if (transitioning || performance.now() < settleAt) return;
   transitioning = true;
 
   /* 若进场动画还在跑（刚打开页面就点总览），先取消——
@@ -801,6 +803,7 @@ function setMode(toGrid, focusIndex) {
     if (!toGrid) { track.style.scrollSnapType = ''; current = -1; layout(); }
     /* 等换字动画（.swap，140ms）在隐形状态下走完再淡入，
        否则头部的淡入和标题的闪换叠在一起，看起来就是"闪一下" */
+    settleAt = performance.now() + 300;   // 冷却期
     setTimeout(function () { document.body.classList.remove('is-moving'); }, 170);
   });
 }
