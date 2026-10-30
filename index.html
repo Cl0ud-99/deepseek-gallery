@@ -17,6 +17,8 @@
          --glass-line: rgba(255,255,255,.62);
          --glass-hi: inset 0 1px 0 rgba(255,255,255,.85);
          --btn-h: clamp(34px, 3vw, 40px);
+         --hover: 1.06;                       /* 所有可交互元素共用的悬停缩放 */
+         --hover-t: .2s cubic-bezier(.2,.7,.3,1);
          --floor-1: rgba(232,234,240,.92); --floor-2: rgba(228,230,238,.72);
          --floor-3: rgba(224,227,236,.38); --floor-4: rgba(220,224,234,0); }
 
@@ -179,7 +181,7 @@
     transition:transform .2s, border-color .2s, color .2s, opacity .2s;
     user-select:none; -webkit-user-select:none;
   }
-  .nav:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:translateY(-50%) scale(1.06)}
+  .nav:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:translateY(-50%) scale(var(--hover))}
   .nav:active{transform:translateY(-50%) scale(.96)}
   .nav.prev{left:clamp(10px,2.2vw,34px)}
   .nav.next{right:clamp(10px,2.2vw,34px)}
@@ -200,7 +202,7 @@
     transition:transform .2s, border-color .2s, color .2s, opacity .2s;
     -webkit-user-select:none; user-select:none;
   }
-  .snd:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:scale(1.06)}
+  .snd:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:scale(var(--hover))}
   .snd:active{transform:scale(.96)}
   .snd .ico{font-size:15px; line-height:1; opacity:.9}
   .snd.on{color:var(--accent); border-color:rgba(77,107,254,.55)}
@@ -227,7 +229,7 @@
     box-shadow:0 10px 26px -14px rgba(50,48,42,.5), var(--glass-hi);
     transition:color .25s ease, background-color .5s ease, border-color .5s ease, box-shadow .5s ease, transform .25s;
   }
-  .credit:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(1.06)}
+  .credit:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(var(--hover))}
   .credit svg{display:block; opacity:.9}
 
   /* 名片：以云朵为圆心展开的半透明遮罩 */
@@ -289,7 +291,7 @@
     box-shadow:0 10px 26px -14px rgba(50,48,42,.5), var(--glass-hi);
     transition:transform .2s, border-color .2s, color .2s;
   }
-  .themebtn:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(1.06)}
+  .themebtn:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(var(--hover))}
   .themebtn svg{display:block; opacity:.9}
 
   .ovbtn{
@@ -301,7 +303,7 @@
     box-shadow:0 10px 26px -14px rgba(50,48,42,.5), var(--glass-hi);
     transition:transform .2s, color .2s, border-color .2s;
   }
-  .ovbtn:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:translateY(-1px)}
+  .ovbtn:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(var(--hover))}
   .ovbtn{position:relative; top:auto; right:auto}
   .ovbtn svg{width:13px; height:13px; opacity:.8}
 
@@ -309,11 +311,11 @@
   body.mode-grid .head{display:none}
   /* 总览：鼠标停留放大，与顶栏按钮同一套手感 */
   body.mode-grid .card{
-    transition:transform .26s cubic-bezier(.2,.7,.3,1), box-shadow .26s ease;
+    transition:transform var(--hover-t), box-shadow var(--hover-t);
     will-change:transform;
   }
   body.mode-grid .card:hover{
-    transform:scale(1.05);
+    transform:scale(var(--hover));
     box-shadow:0 26px 50px -22px rgba(0,0,0,.55);
     z-index:3;
   }
