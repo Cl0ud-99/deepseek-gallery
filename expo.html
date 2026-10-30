@@ -52,6 +52,18 @@
 
   .stage{position:fixed; inset:0; z-index:1; display:flex; flex-direction:column}
 
+  /* 底部毛玻璃渐变：把画面下缘可能露出的硬边柔化掉 */
+  .stage::after{
+    content:""; position:fixed; left:0; right:0; bottom:0; height:clamp(110px,16vh,180px);
+    pointer-events:none; z-index:3;
+    background:linear-gradient(to top,
+      rgba(232,234,240,.92) 0%,
+      rgba(228,230,238,.72) 28%,
+      rgba(224,227,236,.38) 58%,
+      rgba(220,224,234,0) 100%);
+    /* 不用 backdrop-filter：它按元素矩形做模糊，边界反而会显出硬边 */
+  }
+
   /* ---------- 顶部标题（随卡片切换） ---------- */
   .head{padding:clamp(44px,7.2vh,88px) 24px 0; text-align:center; flex:none;
     transition:opacity .34s ease}
