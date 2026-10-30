@@ -627,6 +627,7 @@ function setMode(toGrid, focusIndex) {
          并扣掉两端的滚动量（offsetLeft 含滚动偏移，纵向没有滚动）。 */
       dx = (g0[i].x + g0[i].w / 2 - scroll0 + box0.left) - (g1[i].x + g1[i].w / 2 - scroll1 + box1.left);
       dy = (g0[i].y + g0[i].h / 2 + box0.top) - (g1[i].y + g1[i].h / 2 + box1.top);
+      if (toGrid) base = 'none';   // 进总览时两端都保持纯 translate+scale，避免矩阵插值走弯路
       sx = g0[i].w / Math.max(g1[i].w, 1);
       sy = sx;      // 统一缩放比 —— 横向 16:9 与网格 16:9 仍会有零点几个百分点误差,
                     // 分别取 sx/sy 会让卡片在动画中轻微变形（"抽一下"）
