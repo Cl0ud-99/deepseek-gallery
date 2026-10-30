@@ -612,6 +612,12 @@
     }
     body.dark .caption .title .en{ color:#fff }
 
+    /* Safari 的底部工具栏会盖住布局视口底部，
+       fixed inset:0 因此比"看得见的区域"高出一截，居中就会偏上。
+       用动态视口高度（dvh）跟可见区域对齐。 */
+    .stage{ height:100dvh; bottom:auto }
+    @supports not (height: 100dvh){ .stage{ height:var(--vh, 100vh) } }
+
     /* 移动端：去掉左右翻页按钮（竖屏主要靠滑动） */
     .nav{ display:none !important }
 
@@ -975,6 +981,15 @@ function onResize() {
   clearTimeout(orientTimer);
   orientTimer = setTimeout(applyOrientation, 140);   // iOS 旋转后尺寸会晚到
 }
+/* Safari 工具栏伸缩时，用 visualViewport 更新真实可视高度 */
+if (window.visualViewport) {
+  var setVH = function () {
+    document.documentElement.style.setProperty('--vh', window.visualViewport.height + 'px');
+  };
+  setVH();
+  window.visualViewport.addEventListener('resize', setVH);
+}
+
 window.addEventListener('resize', onResize);
 window.addEventListener('orientationchange', onResize);
 
