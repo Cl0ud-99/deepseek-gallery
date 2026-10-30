@@ -731,7 +731,10 @@ function layout() {
       // d 可以到 ±10（列表总宽 19000px），必须钳制：
       // 之前没钳制会算出 rotateY(±200°)，到 90° 时卡片被压成一条线
       var rot = -Math.max(-1, Math.min(1, d)) * 20;
-      var sc = 1 - ad * 0.13;
+      /* 竖屏备选卡缩 20%，主选卡不变；桌面仍为 13% */
+      var sc = vertical
+        ? 1 - Math.min(1, Math.abs(k - best)) * 0.20        /* 竖屏：按张数算，相邻卡正好小 20% */
+        : 1 - ad * 0.13;
       if (vertical) {
         /* 竖排：上下俯仰，而不是左右转身 */
         box.style.transform = 'rotateX(' + (-rot).toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + (ad * 6).toFixed(1) + 'px)';
