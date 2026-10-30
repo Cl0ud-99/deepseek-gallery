@@ -161,11 +161,11 @@
   body.is-moving .card img{transition:none !important}
   body.mode-grid .card:hover img{transform:scale(1.05); filter:saturate(1.05) brightness(1.08)}
   body.mode-grid .card .hint{display:none}
-  body.mode-grid .card.last-cell{grid-column:3}
+  body.mode-grid .card:nth-child(21){grid-column:3}
   body.mode-grid .nav,
   body.mode-grid .bar{display:none}
   body.mode-grid .title{display:none}
-  @media (max-width:1200px){ body.mode-grid .track{grid-template-columns:repeat(4,1fr)} body.mode-grid .card.last-cell{grid-column:auto} }
+  @media (max-width:1200px){ body.mode-grid .track{grid-template-columns:repeat(4,1fr)} body.mode-grid .card:nth-child(21){grid-column:auto} }
   @media (max-width:820px){ body.mode-grid .track{grid-template-columns:repeat(3,1fr)} }
   @media (max-width:560px){ body.mode-grid .track{grid-template-columns:repeat(2,1fr)} }
 
@@ -509,19 +509,6 @@ function setMode(toGrid, focusIndex) {
   document.getElementById('ovLabel').textContent = toGrid ? '返回' : '总览';
   els.forEach(function (el) { el.style.transform = ''; el.style.opacity = ''; });
 
-  /* 进入网格时把选中那张排到正中一格 —— 这样无论选哪张，
-     它都是从屏幕正中原地缩小落位，动画始终一致 */
-  var N = els.length, CENTER = 12;
-  if (toGrid) {
-    var selNow = lastFocus;
-    els.forEach(function (el, i) {
-      var pos = ((i - selNow + CENTER) % N + N) % N;
-      el.style.order = pos;
-      el.classList.toggle('last-cell', pos === N - 1);
-    });
-  } else {
-    els.forEach(function (el) { el.style.order = ''; el.classList.remove('last-cell'); });
-  }
 
   void track.offsetWidth;
 
@@ -563,7 +550,7 @@ function setMode(toGrid, focusIndex) {
       sx = 0.9; sy = 0.9;
       base = 'none';
       op = 0;
-      delay = Math.random() * 280;      // 错峰，避免 21 张同时横穿
+      delay = Math.random() * 120;      // 轻微错峰，保留"一镜"的连贯感
     } else {
       /* 选中的那张：直接归位 */
       dx = g0[i].x - g1[i].x;
@@ -580,10 +567,13 @@ function setMode(toGrid, focusIndex) {
     var faded = Math.abs(op - op1[i]) > 0.01;
     if (!moving && !turn && !faded) return;
 
+    var isSel = (i === sel);
     anims.push(el.animate([
       { transform: compose(dx, dy, sx, sy, base), opacity: op, borderRadius: r0 + 'px', offset: 0 },
       { transform: t1[i] === 'none' ? 'none' : t1[i], opacity: op1[i], borderRadius: r1 + 'px', offset: 1 }
-    ], { duration: 560, delay: delay, easing: 'cubic-bezier(.22,.8,.24,1)', fill: 'both' }));
+    ], isSel
+      ? { duration: 820, delay: 0, easing: 'cubic-bezier(.32,.02,.18,1)', fill: 'both' }
+      : { duration: 560, delay: delay, easing: 'cubic-bezier(.22,.8,.24,1)', fill: 'both' }));
   });
 
   Promise.all(anims.map(function (a) { return a.finished.catch(function () {}); })).then(function () {
