@@ -44,6 +44,9 @@
   }
 
   /* 背景：暖色天顶 + 地面倒影 */
+  /* 首帧先藏起来，等进场动画接管——否则会先亮一下再消失 */
+  body.booting .stage, body.booting .ovbtn{opacity:0}
+
   .bg{position:fixed; inset:0; pointer-events:none; z-index:0}
   .bg::before{content:""; position:absolute; inset:-24% -12% auto -12%; height:70vh;
     background:radial-gradient(46% 78% at 50% 0%,rgba(255,255,255,.66),transparent 72%),
@@ -219,7 +222,7 @@
   }
 </style>
 </head>
-<body>
+<body class="booting">
 <div class="bg"></div>
 
 <div class="stage">
@@ -704,9 +707,15 @@ function playIntro() {
   } catch (e) {}
 }
 
-window.addEventListener('load', function () {
+function boot() {
   var id = location.hash.replace('#', '');
-  if (id && SRC[id]) { layout(); open(id); return; }
+
+  if (id && SRC[id]) {
+    layout();
+    document.body.classList.remove('booting');
+    open(id);
+    return;
+  }
 
   /* 每次打开随机落在某一件上，而不是永远从第一张开始 */
   jumpTo(Math.floor(Math.random() * cards.length));
@@ -714,8 +723,13 @@ window.addEventListener('load', function () {
   track.style.scrollSnapType = '';
   current = -1;
   layout();
+
+  document.body.classList.remove('booting');   // 先放出舞台，再播进场
   playIntro();
-});
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+else boot();
 requestAnimationFrame(function () { layout(); });
 setTimeout(layout, 240);
 </script>
