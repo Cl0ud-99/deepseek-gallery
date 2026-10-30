@@ -1430,10 +1430,13 @@ themeBtn.addEventListener('click', function () {
   /* 在圆扫到一半时就切换并恢复过渡：
      文字/按钮的颜色变化发生在擦除过程中，而不是等圆铺满才"啪"地一起变。 */
   setTimeout(function () {
+    /* 先摘掉"禁用过渡"的类并强制一次样式重算，
+       否则切换和摘类在同一帧结算，颜色会直接跳过去，没有渐变。 */
+    document.body.classList.remove('wipe-running');
+    void document.body.offsetWidth;
     darkOn = !darkOn;
     localStorage.setItem('gallery-theme', darkOn ? 'dark' : 'light');
     paintTheme();
-    document.body.classList.remove('wipe-running');   // 恢复 0.5s 的颜色过渡
   }, 320);
 
   /* 圆铺满的同一帧：背景瞬切到新值 + 撤掉遮罩。
