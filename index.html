@@ -540,15 +540,13 @@
 
   /* 竖屏翻页时，上下分界用毛玻璃虚化（只在移动端出现） */
   .edge{ position:absolute; inset:0; pointer-events:none; z-index:3; display:none;
-    transition:opacity .16s ease }
-  /* 滑动过程中隐藏：backdrop-filter 每帧都要重新采样背景，是掉帧的主因 */
-  body.scrolling .edge{ opacity:0 }
+    transform:translateZ(0) }
   @media (max-width:720px){
     body.portrait:not(.mode-grid) .edge{ display:block }
     .edge i{
       position:absolute; left:0; right:0; height:clamp(140px, 22vh, 240px);
-      -webkit-backdrop-filter:blur(10px) saturate(88%) brightness(.96);
-              backdrop-filter:blur(10px) saturate(88%) brightness(.96);
+      -webkit-backdrop-filter:blur(7px) saturate(88%) brightness(.96);
+              backdrop-filter:blur(7px) saturate(88%) brightness(.96);
     }
     .edge .top{ top:0;
       -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
