@@ -114,18 +114,7 @@
     background:radial-gradient(58% 100% at 50% 100%,rgba(232,199,154,.07),transparent 72%)}
 
   /* ---------- 底部 ---------- */
-  .foot{flex:none; display:flex; align-items:center; justify-content:space-between; gap:16px;
-    margin:0 clamp(18px,3vw,40px) clamp(14px,2.4vh,26px);
-    padding:11px clamp(16px,2vw,22px); font-size:11.5px; color:var(--dim2);
-    border-radius:var(--r-pill);
-    background:var(--glass); border:1px solid var(--glass-line);
-    -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%);
-    box-shadow:0 16px 40px -22px rgba(0,0,0,.9), var(--glass-hi)}
-  .foot .tip{letter-spacing:.12em}
-  .foot .kbd{display:inline-block; padding:2px 7px; border:1px solid rgba(255,255,255,.14); border-radius:4px; margin:0 2px}
-  .foot .right{display:flex; gap:18px; align-items:center}
-  .foot a:hover{color:var(--accent)}
-  .bar{position:absolute; left:0; right:0; bottom:calc(clamp(16px,2.6vh,30px) + 26px); height:1px; background:rgba(255,255,255,.08)}
+  .bar{position:absolute; left:0; right:0; bottom:0; height:1px; background:rgba(255,255,255,.07)}
   .bar i{display:block; height:100%; width:0; background:rgba(232,199,154,.55); transition:width .18s}
 
   /* ---------- 进入场景 ---------- */
@@ -160,7 +149,6 @@
 
   @media (max-width:720px){
     :root{--cw: 84vw}
-    .foot .tip{display:none}
     .sub{letter-spacing:.14em}
   }
   @media (prefers-reduced-motion:reduce){
@@ -190,13 +178,6 @@
     <div class="bar"><i id="bar"></i></div>
   </div>
 
-  <footer class="foot">
-    <div class="tip"><span class="kbd">←</span><span class="kbd">→</span> 切换 · 拖动或滚轮浏览 · 点击画面进入场景</div>
-    <div class="right">
-      <a href="index.html">档案 / Archive →</a>
-      <a href="https://github.com/Cl0ud-99/diorama-archive" target="_blank" rel="noopener">GitHub →</a>
-    </div>
-  </footer>
 </div>
 
 <div class="viewer" id="viewer">
