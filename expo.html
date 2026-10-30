@@ -27,7 +27,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%; overflow:hidden; color:var(--ink);
     background:
-      radial-gradient(120% 78% at 50% -10%, #d8d7d2 0%, #c2c1bc 38%, #a9a9a3 66%, #96968f 100%);
+      radial-gradient(130% 86% at 50% -14%, #deddd8 0%, #cbcac5 34%, #b3b2ac 62%, #9b9b94 84%, #8b8b84 100%);
     font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
     -webkit-font-smoothing:antialiased; overscroll-behavior:none}
   a{color:inherit;text-decoration:none}
@@ -39,8 +39,6 @@
     background:radial-gradient(46% 78% at 50% 0%,rgba(255,255,255,.62),transparent 72%),
                radial-gradient(38% 64% at 18% 8%,rgba(255,246,229,.45),transparent 74%),
                radial-gradient(34% 58% at 82% 4%,rgba(214,228,255,.40),transparent 74%)}
-  .bg::after{content:""; position:absolute; left:0; right:0; bottom:0; height:38vh;
-    background:linear-gradient(to top,rgba(120,120,114,.42) 0%,rgba(140,140,133,.18) 44%,transparent 100%)}
 
   .stage{position:fixed; inset:0; z-index:1; display:flex; flex-direction:column}
 
@@ -108,8 +106,6 @@
   .nav[disabled]{opacity:.28; pointer-events:none}
 
   /* 地面倒影 */
-  .floor{position:absolute; left:0; right:0; bottom:0; height:26vh; pointer-events:none; z-index:2;
-    background:radial-gradient(58% 100% at 50% 100%,rgba(232,199,154,.07),transparent 72%)}
 
   /* ---------- 底部 ---------- */
   .bar{position:absolute; left:50%; transform:translateX(-50%); bottom:clamp(14px,2.4vh,26px);
@@ -174,7 +170,6 @@
     <div class="track" id="track"></div>
     <button class="nav prev" id="navPrev" aria-label="上一件">‹</button>
     <button class="nav next" id="navNext" aria-label="下一件">›</button>
-    <div class="floor"></div>
     <div class="bar"><i id="bar"></i></div>
   </div>
 
