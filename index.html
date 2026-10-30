@@ -680,6 +680,7 @@ var viewer = document.getElementById('viewer');
 var frame = document.getElementById('frame');
 var veil = document.getElementById('veil');
 var vIndex = 0;
+var openedFromGrid = false;   // 是从总览点开的吗
 
 function open(id) {
   var i = WORKS.findIndex(function (x) { return x.id === id; });
@@ -689,6 +690,7 @@ function open(id) {
     return;
   }
   vIndex = i;
+  openedFromGrid = overview;
   paintViewer();
   veil.classList.remove('off');
   viewer.classList.add('on');
@@ -723,11 +725,18 @@ function closeViewer() {
     viewer.classList.remove('on');
     frame.src = 'about:blank';
     veil.classList.remove('off');
-    jumpTo(backTo);
-    track.style.scrollSnapType = '';
-    current = -1;
-    layout();
     lastFocus = backTo;
+    if (openedFromGrid) {
+      /* 从总览点开的：回到总览，并滚到刚才那一件 */
+      overview = false;            // 让 setMode 认为是"进入"
+      setMode(true);
+    } else {
+      jumpTo(backTo);
+      track.style.scrollSnapType = '';
+      current = -1;
+      layout();
+    }
+    openedFromGrid = false;
   }, 400);
 }
 
@@ -782,7 +791,7 @@ function setMode(toGrid, focusIndex) {
   /* 预选择优先：进入总览时直接取此刻真正居中的那张，
      不依赖 current（它在转场期间可能被置为 -1） */
   if (toGrid) lastFocus = nearestIndex();
-  else if (typeof focusIndex !== 'number') focusIndex = lastFocus;
+  else if (typeof focusIndex !== 'number') focusIndex = overview ? gridFocusIndex() : lastFocus;
 
   /* 2. 切布局 */
   overview = toGrid;
@@ -792,6 +801,19 @@ function setMode(toGrid, focusIndex) {
 
 
   void track.offsetWidth;
+
+  /* 退出总览时以"视野中心那一块"为准，而不是进入时的位置 */
+  function gridFocusIndex() {
+    var tr = track.getBoundingClientRect();
+    var mid = tr.top + tr.height / 2;
+    var best = 0, bd = Infinity;
+    cards.forEach(function (c, i) {
+      var r = c.el.getBoundingClientRect();
+      var d = Math.abs((r.top + r.height / 2) - mid);
+      if (d < bd) { bd = d; best = i; }
+    });
+    return best;
+  }
 
   var wantTop = null;
 
