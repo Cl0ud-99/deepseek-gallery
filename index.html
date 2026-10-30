@@ -1426,19 +1426,19 @@ themeBtn.addEventListener('click', function () {
   void themewipe.offsetWidth;
   themewipe.classList.add('grow');
 
-  /* 圆盖满的瞬间再真正切换，避免看到文字逐帧变色 */
+  /* 在圆扫到一半时就切换并恢复过渡：
+     文字/按钮的颜色变化发生在擦除过程中，而不是等圆铺满才"啪"地一起变。 */
   setTimeout(function () {
     darkOn = !darkOn;
     localStorage.setItem('gallery-theme', darkOn ? 'dark' : 'light');
     paintTheme();
-    /* 圆下面已经是同色的新背景，直接撤掉遮罩即可，不要再淡出一次 */
+    document.body.classList.remove('wipe-running');   // 恢复 0.5s 的颜色过渡
+  }, 320);
+
+  /* 圆铺满后直接撤掉遮罩：下面已是同色的新背景，看不出跳变 */
+  setTimeout(function () {
     themewipe.classList.remove('grow', 'on');
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        document.body.classList.remove('wipe-running');
-        wipeBusy = false;
-      });
-    });
+    wipeBusy = false;
   }, 700);
 });
 paintTheme();
