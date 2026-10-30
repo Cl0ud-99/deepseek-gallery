@@ -15,7 +15,28 @@
          --r-lg: 18px; --r-md: 26px; --r-pill: 999px;
          --glass: rgba(255,255,255,.42);
          --glass-line: rgba(255,255,255,.62);
-         --glass-hi: inset 0 1px 0 rgba(255,255,255,.85); }
+         --glass-hi: inset 0 1px 0 rgba(255,255,255,.85);
+         --floor-1: rgba(232,234,240,.92); --floor-2: rgba(228,230,238,.72);
+         --floor-3: rgba(224,227,236,.38); --floor-4: rgba(220,224,234,0); }
+
+  /* ---------- 暗色模式 ---------- */
+  body.dark{
+    --ink:#f1f2f5; --dim:rgba(241,242,245,.62); --dim2:rgba(241,242,245,.36);
+    --glass:rgba(28,31,40,.52);
+    --glass-line:rgba(255,255,255,.14);
+    --glass-hi:inset 0 1px 0 rgba(255,255,255,.12);
+    --floor-1: rgba(14,16,21,.94); --floor-2: rgba(17,19,25,.74);
+    --floor-3: rgba(19,21,28,.38); --floor-4: rgba(21,23,31,0);
+    background:radial-gradient(130% 86% at 50% -14%, #262a34 0%, #1d2029 34%, #171a21 62%, #121419 84%, #0d0e12 100%);
+  }
+  body.dark .bg::before{
+    background:radial-gradient(46% 78% at 50% 0%,rgba(120,150,255,.16),transparent 72%),
+               radial-gradient(40% 66% at 16% 6%,rgba(77,107,254,.14),transparent 74%),
+               radial-gradient(36% 60% at 84% 4%,rgba(122,99,255,.12),transparent 74%);
+  }
+  body.dark .card{ box-shadow:0 30px 70px -30px rgba(0,0,0,.9), 0 2px 10px rgba(0,0,0,.5);
+    background:rgba(255,255,255,.05) }
+  body.dark .bar{ background:rgba(255,255,255,.16); box-shadow:inset 0 1px 0 rgba(255,255,255,.14) }
 
   /* 苹果式毛玻璃：半透明底 + 高斯模糊 + 饱和度提升 + 顶部高光内描边 */
   .glass{
@@ -74,10 +95,7 @@
     content:""; position:fixed; left:0; right:0; bottom:0; height:clamp(110px,16vh,180px);
     pointer-events:none; z-index:-1;   /* 必须低于卡片，否则会把最后一行洗白 */
     background:linear-gradient(to top,
-      rgba(232,234,240,.92) 0%,
-      rgba(228,230,238,.72) 28%,
-      rgba(224,227,236,.38) 58%,
-      rgba(220,224,234,0) 100%);
+      var(--floor-1) 0%, var(--floor-2) 28%, var(--floor-3) 58%, var(--floor-4) 100%);
     /* 不用 backdrop-filter：它按元素矩形做模糊，边界反而会显出硬边 */
   }
 
@@ -185,8 +203,24 @@
     transition:width .22s ease}
 
   /* ---------- 总览按钮 ---------- */
-  .ovbtn{
+  .topbar{
     position:fixed; top:clamp(14px,2.4vh,26px); right:clamp(14px,2.4vw,30px); z-index:20;
+    display:flex; align-items:center; gap:10px;
+  }
+  /* 主题切换：与总览按钮同款圆形玻璃 */
+  .themebtn{
+    width:clamp(38px,3.4vw,46px); height:clamp(38px,3.4vw,46px); border-radius:50%; padding:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:clamp(14px,1.4vw,17px); line-height:1; color:var(--ink); cursor:pointer;
+    border:1px solid var(--glass-line);
+    background:var(--glass);
+    -webkit-backdrop-filter:blur(26px) saturate(180%); backdrop-filter:blur(26px) saturate(180%);
+    box-shadow:0 10px 26px -14px rgba(50,48,42,.5), var(--glass-hi);
+    transition:transform .2s, border-color .2s, color .2s;
+  }
+  .themebtn:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(1.06)}
+
+  .ovbtn{
     display:inline-flex; align-items:center; gap:8px;
     font:inherit; font-size:12px; letter-spacing:.06em; color:var(--ink); cursor:pointer;
     padding:9px 16px 9px 13px; border-radius:var(--r-pill);
@@ -196,6 +230,7 @@
     transition:transform .2s, color .2s, border-color .2s;
   }
   .ovbtn:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:translateY(-1px)}
+  .ovbtn{position:relative; top:auto; right:auto}
   .ovbtn svg{width:13px; height:13px; opacity:.8}
 
   /* ---------- 总览（网格）模式 ---------- */
@@ -331,10 +366,13 @@
     </div>
   </header>
 
+  <div class="topbar">
+  <button class="themebtn" id="themeBtn" aria-label="Toggle theme" title="Dark mode">🌙</button>
   <button class="ovbtn" id="ovBtn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
     <span id="ovLabel">All Works</span>
   </button>
+  </div>
 
   <div class="wrap">
     <div class="scr" id="scr"><i id="scrThumb"></i></div>
@@ -1023,6 +1061,21 @@ sndBtn.addEventListener('click', function () {
 });
 
 paintSound();
+
+/* ---------- 主题 ---------- */
+var themeBtn = document.getElementById('themeBtn');
+var darkOn = localStorage.getItem('gallery-theme') === 'dark';
+function paintTheme() {
+  document.body.classList.toggle('dark', darkOn);
+  themeBtn.textContent = darkOn ? '☀️' : '🌙';
+  themeBtn.title = darkOn ? 'Switch to light' : 'Switch to dark';
+}
+themeBtn.addEventListener('click', function () {
+  darkOn = !darkOn;
+  localStorage.setItem('gallery-theme', darkOn ? 'dark' : 'light');
+  paintTheme();
+});
+paintTheme();
 
 /* ---------- 禁止复制与拖拽 ---------- */
 document.addEventListener('dragstart', function (e) { e.preventDefault(); }, true);
