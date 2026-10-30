@@ -40,22 +40,17 @@
   body.dark .themefade{opacity:1}
 
   /* 昼夜切换：以主题按钮为圆心的圆形擦除 */
-  /* 放在 .stage(1) 之上、内容的背景层之下：只擦背景，不遮住卡片和文字 */
-  .themewipe{position:fixed; inset:0; z-index:1; pointer-events:none; display:none; overflow:hidden;
-    opacity:1; transition:opacity .45s ease}
-  .themewipe.on{display:block}
-  .themewipe::before{
-    content:""; position:absolute;
-    left:var(--cx,40px); top:var(--cy,40px);
-    width:120px; height:120px; border-radius:50%;
-    background:var(--wp, #1d2029);
-    transform:translate(-50%,-50%) scale(.001);
-    transition:transform .72s cubic-bezier(.5,.02,.5,.98);   /* 面积随半径平方增长，用近线性的曲线才看得出"推开" */
-    will-change:transform;
+  /* 放在内容之下、背景之上：只擦背景。用 clip-path 而不是缩放元素，
+     否则渐变会被放大，铺满后与 .themefade 亮度对不上，撤掉时闪一下。 */
+  .themewipe{
+    position:fixed; inset:0; z-index:1; pointer-events:none; display:none;
+    --cx:50%; --cy:50%; --r:0px;
+    clip-path:circle(0px at var(--cx) var(--cy));
+    transition:clip-path .7s cubic-bezier(.5,.02,.5,.98);
   }
-  .themewipe.grow::before{transform:translate(-50%,-50%) scale(var(--s,30))}
+  .themewipe.on{display:block}
+  .themewipe.grow{clip-path:circle(var(--r) at var(--cx) var(--cy))}
 
-  /* 擦除进行中：其它元素不要自己再渐变一次，切就一起切 */
   body.wipe-running .themefade,
   body.wipe-running .eyebrow, body.wipe-running .lead, body.wipe-running .cta,
   body.wipe-running .title, body.wipe-running .bar, body.wipe-running .card,
@@ -1417,8 +1412,8 @@ themeBtn.addEventListener('click', function () {
   var far = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));
   themewipe.style.setProperty('--cx', Math.round(cx) + 'px');
   themewipe.style.setProperty('--cy', Math.round(cy) + 'px');
-  themewipe.style.setProperty('--s', (far * 2 / 120 + 1).toFixed(2));
-  themewipe.style.setProperty('--wp', darkOn ? BG_LIGHT : BG_DARK);  // 擦进来的是"目标主题"
+  themewipe.style.setProperty('--r', Math.ceil(far + 20) + 'px');
+  themewipe.style.background = darkOn ? BG_LIGHT : BG_DARK;  // 擦进来的是"目标主题"，整屏原尺寸
   themewipe.style.opacity = '1';
 
   document.body.classList.add('wipe-running');
