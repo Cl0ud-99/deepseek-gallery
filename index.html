@@ -711,12 +711,19 @@ function stepViewer(d) {
 }
 
 function closeViewer() {
+  /* 场景里翻过页的话，回到展厅要停在最后看的那一件上 */
+  var backTo = vIndex;
   viewer.classList.remove('shown');
   if (history.replaceState) history.replaceState(null, '', location.pathname);
   setTimeout(function () {
     viewer.classList.remove('on');
     frame.src = 'about:blank';
     veil.classList.remove('off');
+    jumpTo(backTo);
+    track.style.scrollSnapType = '';
+    current = -1;
+    layout();
+    lastFocus = backTo;
   }, 400);
 }
 
