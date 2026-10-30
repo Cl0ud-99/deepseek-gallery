@@ -54,6 +54,15 @@
     will-change:transform;
   }
   .themewipe.grow::before{transform:translate(-50%,-50%) scale(var(--s,30))}
+
+  /* 擦除进行中：其它元素不要自己再渐变一次，切就一起切 */
+  body.wipe-running .themefade,
+  body.wipe-running .eyebrow, body.wipe-running .lead, body.wipe-running .cta,
+  body.wipe-running .title, body.wipe-running .bar, body.wipe-running .card,
+  body.wipe-running .nav, body.wipe-running .ovbtn, body.wipe-running .themebtn,
+  body.wipe-running .snd, body.wipe-running .credit, body.wipe-running .caption{
+    transition:none !important;
+  }
   /* 会随主题变色的元素统一做过渡（渐变类属性不可插值，单独交给 .themefade） */
   .eyebrow, .lead, .cta, .title, .bar,
   .nav, .ovbtn, .themebtn, .snd, .vbtn, .varrow, .vtitle{
@@ -1412,6 +1421,7 @@ themeBtn.addEventListener('click', function () {
   themewipe.style.setProperty('--wp', darkOn ? BG_LIGHT : BG_DARK);  // 擦进来的是"目标主题"
   themewipe.style.opacity = '1';
 
+  document.body.classList.add('wipe-running');
   themewipe.classList.add('on');
   void themewipe.offsetWidth;
   themewipe.classList.add('grow');
@@ -1421,12 +1431,14 @@ themeBtn.addEventListener('click', function () {
     darkOn = !darkOn;
     localStorage.setItem('gallery-theme', darkOn ? 'dark' : 'light');
     paintTheme();
-    themewipe.style.opacity = '0';
-    setTimeout(function () {
-      themewipe.classList.remove('grow', 'on');
-      themewipe.style.opacity = '';
-      wipeBusy = false;
-    }, 440);
+    /* 圆下面已经是同色的新背景，直接撤掉遮罩即可，不要再淡出一次 */
+    themewipe.classList.remove('grow', 'on');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        document.body.classList.remove('wipe-running');
+        wipeBusy = false;
+      });
+    });
   }, 700);
 });
 paintTheme();
