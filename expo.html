@@ -47,19 +47,11 @@
   /* ---------- 顶部标题（随卡片切换） ---------- */
   .head{padding:clamp(26px,4.4vh,54px) 24px 0; text-align:center; flex:none}
   .eyebrow{font-size:10.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--accent); opacity:.85}
-  .title{margin-top:clamp(10px,1.6vh,18px); min-height:2.2em}
+  .title{margin-top:clamp(10px,1.6vh,18px); min-height:2.2em; margin-bottom:clamp(6px,1.2vh,14px)}
   .title .en{font-size:clamp(21px,3.1vw,38px); font-weight:500; letter-spacing:-.02em; line-height:1.18;
     transition:opacity .22s}
   .title .cn{font-size:clamp(11.5px,1.15vw,13px); color:var(--dim); margin-top:7px; transition:opacity .22s}
   .title.swap .en,.title.swap .cn{opacity:0}
-  .sub{margin-top:clamp(12px,1.8vh,20px); display:inline-flex; align-items:center; gap:10px;
-    font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--dim2);
-    padding:8px 18px; border-radius:var(--r-pill);
-    background:var(--glass); border:1px solid var(--glass-line);
-    -webkit-backdrop-filter:blur(22px) saturate(180%); backdrop-filter:blur(22px) saturate(180%);
-    box-shadow:var(--glass-hi)}
-  .sub b{color:var(--dim); font-weight:400; letter-spacing:.18em}
-  .sub i{width:3px; height:3px; border-radius:50%; background:var(--dim2); font-style:normal}
 
   /* ---------- 横向封面流 ---------- */
   .wrap{flex:1; min-height:0; display:flex; align-items:center; position:relative;
@@ -151,7 +143,6 @@
     padding:8px 16px; -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%);
     box-shadow:var(--glass-hi); transition:.2s; white-space:nowrap}
   .vbtn:hover{border-color:rgba(232,199,154,.5); color:var(--accent)}
-  .vcount{font-size:11px; letter-spacing:.14em; color:var(--dim2); font-variant-numeric:tabular-nums; padding:0 4px}
   .varrow{width:44px; height:44px; border-radius:50%; border:1px solid var(--glass-line);
     background:var(--glass); -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%);
     box-shadow:var(--glass-hi); color:var(--ink);
@@ -160,7 +151,6 @@
 
   @media (max-width:720px){
     :root{--cw: 84vw}
-    .sub{letter-spacing:.14em}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important; animation:none!important}
@@ -178,7 +168,6 @@
       <div class="en" id="tEn">Qipao Diorama</div>
       <div class="cn" id="tCn">1936 上海 · 旗袍与留声</div>
     </div>
-    <div class="sub"><span id="tIdx">01 / 21</span></div>
   </header>
 
   <div class="wrap">
@@ -200,7 +189,6 @@
   </div>
   <div class="vbar bottom">
     <div class="varrow" id="vPrev">←</div>
-    <div class="vcount" id="vCount"></div>
     <div class="varrow" id="vNext">→</div>
   </div>
 </div>
@@ -286,8 +274,6 @@ function setCurrent(i) {
   setTimeout(function () {
     document.getElementById('tEn').textContent = cards[i].w.en;
     document.getElementById('tCn').textContent = cards[i].w.cn;
-    document.getElementById('tIdx').textContent =
-      String(i + 1).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0');
     t.classList.remove('swap');
   }, 140);
 }
@@ -403,7 +389,6 @@ function paintViewer() {
   var w = WORKS[vIndex];
   document.getElementById('vEn').textContent = w.en;
   document.getElementById('vCn').textContent = w.cn;
-  document.getElementById('vCount').textContent = (vIndex + 1) + ' / ' + WORKS.length;
 }
 
 function stepViewer(d) {
