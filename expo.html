@@ -502,12 +502,17 @@ function setMode(toGrid, focusIndex) {
   document.getElementById('ovLabel').textContent = toGrid ? '返回' : '总览';
   els.forEach(function (el) { el.style.transform = ''; el.style.opacity = ''; });
 
+  /* 先强制回流，让 flex 布局真正生效——否则下面设置 scrollLeft 会被
+     "grid 模式没有可滚动溢出" 夹成 0，一返回就跳回第一张 */
+  void track.offsetWidth;
+
   if (!toGrid) {
     jumpTo(focusIndex);
     void track.offsetWidth;
-    layout();                       // 先算出横向模式的位姿（3D 变换 + 透明度）
-  } else {
-    void track.offsetWidth;
+    transitioning = false;          // 临时解锁，让 layout() 算出横向位姿
+    current = -1;
+    layout();
+    transitioning = true;
   }
 
   /* 3. 记录终点：目标变换用 layout() 留下的内联样式，最终位置一致 */
