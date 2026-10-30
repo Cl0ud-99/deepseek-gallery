@@ -502,6 +502,7 @@
     /* 竖屏：轨道改为纵向，一屏一张 */
     body.portrait:not(.mode-grid) .track{
       flex-direction:column;
+      gap:0;                                  /* 上下贴紧，靠负边距让相邻卡片叠到后面 */
       height:100%; min-height:0;            /* 不固定高度的话它会撑到内容高度，就没有滚动 */
       overflow-x:hidden; overflow-y:auto;   /* 基础样式只开了横向滚动 */
       scroll-snap-type:y mandatory;
@@ -518,6 +519,7 @@
       width:var(--cw);
       height:calc(var(--cw) * .75);
       aspect-ratio:auto;
+      margin-block:-32px;                     /* 负边距：相邻卡片各让 32px，视觉上叠在主卡后面 */
     }
     /* 标题区加一层柔和底，避免下面那张卡片透出来 */
     body.portrait .caption{
