@@ -169,6 +169,9 @@
 
   /* ---------- 总览（网格）模式 ---------- */
   body.mode-grid .head{display:none}
+  /* 总览里左右箭头与进度条都没有意义（网格是滚动的，不是翻页） */
+  body.mode-grid .nav,
+  body.mode-grid .bar{display:none}
   body.mode-grid .wrap{padding-bottom:0}
   body.mode-grid .track{
     display:grid; grid-template-columns:repeat(4,1fr);
