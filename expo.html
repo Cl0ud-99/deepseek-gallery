@@ -538,7 +538,7 @@ function setMode(toGrid, focusIndex) {
   }
 
   /* 4. 动画 */
-  var r0 = toGrid ? 46 : 18, r1 = toGrid ? 18 : 46;
+  var rv0 = toGrid ? 46 : 18, rv1 = toGrid ? 18 : 46;   // 期望的视觉圆角
   anims = [];
   var vw = window.innerWidth, vh = window.innerHeight;
   var sel = toGrid ? lastFocus : focusIndex;      // 当前选中的那一张
@@ -574,9 +574,13 @@ function setMode(toGrid, focusIndex) {
     if (!moving && !turn && !faded) return;
 
     var isSel = (i === sel);
+    /* 圆角会随 scale 一起缩放：元素放大 3.36 倍时，46px 在屏幕上是 154px。
+       起始帧按缩放倍数反向补偿，视觉圆角才稳定。 */
+    var sc0 = Math.max(Math.abs(sx), Math.abs(sy), 0.02);
+    var cssR0 = Math.max(2, rv0 / sc0);
     anims.push(el.animate([
-      { transform: compose(dx, dy, sx, sy, base), opacity: op, borderRadius: r0 + 'px', offset: 0 },
-      { transform: t1[i] === 'none' ? 'none' : t1[i], opacity: op1[i], borderRadius: r1 + 'px', offset: 1 }
+      { transform: compose(dx, dy, sx, sy, base), opacity: op, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
+      { transform: t1[i] === 'none' ? 'none' : t1[i], opacity: op1[i], borderRadius: rv1 + 'px', offset: 1 }
     ], isSel
       ? { duration: 820, delay: 0, easing: 'cubic-bezier(.32,.02,.18,1)', fill: 'both' }
       : { duration: 560, delay: delay, easing: 'cubic-bezier(.22,.8,.24,1)', fill: 'both' }));
