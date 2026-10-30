@@ -175,7 +175,7 @@
   .snd.on{color:var(--accent); border-color:rgba(77,107,254,.55)}
   .snd.on .ico{opacity:1}
 
-  .bar{position:absolute; left:50%; transform:translateX(-50%); bottom:clamp(14px,2.4vh,26px);
+  .bar{margin:clamp(12px,2vh,20px) auto 0;
     width:clamp(150px,16vw,240px); height:4px; border-radius:999px;
     background:rgba(28,28,26,.16); overflow:hidden; z-index:5;
     box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
@@ -342,7 +342,6 @@
     <div class="track" id="track"></div>
     <button class="nav prev" id="navPrev" aria-label="上一件">‹</button>
     <button class="nav next" id="navNext" aria-label="下一件">›</button>
-    <div class="bar"><i id="bar"></i></div>
   </div>
 
   <div class="caption">
@@ -350,6 +349,7 @@
       <div class="en" id="tEn">Qipao Diorama</div>
       <div class="cn" id="tCn">1936 上海 · 旗袍与留声</div>
     </div>
+    <div class="bar"><i id="bar"></i></div>
   </div>
 
 </div>
