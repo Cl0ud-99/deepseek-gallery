@@ -27,8 +27,20 @@
     --glass-hi:inset 0 1px 0 rgba(255,255,255,.12);
     --floor-1: rgba(14,16,21,.94); --floor-2: rgba(17,19,25,.74);
     --floor-3: rgba(19,21,28,.38); --floor-4: rgba(21,23,31,0);
+  }
+  /* 昼夜交叉淡入：背景是渐变，无法直接过渡，用一层不透明度来做 */
+  .themefade{
+    position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0;
+    transition:opacity .55s cubic-bezier(.4,0,.2,1);
     background:radial-gradient(130% 86% at 50% -14%, #262a34 0%, #1d2029 34%, #171a21 62%, #121419 84%, #0d0e12 100%);
   }
+  body.dark .themefade{opacity:1}
+  /* 会随主题变色的元素统一做过渡（渐变类属性不可插值，单独交给 .themefade） */
+  .eyebrow, .lead, .cta, .title, .bar,
+  .nav, .ovbtn, .themebtn, .snd, .vbtn, .varrow, .vtitle{
+    transition:color .5s ease, background-color .5s ease, border-color .5s ease, box-shadow .5s ease;
+  }
+  .bar i{transition:width .22s ease, background-color .5s ease}
   body.dark .bg::before{
     background:radial-gradient(46% 78% at 50% 0%,rgba(120,150,255,.16),transparent 72%),
                radial-gradient(40% 66% at 16% 6%,rgba(77,107,254,.14),transparent 74%),
@@ -36,7 +48,7 @@
   }
   body.dark .card{ box-shadow:0 30px 70px -30px rgba(0,0,0,.9), 0 2px 10px rgba(0,0,0,.5);
     background:rgba(255,255,255,.05) }
-  body.dark .bar{ background:rgba(255,255,255,.16); box-shadow:inset 0 1px 0 rgba(255,255,255,.14) }
+
 
   /* 苹果式毛玻璃：半透明底 + 高斯模糊 + 饱和度提升 + 顶部高光内描边 */
   .glass{
@@ -352,6 +364,7 @@
 </head>
 <body class="booting">
 <div class="bg"></div>
+<div class="themefade" id="themefade"></div>
 
 <div class="boot">
   <div class="boot-txt">Loading</div>
