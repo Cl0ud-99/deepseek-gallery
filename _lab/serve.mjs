@@ -70,6 +70,17 @@ ${TARGETS.map(([id, rel]) => `<a class="card" href="/s/${id}">
 
 const server = http.createServer((req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
+  if (url.startsWith('/previews/')) {
+    const fp = path.join(EX, '..', decodeURIComponent(url));
+    if (!fs.existsSync(fp)) { res.writeHead(404); return res.end('not found'); }
+    res.writeHead(200, { 'Content-Type': MIME[path.extname(fp).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-store' });
+    return fs.createReadStream(fp).pipe(res);
+  }
+  if (url === '/expo' || url === '/expo.html') {
+    const fp = path.join(EX, '..', 'expo.html');
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+    return fs.createReadStream(fp).pipe(res);
+  }
   if (url === '/audition' || url === '/audition.html') {
     const fp = path.join(__dirname, 'audition.html');
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
