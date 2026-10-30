@@ -552,6 +552,10 @@
   /* 竖屏翻页时，上下分界用毛玻璃虚化（只在移动端出现） */
   .edge{ position:absolute; inset:0; pointer-events:none; z-index:3; display:none;
     transform:translateZ(0) }
+  /* 滚动中 MUST 关掉 transform 过渡：
+     每帧都在改 transform，若还带 .32s 过渡就会不断被"重新缓动"，
+     观感就是一顿一顿、追不上手指。停稳后再恢复。 */
+  body.scrolling .card{ transition:none }
   @media (max-width:720px){
     body.portrait:not(.mode-grid) .edge{ display:block }
     .edge i{
@@ -892,7 +896,7 @@ function layout() {
       if (vertical) {
         /* 远处的卡片要逐级叠上来：按每一对相邻卡片的缩放差累加收拢，
            并额外叠进 OVER，保证每一档都有重叠面积 */
-        var hh = box.offsetHeight, OVER = 14;
+        var hh = box.offsetHeight, OVER = 0;   /* 基础重叠来自 margin，这里不再额外加 */
         var sAt = function (k) { return Math.max(0.22, 1 - Math.abs(k - best) * 0.20); };
         var cum = 0, kk;
         if (j > best) {
