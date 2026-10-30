@@ -428,7 +428,8 @@ track.addEventListener('wheel', function (e) {
   e.preventDefault();
   /* 越拉越沉：位移按当前量衰减 */
   var damp = 1 - Math.min(Math.abs(bounceY) / bounceMax, 1) * 0.72;
-  bounceY += e.deltaY * 0.42 * damp;
+  /* 反向：顶部继续上滑时内容应"被拽下来"，底部继续下滑时内容应被推上去 */
+  bounceY -= e.deltaY * 0.42 * damp;
   bounceY = Math.max(-bounceMax, Math.min(bounceMax, bounceY));
 
   track.style.transition = 'none';
