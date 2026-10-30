@@ -59,11 +59,13 @@ Every preview below is a live scene: click a thumbnail or a title to run it in t
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html"><img src="previews/thumbs/A19.jpg" width="280" alt="Hawkins / Upside Down"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html"><b>A19 · Hawkins / Upside Down</b></a><br><sub>2,739 calls · r149 · 3.4M</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html"><img src="previews/thumbs/A20.jpg" width="280" alt="Moonlit Perfume Atelier"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html"><b>A20 · Moonlit Perfume Atelier</b></a><br><sub>1,027 calls · r160 · 1.3M</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html"><img src="previews/thumbs/A21.jpg" width="280" alt="Ice-Fire Mine Station"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html"><b>A21 · Ice-Fire Mine Station</b></a><br><sub>3,350 calls · r160 · 586K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a22-floating-lava-glacier/index.html"><img src="previews/thumbs/A22.jpg" width="280" alt="Floating Lava Glacier"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a22-floating-lava-glacier/index.html"><b>A22 · Floating Lava Glacier</b></a><br><sub>lava · ice · underwater</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a23-carnival/carnival-miniature/carnival.html"><img src="previews/thumbs/A23.jpg" width="280" alt="Summer Night Carnival"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a23-carnival/carnival-miniature/carnival.html"><b>A23 · Summer Night Carnival</b></a><br><sub>carousel · fireworks · r128</sub></td>
 </tr>
 </table>
 
 Draw calls are measured, not estimated — see [Performance baseline](#performance-baseline).
-All twenty-one now ship readable source. A05 and A16 were originally minified-only exports; both gained
+All twenty-three now ship readable source. A05 and A16 were originally minified-only exports; both gained
 `src/scene.js` plus a local `lib/` on 2026-10-30, with the built single file left byte-identical.
 
 ## Repository layout
