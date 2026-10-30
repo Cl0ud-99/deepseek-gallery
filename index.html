@@ -1414,6 +1414,12 @@ themeBtn.addEventListener('click', function () {
   themewipe.style.setProperty('--cy', Math.round(cy) + 'px');
   themewipe.style.setProperty('--r', Math.ceil(far + 20) + 'px');
   themewipe.style.background = darkOn ? BG_LIGHT : BG_DARK;  // 擦进来的是"目标主题"，整屏原尺寸
+
+  /* 把背景层锁在当前状态：擦除过程中它不能自己渐变，
+     否则遮罩撤掉的那一刻背景还没到终值，就会闪一下。 */
+  var themefade = document.getElementById('themefade');
+  themefade.style.transition = 'none';
+  themefade.style.opacity = darkOn ? '1' : '0';
   themewipe.style.opacity = '1';
 
   document.body.classList.add('wipe-running');
@@ -1430,10 +1436,18 @@ themeBtn.addEventListener('click', function () {
     document.body.classList.remove('wipe-running');   // 恢复 0.5s 的颜色过渡
   }, 320);
 
-  /* 圆铺满后直接撤掉遮罩：下面已是同色的新背景，看不出跳变 */
+  /* 圆铺满的同一帧：背景瞬切到新值 + 撤掉遮罩。
+     两者像素一致，所以看不出任何变化。 */
   setTimeout(function () {
+    themefade.style.opacity = darkOn ? '1' : '0';
     themewipe.classList.remove('grow', 'on');
-    wipeBusy = false;
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        themefade.style.transition = '';
+        themefade.style.opacity = '';
+        wipeBusy = false;
+      });
+    });
   }, 700);
 });
 paintTheme();
