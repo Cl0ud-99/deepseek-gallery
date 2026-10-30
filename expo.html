@@ -681,29 +681,43 @@ document.addEventListener('selectstart', function (e) {
 function playIntro() {
   var sel = nearestIndex();
   try {
-    track.animate([
-      { opacity: 0, transform: 'scale(.975)' },
-      { opacity: 1, transform: 'scale(1)' }
-    ], { duration: 640, easing: 'cubic-bezier(.22,.8,.24,1)', fill: 'backwards' });
-
+    /* 选中那张从下方升起；它左边的从左侧飞入、右边的从右侧飞入；
+       标题单独渐显。终点一律取内联样式，收尾不跳。 */
     cards.forEach(function (c, i) {
-      var d = Math.abs(i - sel);
-      var delay = 90 + Math.min(d * 42, 420);
-      var a = c.el.animate(
-        [{ opacity: 0 }, { opacity: 1 }],
-        { duration: 520, delay: delay, easing: 'ease-out', fill: 'backwards' }
-      );
+      var d = i - sel;
+      var base = c.el.style.transform || 'none';
+      var endOp = c.el.style.opacity ? parseFloat(c.el.style.opacity) : 1;
+      var dx = 0, dy = 0;
+
+      if (d === 0) {
+        dy = Math.min(window.innerHeight * 0.22, 200);        // 从下往上
+      } else {
+        dx = (d < 0 ? -1 : 1) * (130 + Math.min(Math.abs(d), 7) * 92);   // 左右分侧
+        dy = 46;
+      }
+
+      var start = 'translate(' + dx + 'px,' + dy + 'px)' + (base !== 'none' ? ' ' + base : '');
+      var a = c.el.animate([
+        { transform: start, opacity: 0 },
+        { transform: base, opacity: endOp }
+      ], {
+        duration: 760,
+        delay: Math.min(Math.abs(d) * 45, 380),
+        easing: 'cubic-bezier(.22,.8,.24,1)',
+        fill: 'both'
+      });
+      a.onfinish = function () { a.cancel(); };
     });
 
-    document.querySelector('.head').animate([
-      { opacity: 0, transform: 'translateY(12px)' },
-      { opacity: 1, transform: 'translateY(0)' }
-    ], { duration: 720, delay: 120, easing: 'cubic-bezier(.22,.8,.24,1)', fill: 'backwards' });
+    var head = document.querySelector('.head');
+    var h = head.animate([{ opacity: 0 }, { opacity: 1 }],
+      { duration: 720, delay: 260, easing: 'ease-out', fill: 'both' });
+    h.onfinish = function () { h.cancel(); };
 
-    document.querySelector('.bar').animate(
-      [{ opacity: 0 }, { opacity: 1 }],
-      { duration: 600, delay: 620, easing: 'ease-out', fill: 'backwards' }
-    );
+    var bar = document.querySelector('.bar');
+    var b2 = bar.animate([{ opacity: 0 }, { opacity: 1 }],
+      { duration: 620, delay: 640, easing: 'ease-out', fill: 'both' });
+    b2.onfinish = function () { b2.cancel(); };
   } catch (e) {}
 }
 
