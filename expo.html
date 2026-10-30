@@ -589,7 +589,9 @@ function setMode(toGrid, focusIndex) {
     /* 图片多了以后网格会超出一屏：进总览时直接停在预选择那张附近，
        不要每次都回到最上面 */
     var sEl = els[lastFocus];
-    if (sEl && track.scrollHeight > track.clientHeight) {
+    /* ?noscroll=1 可以关掉"滚到选中项"，用来排查进场动画被拽一下的问题 */
+    var noScroll = /[?&]noscroll=1/.test(location.search);
+    if (!noScroll && sEl && track.scrollHeight > track.clientHeight) {
       var want = sEl.offsetTop - (track.clientHeight - sEl.offsetHeight) / 2;
       track.scrollTop = Math.max(0, Math.min(want, track.scrollHeight - track.clientHeight));
     }
