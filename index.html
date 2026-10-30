@@ -448,8 +448,45 @@
     :root{ --cw: clamp(760px, 44vw, 1080px); --gap: clamp(56px, 3vw, 96px); }
   }
 
+  /* ---------- 移动端 ---------- */
   @media (max-width:720px){
-    :root{--cw: 84vw}
+    :root{
+      --cw: 84vw;
+      --btn-h: 44px;                 /* 触控目标不小于 44px */
+      --hover: 1;                    /* 触屏没有 hover，关掉缩放避免误触 */
+    }
+    /* 安全区：刘海与底部手势条 */
+    .credit{ top:max(10px, env(safe-area-inset-top)); left:max(12px, env(safe-area-inset-left)) }
+    .topbar{ top:max(10px, env(safe-area-inset-top)); right:max(12px, env(safe-area-inset-right)) }
+    .bar{ bottom:env(safe-area-inset-bottom) }
+    .caption{ padding-bottom:calc(clamp(30px,6vh,56px) + env(safe-area-inset-bottom)) }
+    .vbar.top{ padding-top:max(13px, env(safe-area-inset-top)) }
+    .vbar.bottom{ padding-bottom:max(13px, env(safe-area-inset-bottom)) }
+
+    /* 顶栏按钮是浮层，给它让出高度，避免压住标题 */
+    .head{ padding-top:calc(env(safe-area-inset-top) + 62px) }
+    /* 竖屏用 4:3，卡片在手里有存在感 */
+    .card{ aspect-ratio:4 / 3 }
+    .eyebrow{ font-size:9.5px; letter-spacing:.28em }
+    .lead{ font-size:11.5px; margin-top:8px; max-width:24em; margin-inline:auto }
+    .title .en{ font-size:13px; letter-spacing:.26em; margin-right:-.26em }
+    .caption{ padding-top:10px }
+
+    /* 总览：2 列，格子更大更好点 */
+    body.mode-grid .track{
+      grid-template-columns:repeat(2, 1fr);
+      gap:10px;
+      padding:calc(env(safe-area-inset-top) + 52px) 12px
+              calc(env(safe-area-inset-bottom) + 16px);
+    }
+    /* 触屏不需要自定义滚动条 */
+    .scr{ display:none !important }
+    /* 卡片之间的移轴带在窄屏会吃掉半屏，收窄 */
+    body.mode-grid{ --tilt-h: clamp(120px, 15vh, 190px) }
+  }
+  /* 平板：3 列 */
+  @media (min-width:721px) and (max-width:1100px){
+    body.mode-grid .track{ grid-template-columns:repeat(3, 1fr) }
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important; animation:none!important}
