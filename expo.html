@@ -547,6 +547,7 @@ function setMode(toGrid, focusIndex) {
   var op0 = els.map(function (el) { return parseFloat(getComputedStyle(el).opacity) || 0; });
   var scroll0 = track.scrollLeft;   // offsetLeft 是相对内容原点，必须扣掉滚动量
   var box0 = track.getBoundingClientRect();   // 切换前后 track 自身也会移动（头部高度变了）
+  var top0 = track.scrollTop;
 
   document.body.classList.add('is-moving');
   els.forEach(function (el) { el.style.willChange = 'transform, opacity'; });
@@ -565,6 +566,17 @@ function setMode(toGrid, focusIndex) {
 
   void track.offsetWidth;
 
+  if (toGrid) {
+    /* 图片多了以后网格会超出一屏：进总览时直接停在预选择那张附近，
+       不要每次都回到最上面 */
+    var sEl = els[lastFocus];
+    if (sEl && track.scrollHeight > track.clientHeight) {
+      var want = sEl.offsetTop - (track.clientHeight - sEl.offsetHeight) / 2;
+      track.scrollTop = Math.max(0, Math.min(want, track.scrollHeight - track.clientHeight));
+    }
+    void track.offsetWidth;
+  }
+
   if (!toGrid) {
     jumpTo(focusIndex);
     void track.offsetWidth;
@@ -579,6 +591,7 @@ function setMode(toGrid, focusIndex) {
     return { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight };
   });
   var scroll1 = track.scrollLeft;
+  var top1 = track.scrollTop;
   var box1 = track.getBoundingClientRect();
   var t1 = els.map(function (el) { return el.style.transform || 'none'; });
   var op1 = els.map(function (el) { return el.style.opacity ? parseFloat(el.style.opacity) : 1; });
@@ -636,7 +649,7 @@ function setMode(toGrid, focusIndex) {
          用"中心点"算位移（宽度变了，左右边缘差和中心差不是一回事），
          并扣掉两端的滚动量（offsetLeft 含滚动偏移，纵向没有滚动）。 */
       dx = (g0[i].x + g0[i].w / 2 - scroll0 + box0.left) - (g1[i].x + g1[i].w / 2 - scroll1 + box1.left);
-      dy = (g0[i].y + g0[i].h / 2 + box0.top) - (g1[i].y + g1[i].h / 2 + box1.top);
+      dy = (g0[i].y + g0[i].h / 2 - top0 + box0.top) - (g1[i].y + g1[i].h / 2 - top1 + box1.top);
       if (toGrid) base = 'none';   // 进总览时两端都保持纯 translate+scale，避免矩阵插值走弯路
       sx = g0[i].w / Math.max(g1[i].w, 1);
       sy = sx;      // 统一缩放比 —— 横向 16:9 与网格 16:9 仍会有零点几个百分点误差,
