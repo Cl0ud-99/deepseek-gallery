@@ -152,6 +152,23 @@
   /* 地面倒影 */
 
   /* ---------- 底部 ---------- */
+  /* 音效开关：横向页面底部正中，左右箭头之间 */
+  .snd{
+    position:absolute; left:50%; transform:translateX(-50%);
+    bottom:clamp(26px,4.6vh,48px); z-index:7;
+    display:inline-flex; align-items:center; gap:8px;
+    font:inherit; font-size:11.5px; letter-spacing:.06em; color:var(--ink); cursor:pointer;
+    padding:9px 16px; border-radius:var(--r-pill);
+    background:var(--glass); border:1px solid var(--glass-line);
+    -webkit-backdrop-filter:blur(26px) saturate(180%); backdrop-filter:blur(26px) saturate(180%);
+    box-shadow:0 10px 26px -14px rgba(50,48,42,.5), var(--glass-hi);
+    transition:transform .2s, color .2s, border-color .2s;
+  }
+  .snd:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:translateX(-50%) translateY(-1px)}
+  .snd .ico{font-size:13px; line-height:1}
+  .snd.on{color:var(--accent); border-color:rgba(77,107,254,.5)}
+  body.mode-grid .snd{display:none}
+
   .bar{position:absolute; left:50%; transform:translateX(-50%); bottom:clamp(14px,2.4vh,26px);
     width:clamp(150px,16vw,240px); height:4px; border-radius:999px;
     background:rgba(28,28,26,.16); overflow:hidden; z-index:5;
@@ -323,6 +340,9 @@
     <div class="track" id="track"></div>
     <button class="nav prev" id="navPrev" aria-label="上一件">‹</button>
     <button class="nav next" id="navNext" aria-label="下一件">›</button>
+    <button class="snd" id="sndBtn" aria-label="Toggle sound">
+      <span class="ico" id="sndIco">🔈</span><span id="sndTxt">Sound off</span>
+    </button>
     <div class="bar"><i id="bar"></i></div>
   </div>
 
@@ -670,7 +690,10 @@ function open(id) {
   viewer.classList.add('on');
   requestAnimationFrame(function () { viewer.classList.add('shown'); });
   frame.src = SRC[id];
-  frame.onload = function () { setTimeout(function () { veil.classList.add('off'); }, 240); };
+  frame.onload = function () {
+    setTimeout(function () { veil.classList.add('off'); }, 240);
+    if (soundOn) setTimeout(applySoundToScene, 600);   // 场景就绪后再尝试起声
+  };
   if (history.replaceState) history.replaceState(null, '', '#' + id);
 }
 
@@ -929,6 +952,42 @@ function setMode(toGrid, focusIndex) {
 }
 
 document.getElementById('ovBtn').addEventListener('click', function () { setMode(!overview); });
+
+/* ---------- 音效总开关（横向页面底部正中） ---------- */
+var sndBtn = document.getElementById('sndBtn');
+var sndIco = document.getElementById('sndIco');
+var sndTxt = document.getElementById('sndTxt');
+var soundOn = localStorage.getItem('gallery-sound') === '1';
+
+function paintSound() {
+  sndIco.textContent = soundOn ? '🔊' : '🔈';
+  sndTxt.textContent = soundOn ? 'Sound on' : 'Sound off';
+  sndBtn.classList.toggle('on', soundOn);
+  sndBtn.title = soundOn ? '环境声已开启（点击关闭）' : '点击开启环境声';
+}
+
+/* 向当前场景注入意图；场景是 same-origin，可直接调它的 Ambience */
+function applySoundToScene() {
+  var w = frame && frame.contentWindow;
+  if (!w || !w.Ambience) return false;
+  try {
+    if (soundOn) {
+      if (!(w.Ambience.active && w.Ambience.active().length)) w.Ambience.start();
+    } else {
+      w.Ambience.stopAll();
+    }
+    return true;
+  } catch (e) { return false; }
+}
+
+sndBtn.addEventListener('click', function () {
+  soundOn = !soundOn;
+  localStorage.setItem('gallery-sound', soundOn ? '1' : '0');
+  paintSound();
+  applySoundToScene();
+});
+
+paintSound();
 
 /* ---------- 禁止复制与拖拽 ---------- */
 document.addEventListener('dragstart', function (e) { e.preventDefault(); }, true);
