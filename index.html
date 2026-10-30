@@ -233,6 +233,42 @@
     border-left:1px solid var(--glass-line); transition:opacity .2s, color .2s}
   .credit .mail:hover{opacity:1; color:var(--accent)}
 
+  /* 名片：以云朵为圆心展开的半透明遮罩 */
+  .cardveil{
+    position:fixed; inset:0; z-index:60; display:none;
+    background:rgba(18,20,26,.62);
+    -webkit-backdrop-filter:blur(22px) saturate(150%); backdrop-filter:blur(22px) saturate(150%);
+    clip-path:circle(0px at 50% 50%);
+    transition:clip-path .6s cubic-bezier(.32,.72,.24,1);
+  }
+  .cardveil.on{display:block}
+  .cardveil.open{clip-path:circle(150% at var(--cx,50%) var(--cy,50%))}
+  .cardbox{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:min(90vw,420px); text-align:center; color:#f2f3f6;
+    display:flex; flex-direction:column; align-items:center; gap:14px;
+    opacity:0; transition:opacity .35s ease .18s;
+  }
+  .cardveil.open .cardbox{opacity:1}
+  .cardbox .bigcloud{opacity:.9}
+  .cname{font-size:clamp(24px,3vw,32px); font-weight:500; letter-spacing:-.01em}
+  .crole{font-size:12.5px; letter-spacing:.06em; color:rgba(242,243,246,.55); margin-top:-6px}
+  .crow{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:14px;
+    padding:12px 16px; border-radius:12px; font-size:12.5px;
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.13);
+    color:#e9ecf3; transition:background .2s, border-color .2s;
+  }
+  .crow:hover{background:rgba(255,255,255,.12); border-color:rgba(120,150,255,.5)}
+  .crow .ck{letter-spacing:.16em; text-transform:uppercase; font-size:10.5px; color:rgba(242,243,246,.5)}
+  .crow .cv{font-variant-numeric:tabular-nums}
+  .cclose{
+    margin-top:6px; font:inherit; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+    color:rgba(242,243,246,.6); background:none; border:1px solid rgba(255,255,255,.16);
+    padding:8px 18px; border-radius:999px; cursor:pointer; transition:.2s;
+  }
+  .cclose:hover{color:#fff; border-color:rgba(255,255,255,.4)}
+
   .topbar{
     position:fixed; top:clamp(14px,2.4vh,26px); right:clamp(14px,2.4vw,30px); z-index:20;
     display:flex; align-items:center; gap:10px;
@@ -428,6 +464,21 @@
     <div class="bar"><i id="bar"></i></div>
   </div>
 
+</div>
+
+<div class="cardveil" id="cardveil" aria-hidden="true">
+  <div class="cardbox" role="dialog" aria-label="Cloud99">
+    <svg class="bigcloud" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 18.5h10.1a3.6 3.6 0 0 0 .3-7.2 5.1 5.1 0 0 0-9.8-1.2 3.9 3.9 0 0 0-.6 8.4z"/></svg>
+    <div class="cname">Cloud99</div>
+    <div class="crole">WebGL · Three.js · procedural dioramas</div>
+    <a class="crow" href="https://github.com/Cl0ud-99/deepseek-gallery" target="_blank" rel="noopener">
+      <span class="ck">GitHub</span><span class="cv">Cl0ud-99 / deepseek-gallery</span>
+    </a>
+    <a class="crow" href="mailto:cloud990725@gmail.com">
+      <span class="ck">Email</span><span class="cv">cloud990725@gmail.com</span>
+    </a>
+    <button class="cclose" id="cclose">Close</button>
+  </div>
 </div>
 
 <div class="viewer" id="viewer">
@@ -1099,6 +1150,33 @@ sndBtn.addEventListener('click', function () {
 });
 
 paintSound();
+
+/* ---------- 名片：点击云朵，以它为圆心展开 ---------- */
+var cardveil = document.getElementById('cardveil');
+
+function openCard() {
+  var icon = document.querySelector('.credit .who svg');
+  var r = icon ? icon.getBoundingClientRect() : { left: 40, top: 40, width: 15, height: 15 };
+  cardveil.style.setProperty('--cx', Math.round(r.left + r.width / 2) + 'px');
+  cardveil.style.setProperty('--cy', Math.round(r.top + r.height / 2) + 'px');
+  cardveil.classList.add('on');
+  requestAnimationFrame(function () { cardveil.classList.add('open'); });
+}
+
+function closeCard() {
+  cardveil.classList.remove('open');
+  setTimeout(function () { cardveil.classList.remove('on'); }, 620);
+}
+
+document.querySelector('.credit .who').addEventListener('click', function (e) {
+  e.preventDefault();
+  openCard();
+});
+document.getElementById('cclose').addEventListener('click', closeCard);
+cardveil.addEventListener('click', function (e) { if (e.target === cardveil) closeCard(); });
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && cardveil.classList.contains('on')) closeCard();
+});
 
 /* ---------- 主题 ---------- */
 var themeBtn = document.getElementById('themeBtn');
