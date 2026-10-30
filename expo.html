@@ -169,7 +169,7 @@
   .ovbtn svg{width:13px; height:13px; opacity:.8}
 
   /* ---------- 总览（网格）模式 ---------- */
-  body.mode-grid .head{padding:clamp(14px,2.2vh,26px) 24px 0}
+  body.mode-grid .head{display:none}
   body.mode-grid .wrap{padding-bottom:0}
   body.mode-grid .track{
     display:grid; grid-template-columns:repeat(4,1fr);
@@ -183,6 +183,25 @@
     scrollbar-width:none; -ms-overflow-style:none;
   }
   body.mode-grid .track::-webkit-scrollbar{display:none}
+
+  /* 总览的移轴感：上下两条模糊带，用渐变遮罩淡出边界 */
+  body.mode-grid .wrap::before,
+  body.mode-grid .wrap::after{
+    content:""; position:absolute; left:0; right:0; z-index:8; pointer-events:none;
+    height:clamp(64px,10.5vh,116px);
+    -webkit-backdrop-filter:blur(9px) saturate(130%);
+            backdrop-filter:blur(9px) saturate(130%);
+  }
+  body.mode-grid .wrap::before{
+    top:0;
+    -webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.55) 45%,transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.55) 45%,transparent 100%);
+  }
+  body.mode-grid .wrap::after{
+    bottom:0;
+    -webkit-mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.55) 45%,transparent 100%);
+            mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.55) 45%,transparent 100%);
+  }
   body.mode-grid .card{
     /* 必须和横向模式同为 16:9：格子是 257x151(1.70)，若拉伸填满格子，
        转场时 sx≠sy 会把卡片压扁一下（'抽'的感觉） */
