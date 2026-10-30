@@ -1405,6 +1405,15 @@ var BG_LIGHT = 'radial-gradient(130% 86% at 50% -14%, #e9ebf2 0%, #d3d7e0 34%, #
 
 themeBtn.addEventListener('click', function () {
   if (wipeBusy) return;
+
+  /* 圆形擦除目前只给桌面端；移动端先走原来的整体交叉淡入 */
+  if (!window.matchMedia('(min-width: 721px)').matches) {
+    darkOn = !darkOn;
+    localStorage.setItem('gallery-theme', darkOn ? 'dark' : 'light');
+    paintTheme();
+    return;
+  }
+
   wipeBusy = true;
 
   var r = themeBtn.getBoundingClientRect();
