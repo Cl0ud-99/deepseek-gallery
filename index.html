@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234d6bfe'/></svg>">
-<title>微缩场景展 · 22 件程序化立体景观</title>
-<meta name="description" content="22 件 Three.js 微缩立体场景。没有模型文件，没有一张贴图——几何、材质、光影全部由代码在浏览器里现场生成。">
-<meta property="og:title" content="微缩场景展 · 22 件程序化立体景观">
-<meta property="og:description" content="22 件 Three.js 微缩立体场景，全部由代码生成。点开即可自由旋转。">
+<title>微缩场景展 · 23 件程序化立体景观</title>
+<meta name="description" content="23 件 Three.js 微缩立体场景。没有模型文件，没有一张贴图——几何、材质、光影全部由代码在浏览器里现场生成。">
+<meta property="og:title" content="微缩场景展 · 23 件程序化立体景观">
+<meta property="og:description" content="23 件 Three.js 微缩立体场景，全部由代码生成。点开即可自由旋转。">
 <style>
   :root{ --bg:#b6bac2; --ink:#14161c; --dim:rgba(18,20,28,.60); --dim2:rgba(18,20,28,.38);
          --accent:#4d6bfe; --accent-2:#7a63ff;
@@ -290,7 +290,7 @@
 
 <div class="stage">
   <header class="head">
-    <div class="eyebrow">Micro Dioramas · 22 Pieces</div>
+    <div class="eyebrow">Micro Dioramas · 23 Pieces</div>
     <div class="title" id="title">
       <div class="en" id="tEn">Qipao Diorama</div>
       <div class="cn" id="tCn">1936 上海 · 旗袍与留声</div>
@@ -349,9 +349,10 @@ var WORKS = [
   {id:"A09",en:"Grand Hotel",cn:"阿尔卑斯缆车站酒店"},
   {id:"A16",en:"Route 66 Diner",cn:"66 号公路复古餐厅"},
   {id:"A18",en:"Sunset Dream Loom",cn:"晚霞织梦染坊"},
-  {id:"A22",en:"Floating Lava Glacier",cn:"浮空熔岩 · 冰川断崖箱庭"}
+  {id:"A22",en:"Floating Lava Glacier",cn:"浮空熔岩 · 冰川断崖箱庭"},
+  {id:"A23",en:"Summer Night Carnival",cn:"夏夜游乐园 · 掌上八音盒"}
 ];
-var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"_extracted/a04-autumn-farm/index.html","A05":"_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"_extracted/a13-mori-mart/mori-mart/index.html","A14":"_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"_extracted/a16-route66-diner/route66-diner/index.html","A17":"_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html","A22":"_extracted/a22-floating-lava-glacier/index.html"};
+var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"_extracted/a04-autumn-farm/index.html","A05":"_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"_extracted/a13-mori-mart/mori-mart/index.html","A14":"_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"_extracted/a16-route66-diner/route66-diner/index.html","A17":"_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html","A22":"_extracted/a22-floating-lava-glacier/index.html","A23":"_extracted/a23-carnival/carnival-miniature/carnival.html"};
 
 var track = document.getElementById('track');
 var cards = [];

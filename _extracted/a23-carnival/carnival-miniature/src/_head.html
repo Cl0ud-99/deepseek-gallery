@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>夏夜游乐园 · 掌上八音盒</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #07061a;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #stage { position: fixed; inset: 0; }
+  #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+  #veil {
+    position: fixed; inset: 0; background: #07061a;
+    pointer-events: none; opacity: 1;
+    transition: opacity 1.7s cubic-bezier(.4,0,.2,1);
+    z-index: 9;
+  }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="veil"></div>
+<script>
