@@ -44,6 +44,19 @@
   }
 
   /* 背景：暖色天顶 + 地面倒影 */
+  /* 加载态 */
+  .boot{position:fixed; inset:0; z-index:9; pointer-events:none;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;
+    opacity:0; transition:opacity .4s ease}
+  body.booting .boot{opacity:1}
+  .boot-txt{font-size:11px; letter-spacing:.44em; text-transform:uppercase; color:var(--accent); opacity:.85; padding-left:.44em}
+  .boot-bar{width:clamp(120px,13vw,170px); height:2px; border-radius:999px;
+    background:rgba(20,22,28,.12); overflow:hidden}
+  .boot-bar i{display:block; width:38%; height:100%; border-radius:999px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    animation:bootSlide 1.15s cubic-bezier(.45,0,.55,1) infinite}
+  @keyframes bootSlide{0%{transform:translateX(-105%)}100%{transform:translateX(365%)}}
+
   /* 首帧先藏起来，等进场动画接管——否则会先亮一下再消失 */
   body.booting .stage, body.booting .ovbtn{opacity:0}
 
@@ -225,6 +238,11 @@
 </head>
 <body class="booting">
 <div class="bg"></div>
+
+<div class="boot">
+  <div class="boot-txt">Loading</div>
+  <div class="boot-bar"><i></i></div>
+</div>
 
 <div class="stage">
   <header class="head">
