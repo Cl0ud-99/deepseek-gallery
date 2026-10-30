@@ -475,14 +475,14 @@
   @media (max-width:720px){
     body.portrait:not(.mode-grid) .edge{ display:block }
     .edge i{
-      position:absolute; left:0; right:0; height:clamp(64px, 11vh, 120px);
+      position:absolute; left:0; right:0; height:clamp(56px, 9vh, 96px);
       -webkit-backdrop-filter:blur(10px) saturate(88%) brightness(.96);
               backdrop-filter:blur(10px) saturate(88%) brightness(.96);
     }
-    .edge .top{ top:0;
+    .edge .top{ top:calc(env(safe-area-inset-top) + 74px);    /* 让开顶部按钮 */
       -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
               mask-image:linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%) }
-    .edge .bot{ bottom:0;
+    .edge .bot{ bottom:calc(env(safe-area-inset-bottom) + 46px);  /* 让开底部进度条 */
       -webkit-mask-image:linear-gradient(to top, #000 0%, #000 30%, transparent 100%);
               mask-image:linear-gradient(to top, #000 0%, #000 30%, transparent 100%) }
   }
@@ -506,7 +506,7 @@
     .head{ padding-top:calc(env(safe-area-inset-top) + 62px) }
     /* 竖屏用 4:3，卡片在手里有存在感 */
     .card{ aspect-ratio:4 / 3 }
-    .eyebrow{ font-size:9.5px; letter-spacing:.28em }
+    .head{ display:none }          /* 移动端不要顶部文字 */
     .lead{ font-size:11.5px; margin-top:8px; max-width:24em; margin-inline:auto }
     .title .en{ font-size:13px; letter-spacing:.26em; margin-right:-.26em }
     /* 作品名叠在卡片正中央 */
