@@ -676,9 +676,15 @@ document.addEventListener('selectstart', function (e) {
 
 /* ---------- 启动 ---------- */
 window.addEventListener('load', function () {
-  layout();
   var id = location.hash.replace('#', '');
-  if (id && SRC[id]) open(id);
+  if (id && SRC[id]) { layout(); open(id); return; }
+
+  /* 每次打开随机落在某一件上，而不是永远从第一张开始 */
+  jumpTo(Math.floor(Math.random() * cards.length));
+  void track.offsetWidth;
+  track.style.scrollSnapType = '';
+  current = -1;
+  layout();
 });
 requestAnimationFrame(function () { layout(); });
 setTimeout(layout, 240);
