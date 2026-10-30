@@ -313,6 +313,51 @@
   }
   .cclose:hover{color:#fff; border-color:rgba(255,255,255,.4)}
 
+  /* ---------- 分享面板（类 iOS 底部弹层） ---------- */
+  .sheet{
+    position:fixed; inset:0; z-index:80; display:none;
+    background:rgba(12,14,20,.32);
+    -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
+    opacity:0; transition:opacity .26s ease;
+  }
+  .sheet.on{ display:block }
+  .sheet.open{ opacity:1 }
+  .sheetbox{
+    position:absolute; left:50%; bottom:0; transform:translate(-50%, 100%);
+    width:min(100%, 520px);
+    padding:10px 14px calc(14px + env(safe-area-inset-bottom));
+    border-radius:22px 22px 0 0;
+    background:var(--glass);
+    -webkit-backdrop-filter:blur(30px) saturate(180%); backdrop-filter:blur(30px) saturate(180%);
+    border:1px solid var(--glass-line); border-bottom:0;
+    box-shadow:0 -18px 60px -20px rgba(20,24,36,.45);
+    transition:transform .34s cubic-bezier(.32,.72,.24,1);
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .sheet.open .sheetbox{ transform:translate(-50%, 0) }
+  .grab{ width:38px; height:4px; border-radius:2px; margin:2px auto 8px; background:rgba(28,32,44,.22) }
+  body.dark .grab{ background:rgba(255,255,255,.24) }
+  .stitle{ text-align:center; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--dim); margin-bottom:4px }
+  .surl{ font-size:12.5px; color:var(--ink); opacity:.7; text-align:center;
+    word-break:break-all; padding:0 8px 8px }
+  .srow{
+    display:flex; align-items:center; justify-content:space-between; width:100%;
+    font:inherit; font-size:15px; color:var(--ink); cursor:pointer;
+    padding:15px 18px; border-radius:14px; text-align:left;
+    background:rgba(255,255,255,.42); border:1px solid var(--glass-line);
+    transition:background .18s, transform .18s;
+  }
+  body.dark .srow{ background:rgba(255,255,255,.08) }
+  .srow:active{ transform:scale(.99) }
+  .srow .si{ opacity:.45; font-size:15px }
+  .scancel{
+    margin-top:2px; width:100%; font:inherit; font-size:15px; font-weight:500;
+    padding:15px; border-radius:14px; cursor:pointer; color:var(--accent);
+    background:rgba(255,255,255,.55); border:1px solid var(--glass-line);
+  }
+  body.dark .scancel{ background:rgba(255,255,255,.1) }
+
   /* 分享：与云朵同款圆形玻璃，紧挨在它右边 */
   .share{
     position:fixed; z-index:20;
@@ -687,6 +732,17 @@
     </a>
 
     <button class="cclose" id="cclose">Close</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" aria-hidden="true">
+  <div class="sheetbox">
+    <div class="grab"></div>
+    <div class="stitle">Share</div>
+    <div class="surl" id="surl"></div>
+    <button class="srow" id="copyLink"><span>Copy link</span><span class="si">&#10697;</span></button>
+    <button class="srow" id="moreShare"><span>More&hellip;</span><span class="si">&hellip;</span></button>
+    <button class="scancel" id="cancelShare">Cancel</button>
   </div>
 </div>
 
@@ -1494,6 +1550,40 @@ document.addEventListener('keydown', function (e) {
 });
 
 /* ---------- 分享 ---------- */
+var sheet = document.getElementById('sheet');
+var shareUrl = location.origin + location.pathname;
+
+function openSheet() {
+  document.getElementById('surl').textContent = shareUrl;
+  sheet.classList.add('on');
+  requestAnimationFrame(function () { sheet.classList.add('open'); });
+}
+function closeSheet() {
+  sheet.classList.remove('open');
+  setTimeout(function () { sheet.classList.remove('on'); }, 340);
+}
+
+sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(); });
+document.getElementById('cancelShare').addEventListener('click', closeSheet);
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && sheet.classList.contains('on')) closeSheet();
+});
+
+document.getElementById('copyLink').addEventListener('click', async function () {
+  try { await navigator.clipboard.writeText(shareUrl); } catch (e) {}
+  var el = this.querySelector('span');
+  var old = el.textContent;
+  el.textContent = 'Copied';
+  setTimeout(function () { el.textContent = old; }, 1400);
+});
+
+document.getElementById('moreShare').addEventListener('click', async function () {
+  if (!navigator.share) return;
+  try { await navigator.share({ title: 'DeepSeek Gallery', url: shareUrl }); closeSheet(); } catch (e) {}
+});
+
+document.getElementById('shareBtn').addEventListener('click', openSheet);
+
 document.getElementById('shareBtn').addEventListener('click', async function () {
   var url = location.origin + location.pathname;
   var btn = this;
