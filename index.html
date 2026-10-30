@@ -933,7 +933,8 @@ function layout() {
     if (vertical && !overview && !transitioning) {
       var near = nearestIndex();
       var off = axisPos(cards[near].el) - (axisScroll() + axisView() / 2);
-      if (Math.abs(off) > 8) {
+      /* 给一个容差范围：偏离不到 1/4 张就不动，别强行把每张都钉死 */
+      if (Math.abs(off) > axisView() * 0.22) {
         /* 自己跑一段 160ms 的缓动，比浏览器 smooth 快很多 */
         var from = track.scrollTop;
         var to = axisPos(cards[near].el) - axisView() / 2;
