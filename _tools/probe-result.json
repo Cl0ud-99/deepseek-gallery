@@ -156,11 +156,11 @@
   {
     "id": "A15",
     "frames": 3,
-    "draws": 2832,
-    "tris": 398676,
-    "callsPerFrame": 944,
-    "trisPerFrame": 132892,
-    "fps": 0.9,
+    "draws": 2820,
+    "tris": 395430,
+    "callsPerFrame": 940,
+    "trisPerFrame": 131810,
+    "fps": 0.8,
     "canvas": "1280x800",
     "errs": []
   },

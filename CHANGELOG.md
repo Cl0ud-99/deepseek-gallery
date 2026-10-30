@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.0.6 — 2026-10-30
+
+### A15 — removed the gramophone from the second-floor balcony
+
+The balcony carried a gramophone with a flared brass horn. Measured against the geometry it could
+never have worked: the horn is **0.86 wide** while the balcony is only about 0.8 deep, so the whole
+assembly ran from z=0.73 (inside the window opening) to z=1.72 (past the railing). From the street it
+read as "a gramophone wedged into a second-floor windowsill" — the horn covered most of the window.
+
+Removed the `balconyGramophone(bal, -0.18, 3.83, 1.07)` call in `src/interiors.js`. The balcony keeps
+its wrought-iron railing, stone parapet, three-tier flower stand and the stone urns with potted
+sprays. The gramophone motif survives downstairs — the record shop still has its brass-horn machine.
+The function definition is left in place, so restoring it is one uncommented line.
+
+| | before | after |
+|---|---|---|
+| draw calls / frame | 944 | **940** |
+| scene triangles | 132,892 | 131,810 |
+
+Draw calls barely move because most of the gramophone's ~40 parts had already been merged into static
+batches; what changes is the composition, not the cost.
+
+`previews/A15.png` and the gallery thumbnail were re-rendered, and the measures in `index.html`,
+`README.md`, `AUDIT.md` and `profiles.md` were updated to match.
+
 ## 0.0.5 — 2026-10-30
 
 ### Scene-graph audit of all 19 entries

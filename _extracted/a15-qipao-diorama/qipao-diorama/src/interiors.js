@@ -1080,7 +1080,12 @@
 
     /* ============ balcony ============ */
     var bal = QP.group(g, 0, 0, 0);
-    balconyGramophone(bal, -0.18, 3.83, 1.07);
+    /* 阳台上原本放着一台带大喇叭的留声机（balconyGramophone）。
+       问题：喇叭口径约 0.86，而阳台进深只有 0.8 出头，整台机器从 z=0.73 一直伸到 1.72，
+       等于把窗洞和栏杆全占了，从外面看就是"一台留声机卡在二楼窗台上"，不符合实景。
+       留声机保留在一楼唱片行里（见上面那台），阳台只留花架与石瓮盆栽。
+       函数定义仍然留着，想恢复直接取消下面这行注释即可。 */
+    // balconyGramophone(bal, -0.18, 3.83, 1.07);
     flowerStand(bal, -4.55, 3.83, 1.13);
     /* potted sprays on the stone urns */
     function urnPlant(x) {

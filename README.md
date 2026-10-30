@@ -34,7 +34,7 @@ Every preview below is a live scene: click a thumbnail or a title to run it in t
 <tr>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a13-mori-mart/mori-mart/index.html"><img src="previews/thumbs/A13.jpg" width="280" alt="Mori Mart"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a13-mori-mart/mori-mart/index.html"><b>A13 · Mori Mart</b></a><br><sub>1,775 calls · r160 · 1.3M</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html"><img src="previews/thumbs/A14.jpg" width="280" alt="Polar Icebreaker"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html"><b>A14 · Polar Icebreaker</b></a><br><sub>1,249 calls · r169 · 568K</sub></td>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html"><img src="previews/thumbs/A15.jpg" width="280" alt="Qipao Diorama"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html"><b>A15 · Qipao Diorama</b></a><br><sub>944 calls · r150 · 17M</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html"><img src="previews/thumbs/A15.jpg" width="280" alt="Qipao Diorama"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html"><b>A15 · Qipao Diorama</b></a><br><sub>940 calls · r150 · 17M</sub></td>
 </tr>
 <tr>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><img src="previews/thumbs/A16.jpg" width="280" alt="Route 66 Diner"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><b>A16 · Route 66 Diner</b></a><br><sub>2,355 calls · inline · 156K</sub></td>
@@ -129,7 +129,7 @@ Frame rates under software rendering are only meaningful relative to each other.
 | A14 | Polar Icebreaker | 1,249 | r169 | 568K |
 | A06 | Cloud Post Office | 1,154 | inline UMD | 2.9M |
 | A09 | Grand Hotel | 1,009 | r160 | 468K |
-| A15 | Qipao Diorama | 944 | r150 | 17M |
+| A15 | Qipao Diorama | 940 | r150 | 17M |
 | A11 | Lunar Outpost | 889 | r169 | 896K |
 | A10 | The Lighthouse | 864 | r160.1 | 1.6M |
 | A03 | Aurora Hourglass | 721 | r160 | 456K |
