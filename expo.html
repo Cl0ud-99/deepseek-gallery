@@ -58,7 +58,8 @@
   .sub i{width:3px; height:3px; border-radius:50%; background:var(--dim2); font-style:normal}
 
   /* ---------- 横向封面流 ---------- */
-  .wrap{flex:1; min-height:0; display:flex; align-items:center; position:relative}
+  .wrap{flex:1; min-height:0; display:flex; align-items:center; position:relative;
+    padding-bottom:clamp(52px,9vh,96px)}
   .track{
     display:flex; align-items:center; gap:var(--gap);
     overflow-x:auto; overflow-y:hidden; width:100%;
@@ -114,8 +115,13 @@
     background:radial-gradient(58% 100% at 50% 100%,rgba(232,199,154,.07),transparent 72%)}
 
   /* ---------- 底部 ---------- */
-  .bar{position:absolute; left:0; right:0; bottom:0; height:1px; background:rgba(255,255,255,.07)}
-  .bar i{display:block; height:100%; width:0; background:rgba(232,199,154,.55); transition:width .18s}
+  .bar{position:absolute; left:50%; transform:translateX(-50%); bottom:clamp(14px,2.4vh,26px);
+    width:clamp(150px,16vw,240px); height:4px; border-radius:999px;
+    background:rgba(255,255,255,.13); overflow:hidden; z-index:5;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+  .bar i{display:block; height:100%; width:0; border-radius:999px;
+    background:var(--accent); box-shadow:0 0 10px rgba(232,199,154,.55);
+    transition:width .22s ease}
 
   /* ---------- 进入场景 ---------- */
   .viewer{position:fixed; inset:0; z-index:100; background:#000; display:none; opacity:0; transition:opacity .4s}
