@@ -306,6 +306,16 @@
 
   /* ---------- 总览（网格）模式 ---------- */
   body.mode-grid .head{display:none}
+  /* 总览：鼠标停留放大，与顶栏按钮同一套手感 */
+  body.mode-grid .card{
+    transition:transform .26s cubic-bezier(.2,.7,.3,1), box-shadow .26s ease;
+    will-change:transform;
+  }
+  body.mode-grid .card:hover{
+    transform:scale(1.05);
+    box-shadow:0 26px 50px -22px rgba(0,0,0,.55);
+    z-index:3;
+  }
   /* 总览里左右箭头与进度条都没有意义（网格是滚动的，不是翻页） */
   body.mode-grid .nav,
   body.mode-grid .bar{display:none}
