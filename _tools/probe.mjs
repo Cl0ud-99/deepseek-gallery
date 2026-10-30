@@ -59,7 +59,9 @@ export const TARGETS = [
   { id:'A16', rel:'a16-route66-diner/route66-diner/index.html', wait:6000 },
   { id:'A17', rel:'a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html', wait:8000 },
   { id:'A18', rel:'a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html', wait:11000 },
-  { id:'A19', rel:'a19-stranger-things/hawkins-mirror/hawkins-mirror.html', wait:7000 }
+  { id:'A19', rel:'a19-stranger-things/hawkins-mirror/hawkins-mirror.html', wait:7000 },
+  { id:'A20', rel:'a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html', wait:7000 },
+  { id:'A21', rel:'a21-ice-fire-mine-station/ice-fire-mine-station/index.html', wait:7000 }
 ];
 
 const INJECT = () => {

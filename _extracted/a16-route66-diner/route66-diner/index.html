@@ -3928,6 +3928,7 @@ void main() {
 
 
 
+
 <!-- AMB:start -->
 <script>window.__AMB_PRESET__="A16";</script>
 <script>
@@ -3998,7 +3999,18 @@ void main() {
                  ev:[[ 'chime', 3.0, 8.0, .14 ], [ 'bubble', 1.6, 5.0, .10 ], [ 'bell', 8.0, 18, .10 ]] },
     A19: { g: .55, bed: { n:'pink',  t:'bandpass', f:1400, q:.55, v:.40, lfo:[.08,.35] },
                  drone:{ f:[41,55,82.4], type:'sawtooth', v:.065, lp:200, lfo:[.04,.45] },
-                 ev:[[ 'arcade', 2.2, 6.0, .13 ], [ 'thunder', 15, 30, .12 ], [ 'drip', 2.0, 6.0, .12 ]] }
+                 ev:[[ 'arcade', 2.2, 6.0, .13 ], [ 'thunder', 15, 30, .12 ], [ 'drip', 2.0, 6.0, .12 ]] },
+    /* 白天：琉璃水池 + 水晶莲花 + 花园。空气感为主，玻璃泛音，水声当点缀。 */
+    A20: { g: .46, bed: { n:'pink',  t:'bandpass', f:2600, q:.50, v:.22, lfo:[.10,.45] },
+                 drone:{ f:[330,495,660], type:'sine', v:.050, lp:1500, lfo:[.07,.55] },
+                 ev:[[ 'chime', 2.2, 6.5, .12 ], [ 'bubble', 1.6, 4.5, .09 ],
+                      [ 'drip', 3.0, 8.0, .09 ], [ 'chirp', 3.5, 10, .07 ],
+                      [ 'splash', 7, 16, .09 ]] },
+    /* 冰火对立：熔岩在脚下、冰川贴着脸，中间是矿山机械。低频同时承担"地热"和"坑道"。 */
+    A21: { g: .55, bed: { n:'brown', t:'lowpass',  f:360,  q:.65, v:.46, lfo:[.04,.32] },
+                 drone:{ f:[36.7,55,73.4], type:'sawtooth', v:.075, lp:158, lfo:[.03,.35] },
+                 ev:[[ 'lava', 1.6, 4.5, .17 ], [ 'ice', 5.0, 12, .14 ],
+                      [ 'steam', 4.0, 10, .10 ], [ 'clank', 3.5, 9.0, .10 ]] }
   };
 
   /* ---------- 噪声缓冲 ---------- */
@@ -4147,6 +4159,15 @@ void main() {
         var om = ctx.createOscillator(); om.type = 'triangle'; om.frequency.value = rnd(220, 330);
         var fm = ctx.createBiquadFilter(); fm.type = 'lowpass'; fm.frequency.value = 1400;
         om.connect(fm); env(fm, gain * 0.55, 0.15, 0, 1.4); om.start(t); om.stop(t + 1.5);
+        break;
+      case 'lava':
+        var s9 = ctx.createBufferSource(); s9.buffer = noiseBuf(ctx, 'brown', 0.35); s9.loop = true;
+        var lp9 = ctx.createBiquadFilter(); lp9.type = 'lowpass'; lp9.frequency.value = rnd(180, 430);
+        s9.connect(lp9); env(lp9, gain * 1.8, 0.025, 0, 0.5); s9.start(t); s9.stop(t + 0.55);
+        var o9 = ctx.createOscillator(); o9.type = 'sine';
+        o9.frequency.setValueAtTime(rnd(80, 150), t);
+        o9.frequency.exponentialRampToValueAtTime(rnd(38, 62), t + 0.24);
+        env(o9, gain * 0.7, 0.006, 0, 0.3); o9.start(t); o9.stop(t + 0.35);
         break;
       case 'truck':
         var s8 = ctx.createBufferSource(); s8.buffer = noiseBuf(ctx, 'brown', 1.5); s8.loop = true;

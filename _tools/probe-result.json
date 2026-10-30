@@ -207,5 +207,27 @@
     "fps": 0.6,
     "canvas": "1280x800",
     "errs": []
+  },
+  {
+    "id": "A20",
+    "frames": 6,
+    "draws": 6162,
+    "tris": 1638324,
+    "callsPerFrame": 1027,
+    "trisPerFrame": 273054,
+    "fps": 2.1,
+    "canvas": "1280x800",
+    "errs": []
+  },
+  {
+    "id": "A21",
+    "frames": 5,
+    "draws": 16750,
+    "tris": 471500,
+    "callsPerFrame": 3350,
+    "trisPerFrame": 94300,
+    "fps": 2,
+    "canvas": "1280x800",
+    "errs": []
   }
 ]

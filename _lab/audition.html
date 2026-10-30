@@ -131,7 +131,18 @@
                  ev:[[ 'chime', 3.0, 8.0, .14 ], [ 'bubble', 1.6, 5.0, .10 ], [ 'bell', 8.0, 18, .10 ]] },
     A19: { g: .55, bed: { n:'pink',  t:'bandpass', f:1400, q:.55, v:.40, lfo:[.08,.35] },
                  drone:{ f:[41,55,82.4], type:'sawtooth', v:.065, lp:200, lfo:[.04,.45] },
-                 ev:[[ 'arcade', 2.2, 6.0, .13 ], [ 'thunder', 15, 30, .12 ], [ 'drip', 2.0, 6.0, .12 ]] }
+                 ev:[[ 'arcade', 2.2, 6.0, .13 ], [ 'thunder', 15, 30, .12 ], [ 'drip', 2.0, 6.0, .12 ]] },
+    /* 白天：琉璃水池 + 水晶莲花 + 花园。空气感为主，玻璃泛音，水声当点缀。 */
+    A20: { g: .46, bed: { n:'pink',  t:'bandpass', f:2600, q:.50, v:.22, lfo:[.10,.45] },
+                 drone:{ f:[330,495,660], type:'sine', v:.050, lp:1500, lfo:[.07,.55] },
+                 ev:[[ 'chime', 2.2, 6.5, .12 ], [ 'bubble', 1.6, 4.5, .09 ],
+                      [ 'drip', 3.0, 8.0, .09 ], [ 'chirp', 3.5, 10, .07 ],
+                      [ 'splash', 7, 16, .09 ]] },
+    /* 冰火对立：熔岩在脚下、冰川贴着脸，中间是矿山机械。低频同时承担"地热"和"坑道"。 */
+    A21: { g: .55, bed: { n:'brown', t:'lowpass',  f:360,  q:.65, v:.46, lfo:[.04,.32] },
+                 drone:{ f:[36.7,55,73.4], type:'sawtooth', v:.075, lp:158, lfo:[.03,.35] },
+                 ev:[[ 'lava', 1.6, 4.5, .17 ], [ 'ice', 5.0, 12, .14 ],
+                      [ 'steam', 4.0, 10, .10 ], [ 'clank', 3.5, 9.0, .10 ]] }
   };
 
   /* ---------- 噪声缓冲 ---------- */
@@ -280,6 +291,15 @@
         var om = ctx.createOscillator(); om.type = 'triangle'; om.frequency.value = rnd(220, 330);
         var fm = ctx.createBiquadFilter(); fm.type = 'lowpass'; fm.frequency.value = 1400;
         om.connect(fm); env(fm, gain * 0.55, 0.15, 0, 1.4); om.start(t); om.stop(t + 1.5);
+        break;
+      case 'lava':
+        var s9 = ctx.createBufferSource(); s9.buffer = noiseBuf(ctx, 'brown', 0.35); s9.loop = true;
+        var lp9 = ctx.createBiquadFilter(); lp9.type = 'lowpass'; lp9.frequency.value = rnd(180, 430);
+        s9.connect(lp9); env(lp9, gain * 1.8, 0.025, 0, 0.5); s9.start(t); s9.stop(t + 0.55);
+        var o9 = ctx.createOscillator(); o9.type = 'sine';
+        o9.frequency.setValueAtTime(rnd(80, 150), t);
+        o9.frequency.exponentialRampToValueAtTime(rnd(38, 62), t + 0.24);
+        env(o9, gain * 0.7, 0.006, 0, 0.3); o9.start(t); o9.stop(t + 0.35);
         break;
       case 'truck':
         var s8 = ctx.createBufferSource(); s8.buffer = noiseBuf(ctx, 'brown', 1.5); s8.loop = true;
@@ -469,7 +489,7 @@
 (function () {
   var NAMES = {"A01":"Black Lodge","A02":"Ashtray Maze","A03":"Aurora Hourglass","A04":"Autumn Farm","A05":"Cliff Lighthouse Café","A06":"Cloud Post Office","A07":"FBC Quarry 07","A08":"Redshift Archive","A09":"Grand Hotel","A10":"The Lighthouse","A11":"Lunar Outpost","A12":"Stutter Lab","A13":"Mori Mart","A14":"Polar Icebreaker","A15":"Qipao Diorama","A16":"Route 66 Diner","A17":"The Red Room","A18":"Sunset Dream Loom","A19":"Hawkins / Upside Down"};
   var SOUND = {"A01":"雨 · 低频 drone · 远雷 · 滴水","A02":"工业嗡鸣 · 荧光灯 · 金属撞击","A03":"高空风 · 玻璃泛音 · 星铃","A04":"溪流 · 鸟 · 蜂 · 水花","A05":"海浪 · 海鸥 · 轻风","A06":"云海风 · 螺旋桨 · 蒸汽","A07":"深低频 · 金属共振 · 警报","A08":"压迫 drone · 纸页 · 钟","A09":"阿尔卑斯风 · 缆索 · 钟 · 蒸汽","A10":"暴雨 · 海鸥 · 雷","A11":"真空嗡鸣 · 无线电 · 气闸","A12":"极静高频 · 时间卡顿脉冲","A13":"细雨 · 叶响 · 风铃 · 蛙","A14":"寒风 · 冰裂 · 船体金属","A15":"雨 · 电车铃 · 留声机 · 滴水","A16":"热风 · 远处卡车 · 霓虹嗡","A17":"低音 drone · 雨 · 钟摆 · 雷","A18":"梦幻 drone · 玻璃 · 气泡","A19":"80s 合成器 · 雨 · 街机 · 威胁低频"};
-  var LINKS = {"A01":"../_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"../_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"../_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"../_extracted/a04-autumn-farm/index.html","A05":"../_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"../_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"../_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"../_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"../_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"../_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"../_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"../_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"../_extracted/a13-mori-mart/mori-mart/index.html","A14":"../_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"../_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"../_extracted/a16-route66-diner/route66-diner/index.html","A17":"../_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"../_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"../_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html"};
+  var LINKS = {"A01":"../_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"../_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"../_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"../_extracted/a04-autumn-farm/index.html","A05":"../_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"../_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"../_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"../_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"../_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"../_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"../_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"../_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"../_extracted/a13-mori-mart/mori-mart/index.html","A14":"../_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"../_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"../_extracted/a16-route66-diner/route66-diner/index.html","A17":"../_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"../_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"../_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"../_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"../_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html"};
   var grid = document.getElementById('grid');
   var cards = {};
   var oneAtATime = false;
