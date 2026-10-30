@@ -189,6 +189,22 @@
   }
   body.mode-grid .track::-webkit-scrollbar{display:none}
 
+  /* 总览的自定义滚动条：玻璃质感，闲置 1s 后淡出 */
+  .scr{position:absolute; right:calc(clamp(16px,3vw,46px) / 2.4);
+    top:clamp(16px,3vw,46px); bottom:clamp(16px,3vw,46px);
+    width:6px; border-radius:999px; z-index:9; display:none;
+    opacity:0; transition:opacity .34s ease; pointer-events:none}
+  body.mode-grid .scr{display:block}
+  .scr.on{opacity:1}
+  .scr i{position:absolute; left:0; width:100%; border-radius:999px; cursor:grab;
+    background:rgba(255,255,255,.42);
+    border:1px solid rgba(255,255,255,.55);
+    -webkit-backdrop-filter:blur(14px) saturate(150%); backdrop-filter:blur(14px) saturate(150%);
+    box-shadow:0 4px 14px -6px rgba(28,32,44,.35), inset 0 1px 0 rgba(255,255,255,.7);
+    transition:background .2s}
+  .scr i:hover{background:rgba(255,255,255,.62)}
+  .scr i.drag{cursor:grabbing; background:rgba(255,255,255,.72)}
+
   /* 总览的移轴感：三层叠加做出"模糊半径渐变"。
      单层 backdrop-filter 只有恒定强度，靠遮罩淡出的只是可见度；
      叠三层不同半径、不同高度，边缘处累积成强模糊，向内逐级变弱。 */
@@ -282,6 +298,7 @@
   </button>
 
   <div class="wrap">
+    <div class="scr" id="scr"><i id="scrThumb"></i></div>
     <div class="tilt"><i class="t t1"></i><i class="t t2"></i><i class="t t3"></i><i class="b b1"></i><i class="b b2"></i><i class="b b3"></i></div>
     <div class="track" id="track"></div>
     <button class="nav prev" id="navPrev" aria-label="上一件">‹</button>
@@ -419,6 +436,62 @@ function center(i) {
   snapTimer = setTimeout(function () { track.style.scrollSnapType = 'x mandatory'; }, reduce ? 40 : 640);
 }
 
+/* ---------- 总览的自定义滚动条 ---------- */
+var scr = document.getElementById('scr');
+var scrThumb = document.getElementById('scrThumb');
+var scrIdle = 0, scrDragging = false;
+
+function scrSync() {
+  var max = track.scrollHeight - track.clientHeight;
+  var h = scr.clientHeight;
+  if (h <= 0) return;
+  var ratio = Math.min(1, track.clientHeight / Math.max(track.scrollHeight, 1));
+  var thumbH = Math.max(44, Math.round(h * ratio));
+  var top = max > 0 ? (track.scrollTop / max) * (h - thumbH) : 0;
+  scrThumb.style.height = thumbH + 'px';
+  scrThumb.style.transform = 'translate3d(0,' + top.toFixed(1) + 'px,0)';
+}
+
+function scrShow() {
+  if (!overview) return;
+  scrSync();
+  scr.classList.add('on');
+  clearTimeout(scrIdle);
+  scrIdle = setTimeout(function () {
+    if (!scrDragging) scr.classList.remove('on');
+  }, 1000);
+}
+
+track.addEventListener('scroll', scrShow, { passive: true });
+window.addEventListener('resize', scrSync);
+
+/* 拖动：拉到顶/底时不再触发回弹，让用户看到上下内容 */
+scrThumb.addEventListener('pointerdown', function (e) {
+  e.preventDefault();
+  scrDragging = true;
+  scr.classList.add('on');
+  scrThumb.classList.add('drag');
+  clearTimeout(scrIdle);
+  var startY = e.clientY;
+  var startTop = track.scrollTop;
+
+  function onMove(ev) {
+    var max = track.scrollHeight - track.clientHeight;
+    var span = scr.clientHeight - scrThumb.offsetHeight;
+    if (span <= 0) return;
+    track.scrollTop = Math.max(0, Math.min(max, startTop + (ev.clientY - startY) / span * max));
+  }
+  function onUp() {
+    scrDragging = false;
+    scrThumb.classList.remove('drag');
+    document.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerup', onUp);
+    scrIdle = setTimeout(function () { scr.classList.remove('on'); }, 1000);
+  }
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+});
+
 /* ---------- 总览的弹性过冲（模拟 iOS 橡皮筋）---------- */
 var bounceY = 0, bounceTimer = 0, bounceRaf = 0, bouncMax = 200, bouncing = false;
 
@@ -447,7 +520,7 @@ function endBounce() {
 }
 
 track.addEventListener('wheel', function (e) {
-  if (!overview) return;
+  if (!overview || scrDragging) return;
   var atTop = track.scrollTop <= 0;
   var atBottom = track.scrollTop >= track.scrollHeight - track.clientHeight - 1;
   var pushingUp = e.deltaY < 0, pushingDown = e.deltaY > 0;
