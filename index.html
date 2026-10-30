@@ -629,6 +629,9 @@
     <button class="snd" id="sndBtn" aria-label="Toggle ambience" title="Ambience off">
       <span class="ico" id="sndIco">🔈</span>
     </button>
+    <button class="snd shot" id="shotBtn" aria-label="Save a screenshot" title="Save a screenshot">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5h2.6l1.4-2h8.9l1.4 2h2.6a1.6 1.6 0 0 1 1.6 1.6v7.2a1.6 1.6 0 0 1-1.6 1.6H3.5a1.6 1.6 0 0 1-1.6-1.6v-7.2a1.6 1.6 0 0 1 1.6-1.6z"/><circle cx="12" cy="13.6" r="3.4"/></svg>
+    </button>
     <div class="varrow" id="vNext">→</div>
   </div>
 </div>
@@ -1404,6 +1407,35 @@ document.getElementById('cclose').addEventListener('click', closeCard);
 cardveil.addEventListener('click', function () { closeCard(); });
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && cardveil.classList.contains('on')) closeCard();
+});
+
+/* ---------- 场景截图 ---------- */
+document.getElementById('shotBtn').addEventListener('click', function () {
+  var w = frame && frame.contentWindow;
+  if (!w) return;
+  var cv = w.document.querySelector('canvas');
+  if (!cv) return;
+
+  var out = document.createElement('canvas');
+  out.width = cv.width; out.height = cv.height;
+  var ctx2 = out.getContext('2d');
+
+  /* 必须在场景渲染完的那一帧立刻拷贝：
+     WebGL 的绘制缓冲在合成后就清掉了，晚一步就是空白 */
+  w.requestAnimationFrame(function () {
+    try { ctx2.drawImage(cv, 0, 0); } catch (e) { return; }
+    out.toBlob(function (blob) {
+      if (!blob) return;
+      var name = ((cards[vIndex] && cards[vIndex].w.en) || 'scene')
+        .replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'deepseek-gallery-' + name + '.png';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+    }, 'image/png');
+  });
 });
 
 /* ---------- 主题 ---------- */
