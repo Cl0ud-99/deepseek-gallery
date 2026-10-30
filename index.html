@@ -11,7 +11,7 @@
   :root{ --bg:#b6bac2; --ink:#14161c; --dim:rgba(18,20,28,.60); --dim2:rgba(18,20,28,.38);
          --accent:#4d6bfe; --accent-2:#7a63ff;
          --cw: clamp(300px, 60vw, 880px); --gap: clamp(16px, 2vw, 34px);
-         --r-lg: 46px; --r-md: 26px; --r-pill: 999px;
+         --r-lg: 18px; --r-md: 26px; --r-pill: 999px;
          --glass: rgba(255,255,255,.42);
          --glass-line: rgba(255,255,255,.62);
          --glass-hi: inset 0 1px 0 rgba(255,255,255,.85); }
@@ -661,7 +661,7 @@ function setMode(toGrid, focusIndex) {
   }
 
   /* 4. 动画 */
-  var rv0 = toGrid ? 46 : 18, rv1 = toGrid ? 18 : 46;   // 期望的视觉圆角
+  var rv0 = 18, rv1 = 18;   // 横向与总览同一圆角，转场不再变形
   anims = [];
   var vw = window.innerWidth, vh = window.innerHeight;
   var sel = toGrid ? lastFocus : focusIndex;      // 当前选中的那一张
