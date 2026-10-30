@@ -53,7 +53,9 @@
   .stage{position:fixed; inset:0; z-index:1; display:flex; flex-direction:column}
 
   /* ---------- 顶部标题（随卡片切换） ---------- */
-  .head{padding:clamp(26px,4.4vh,54px) 24px 0; text-align:center; flex:none}
+  .head{padding:clamp(26px,4.4vh,54px) 24px 0; text-align:center; flex:none;
+    transition:opacity .34s ease}
+  body.is-moving .head{opacity:0}      /* 转场时先让位，避免文字压在飞行的卡片上 */
   .eyebrow{font-size:10.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--accent); opacity:.85}
   .title{margin-top:clamp(10px,1.6vh,18px); min-height:2.2em; margin-bottom:clamp(6px,1.2vh,14px)}
   .title .en{font-size:clamp(21px,3.1vw,38px); font-weight:500; letter-spacing:-.02em; line-height:1.18;
