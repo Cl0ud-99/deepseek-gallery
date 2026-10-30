@@ -38,6 +38,21 @@
     background:radial-gradient(130% 86% at 50% -14%, #262a34 0%, #1d2029 34%, #171a21 62%, #121419 84%, #0d0e12 100%);
   }
   body.dark .themefade{opacity:1}
+
+  /* 昼夜切换：以主题按钮为圆心的圆形擦除 */
+  .themewipe{position:fixed; inset:0; z-index:65; pointer-events:none; display:none; overflow:hidden;
+    opacity:1; transition:opacity .4s ease}
+  .themewipe.on{display:block}
+  .themewipe::before{
+    content:""; position:absolute;
+    left:var(--cx,40px); top:var(--cy,40px);
+    width:120px; height:120px; border-radius:50%;
+    background:var(--wp, #1d2029);
+    transform:translate(-50%,-50%) scale(.001);
+    transition:transform .72s cubic-bezier(.5,.02,.5,.98);   /* 面积随半径平方增长，用近线性的曲线才看得出"推开" */
+    will-change:transform;
+  }
+  .themewipe.grow::before{transform:translate(-50%,-50%) scale(var(--s,30))}
   /* 会随主题变色的元素统一做过渡（渐变类属性不可插值，单独交给 .themefade） */
   .eyebrow, .lead, .cta, .title, .bar,
   .nav, .ovbtn, .themebtn, .snd, .vbtn, .varrow, .vtitle{
@@ -523,6 +538,7 @@
 <body class="booting">
 <div class="bg"></div>
 <div class="themefade" id="themefade"></div>
+<div class="themewipe" id="themewipe" aria-hidden="true"></div>
 
 <div class="boot">
   <div class="boot-txt">Loading</div>
@@ -1375,10 +1391,42 @@ function paintTheme() {
   themeBtn.innerHTML = darkOn ? ICON_SUN : ICON_MOON;   /* 暗色时显示太阳（可切回） */
   themeBtn.title = darkOn ? 'Switch to light' : 'Switch to dark';
 }
+/* 以主题按钮为圆心做圆形擦除，切完再把遮罩淡出 */
+var themewipe = document.getElementById('themewipe');
+var wipeBusy = false;
+
+var BG_DARK  = 'radial-gradient(130% 86% at 50% -14%, #262a34 0%, #1d2029 34%, #171a21 62%, #121419 84%, #0d0e12 100%)';
+var BG_LIGHT = 'radial-gradient(130% 86% at 50% -14%, #e9ebf2 0%, #d3d7e0 34%, #b9bec9 62%, #9ba0ac 84%, #8b909c 100%)';
+
 themeBtn.addEventListener('click', function () {
-  darkOn = !darkOn;
-  localStorage.setItem('gallery-theme', darkOn ? 'dark' : 'light');
-  paintTheme();
+  if (wipeBusy) return;
+  wipeBusy = true;
+
+  var r = themeBtn.getBoundingClientRect();
+  var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  var far = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));
+  themewipe.style.setProperty('--cx', Math.round(cx) + 'px');
+  themewipe.style.setProperty('--cy', Math.round(cy) + 'px');
+  themewipe.style.setProperty('--s', (far * 2 / 120 + 1).toFixed(2));
+  themewipe.style.setProperty('--wp', darkOn ? BG_LIGHT : BG_DARK);  // 擦进来的是"目标主题"
+  themewipe.style.opacity = '1';
+
+  themewipe.classList.add('on');
+  void themewipe.offsetWidth;
+  themewipe.classList.add('grow');
+
+  /* 圆盖满的瞬间再真正切换，避免看到文字逐帧变色 */
+  setTimeout(function () {
+    darkOn = !darkOn;
+    localStorage.setItem('gallery-theme', darkOn ? 'dark' : 'light');
+    paintTheme();
+    themewipe.style.opacity = '0';
+    setTimeout(function () {
+      themewipe.classList.remove('grow', 'on');
+      themewipe.style.opacity = '';
+      wipeBusy = false;
+    }, 440);
+  }, 700);
 });
 paintTheme();
 

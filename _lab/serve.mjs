@@ -112,6 +112,7 @@ const server = http.createServer((req, res) => {
   fs.createReadStream(fp).pipe(res);
 });
 
-server.listen(PORT, '127.0.0.1', () => {
+server.listen(PORT, process.env.HOST || '0.0.0.0', () => {
   console.log('ambience lab: http://127.0.0.1:' + PORT);
+  if ((process.env.HOST || '0.0.0.0') === '0.0.0.0') console.log('           局域网: http://<本机IP>:' + PORT);
 });
