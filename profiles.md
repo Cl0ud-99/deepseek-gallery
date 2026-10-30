@@ -118,21 +118,28 @@ v1.0 初版 → v1.1 屋顶霓虹板换成经典美式路边餐厅立牌（红 T
 
 ## A05 · Cliff Lighthouse Café（海崖灯塔咖啡馆）
 
-**包** `a05-cliff-lighthouse-cafe.zip` ｜ 152K ｜ 2 文件 ｜ 单文件 3964 行（**已 minify**）
+**包** `a05-cliff-lighthouse-cafe.zip` ｜ 450K ｜ 19 文件 ｜ 源码 `scene.js` 1564 行 + 成品单文件 ｜ three r160
 
 **是什么**
 海崖上的灯塔咖啡馆，夏日黄昏。完全自包含单文件，Three.js 与场景代码全部内联，无需联网/安装/服务器。全库体积第二小。
 
-**入口**
-双击 `index.html`。支持两个 URL 参数：
-- `?nopost=1` 关闭后处理（低端机提速用）
-- `?cam=x,y,z,tx,ty,tz` 指定初始机位（出图用）
+**入口与构建**
+- 看：双击 `index.html`（588KB 成品，three.js 已内联，离线可用）
+- 改：`src/scene.js`（1564 行 ES module，未压缩）。`src/index.html` 用 importmap 指向本地
+  `lib/three.module.js`（r160）与 addons，所以**必须在本地服务器下预览**（`cd src && python -m http.server`），
+  `file://` 会被 CORS 挡。
+- 重打包：`esbuild scene.js --bundle --format=iife --minify --alias:three=./lib/three.module.js`
+  （详见包内 `src/BUILD.md`）
+- URL 参数：`?nopost=1` 关后处理，`?cam=x,y,z,tx,ty,tz` 指定机位
 
-**状态：成品锁死 ⚠️**
-文件里 three.js 与场景代码一起被压缩成单行 IIFE（`function l_(){...}` 之类的短变量名），**没有可读源码、没有 README 之外的任何文档**。想继续改只能照着效果重写。
+**源码状态（2026-10-30 补充）**
+原归档只有成品导出包（单行 IIFE、短变量名）。现拿到带完整源码的版本：`src/scene.js` 可读，
+`lib/` 里是 three r160 与 EffectComposer / UnrealBloom / OutputPass / RoundedBox 等 addons。
+**成品单文件与旧版逐字节一致**，所以画面和实测数据都不受影响。
 
 **优化切入点**
-无源码不可改。若只是嫌卡，用 `?nopost=1` 关后处理是最直接的杠杆。
+现在可以真动手了。结构是「单 scene.js 顺序构建」：几何 → 材质 → 着色器 → 动画 → 相机交互。
+另外 `?nopost=1` 仍是低端机上最快的杠杆（直接砍掉 Bloom + ACES + 暗角 + 颗粒整条链）。
 
 ---
 
@@ -425,19 +432,26 @@ three r150；自定义 5 段 toon ramp + fresnel 边缘光 + 反向外壳描边�
 
 ## A16 · Route 66 Diner（66 号公路复古餐厅）
 
-**包** `a16-route66-diner.zip` ｜ 156K ｜ 2 文件 ｜ 单文件 3929 行（**已 minify**）
+**包** `a16-route66-diner.zip` ｜ 459K ｜ 19 文件 ｜ 源码 `scene.js` 2179 行 + 成品单文件 ｜ three r160
 
 **是什么**
-66 号公路旁的沙漠复古加油站 / 餐厅。与 A05 海崖咖啡馆是**同一套模板的姊妹作**（同样的 README 文案、同样的 `?nopost` / `?cam` 参数、几乎同样的行数 3929 vs 3964）。全库体积最小。
+66 号公路旁的沙漠复古加油站 / 餐厅。与 A05 海崖咖啡馆是**同一套模板的姊妹作**（同一份 README 文案、
+同样的 `?nopost` / `?cam` 参数、同样的 `src/` 结构）。源码比 A05 多出约 600 行，是这批模板里做得最满的一版。
 
-**入口**
-双击 `index.html`。`?nopost=1` 关后处理；`?cam=x,y,z,tx,ty,tz` 指定机位。
+**入口与构建**
+- 看：双击 `index.html`（591KB 成品）
+- 改：`src/scene.js`（2179 行）。预览要起本地服务：`cd src && python -m http.server`
+- 重打包：`esbuild scene.js --bundle --format=iife --minify --alias:three=./lib/three.module.js`
+  （注意 addons 内部是裸导入 `three`，**必须带 `--alias`**，否则报 `Failed to resolve "three"`）
+- URL 参数：`?nopost=1` 关后处理；`?cam=x,y,z,tx,ty,tz` 指定机位
 
-**状态：成品锁死 ⚠️**
-与 A05 一样是 minify 后的单行 IIFE，无可读源码、无文档。
+**源码状态（2026-10-30 补充）**
+原归档只有成品导出包。现拿到带源码的完整包，成品单文件与旧版**逐字节一致**。
+A05 与 A16 共用同一套渲染骨架，但场景内容各自独立——**改一处不会自动同步到另一件**。
 
 **优化切入点**
-同 A05：只能用 `?nopost=1`。若要改场景必须重写。
+同 A05。两件都是「单 scene.js 顺序构建」，结构一致，改法通用；
+`?nopost=1` 仍是最快的降级开关。
 
 ---
 
@@ -528,7 +542,7 @@ three r186；MeshToon + 自定义 6 级柔和明暗渐变 + 柔和倒模轮廓�
 | A02 | ✅ 详细 | 部分 | ✅ 2950 calls | — | gallery/ 全套 + contact-sheet |
 | A03 | ✅ | ✅ 小节表 | — | — | ❌ |
 | A04 | ✅ 行号地图 | ✅ | ✅ 1670 calls | ✅ 5 条 | preview.png |
-| A05 | 简短 | — | — | — | ❌ |
+| A05 | ✅ 使用说明 + BUILD.md | BUILD.md 构建步骤 | — | — | ❌ |
 | A06 | ❌ | — | — | — | preview/ 2 张 |
 | A07 | ✅ 详细 | — | ✅ 2800–3000 | — | shots/ 7 张 |
 | A08 | ✅ 详细 | ✅ 文件表 | ✅ 54–68 FPS | — | shots/ 5 张 |
@@ -539,7 +553,7 @@ three r186；MeshToon + 自定义 6 级柔和明暗渐变 + 柔和倒模轮廓�
 | A13 | 使用说明 | — | — | — | preview.png |
 | A14 | 使用说明 | ✅ 搜索词 | — | — | ❌ |
 | A15 | ✅ 详细（繁体） | — | ✅ 2758→850 | — | shots/ 7 张 |
-| A16 | 简短 | — | — | — | ❌ |
+| A16 | ✅ 使用说明 + BUILD.md | BUILD.md 构建步骤 | — | — | ❌ |
 | A17 | ✅ 详细 | — | — | — | shots/ 7 张 |
 | A18 | ✅ + OPTIMIZATION.md | ✅ 调试句柄 | ✅ 2000+ calls | — | screenshots/ 3 张 |
 | A19 | 使用说明 | — | — | — | ❌ |

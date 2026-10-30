@@ -250,15 +250,14 @@ const DATA = [
 },
 {
   code:"A05", name:"Cliff Lighthouse Café", cn:"海崖灯塔咖啡馆",
-  theme:"现实复古", tags:["灯塔","咖啡馆","夏日黄昏","成品锁死"],
-  size:"152K", zip:"a05-cliff-lighthouse-cafe.zip", loc:3964, three:"内联", calls:2154, tris:264952,
-  entry:"index.html", build:"—", open:"direct", edit:"locked",
+  theme:"现实复古", tags:["灯塔","咖啡馆","夏日黄昏","源码可改"],
+  size:"450K", zip:"a05-cliff-lighthouse-cafe.zip", loc:1564, three:"r160", calls:2154, tris:264952,
+  entry:"index.html", build:"esbuild scene.js", open:"direct", edit:"module",
   preview:"previews/A05.png", pal:["#7a5a3a","#140f0a"],
   lede:"海崖上的灯塔咖啡馆，夏日黄昏。完全自包含单文件，体积第二小。",
   entryNote:"双击 index.html。支持 ?nopost=1 关后处理、?cam=x,y,z,tx,ty,tz 指定机位。",
-  tech:"three.js 与场景代码一起 minify 成单行 IIFE，无可读源码。",
-  points:"无源码不可改。嫌卡就用 ?nopost=1 关后处理。",
-  note:"与 A16 是同一套模板的姊妹作（同样 README 文案、同样 URL 参数、几乎同样的行数）。要改只能照着重写。"
+  tech:"包内两段式：成品 index.html（three.js 与场景代码 minify 内联）+ src/ 完整源码。src/scene.js 1564 行 ES module，importmap 指向本地 lib/three.module.js（r160）与 addons（EffectComposer / UnrealBloom / OutputPass / RoundedBox）。",
+  points:"源码已归档（2026-10-30 补入），不再锁死。改 src/scene.js 后按 BUILD.md 用 esbuild 重打包；嫌卡仍可用 ?nopost=1 直接关后处理。"
 },
 {
   code:"A06", name:"Cloud Post Office", cn:"云端蒸汽飞艇邮政局",
@@ -382,15 +381,14 @@ const DATA = [
 },
 {
   code:"A16", name:"Route 66 Diner", cn:"66 号公路复古餐厅",
-  theme:"现实复古", tags:["66号公路","加油站","沙漠","成品锁死"],
-  size:"156K", zip:"a16-route66-diner.zip", loc:3929, three:"内联", calls:2355, tris:203253,
-  entry:"index.html", build:"—", open:"direct", edit:"locked",
+  theme:"现实复古", tags:["66号公路","加油站","沙漠","源码可改"],
+  size:"459K", zip:"a16-route66-diner.zip", loc:2179, three:"r160", calls:2355, tris:203253,
+  entry:"index.html", build:"esbuild scene.js", open:"direct", edit:"module",
   preview:"previews/A16.png", pal:["#6b3a24","#120a06"],
   lede:"66 号公路旁的沙漠复古加油站 / 餐厅。全库体积最小。",
   entryNote:"双击 index.html。?nopost=1 关后处理；?cam=x,y,z,tx,ty,tz 指定机位。",
-  tech:"three.js 与场景代码一起 minify 成单行 IIFE，无可读源码。",
-  points:"同 A05，只能用 ?nopost=1。要改场景必须重写。",
-  note:"与 A05 是同一套模板的姊妹作（同样 README 文案、同样参数、3929 vs 3964 行）。"
+  tech:"同 A05 的两段式结构：成品单文件 + src/ 完整源码。src/scene.js 2179 行 ES module，本地 lib/ 里是 three r160 与 addons。",
+  points:"源码已归档（2026-10-30 补入）。与 A05 同模板但代码量更大，改 src/scene.js 后按 BUILD.md 重打包。"
 },
 {
   code:"A17", name:"The Red Room", cn:"双峰 · 红房间",
@@ -483,6 +481,8 @@ function buildChips(){
   });
   const fe = document.getElementById("fEdit");
   EDITS.forEach(e=>{
+    /* 没有任何作品命中的筛选项就不画，免得点开是一片空 */
+    if(e.k!=="all" && !DATA.some(d=>d.edit===e.k)) return;
     const b=document.createElement("button");
     b.className="chip"+(e.k===state.edit?" on":"");
     b.textContent=e.t; b.dataset.v=e.k;
@@ -507,6 +507,7 @@ function costHtml(d){
 }
 
 function matches(d){
+  if(state.edit!=="all" && !DATA.some(x=>x.edit===state.edit)) state.edit="all";
   if(state.theme!=="全部" && d.theme!==state.theme) return false;
   if(state.edit!=="all" && d.edit!==state.edit) return false;
   if(!state.q) return true;

@@ -49,8 +49,8 @@ Every preview below is a live scene: click a thumbnail or a title to run it in t
 </table>
 
 Draw calls are measured, not estimated — see [Performance baseline](#performance-baseline).
-A05 and A16 ship minified only: three.js and the scene code are fused into one IIFE, so there is no
-readable source to edit.
+All nineteen now ship readable source. A05 and A16 were originally minified-only exports; both gained
+`src/scene.js` plus a local `lib/` on 2026-10-30, with the built single file left byte-identical.
 
 ## Repository layout
 
@@ -175,7 +175,7 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## Notes
 
-- Roughly 87 MB of zip archives, 134 MB unpacked, 24 MB of full-size previews, 0.8 MB of thumbnails.
+- Roughly 87 MB of zip archives, 136 MB unpacked, 25 MB of full-size previews, 0.8 MB of thumbnails.
 - `catalog.md` and `profiles.md` are written in Chinese; everything else here is in English.
 - Three filenames had to be repaired during archiving because their zips used a non-UTF-8 encoding
   (`a13-mori-mart`, `a19-stranger-things`, `a18-whale-dream-atelier`). File contents are untouched.

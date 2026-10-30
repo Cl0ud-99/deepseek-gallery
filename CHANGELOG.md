@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.0.7 — 2026-10-30
+
+### A05 and A16 are no longer locked — full source recovered
+
+Both entries had shipped as minified-only exports: three.js and the entire scene fused into one IIFE
+with short generated identifiers, so the archive documented them as unmodifiable. The original source
+packages arrived today and both contain a readable tree:
+
+| | built file | source | three.js |
+|---|---|---|---|
+| A05 Cliff Lighthouse Café | 588 KB | `src/scene.js` — 1,564 lines | r160 |
+| A16 Route 66 Diner | 591 KB | `src/scene.js` — 2,179 lines | r160 |
+
+Each package is two-part: the shipped single file, plus `src/` with an import-map entry point, the
+scene module and a local `lib/` holding `three.module.js` and the addons actually used
+(EffectComposer / RenderPass / ShaderPass / UnrealBloomPass / OutputPass / RoundedBoxGeometry), plus a
+`BUILD.md` describing how to re-bundle with esbuild.
+
+**The built files are byte-identical to what 0.0.6 shipped** (verified by sha256 on both), so nothing
+in the rendered scenes changes and every measurement in `AUDIT.md` and `README.md` still holds. Only
+the packaging and the documentation changed.
+
+Impact on the archive:
+
+- the "minified, uneditable" tier is now **empty** — 13 entries are modular, 6 are single-file-readable
+- package sizes: A05 152 KB → 450 KB, A16 156 KB → 459 KB; unpacked archive 134 MB → 136 MB
+- `index.html` no longer renders filter chips that would match nothing (the "成品锁死" chip is gone)
+- `catalog.md` / `profiles.md` / `README.md` / `AUDIT.md` updated: A05 and A16 now carry entry,
+  build and optimisation sections instead of "no source, cannot edit"
+
+Both files remain candidates for the same treatment as A09: A05 has 935 mergeable meshes, A16 has 990,
+and they share one scene skeleton, so a single batcher could serve both.
+
 ## 0.0.6 — 2026-10-30
 
 ### A15 — removed the gramophone from the second-floor balcony
