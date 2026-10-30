@@ -93,7 +93,8 @@
   .track.dragging{cursor:grabbing; scroll-snap-type:none}
   .card{
     flex:0 0 var(--cw); aspect-ratio:16/9; scroll-snap-align:center; contain:layout paint;
-    position:relative; border-radius:var(--r-lg); overflow:hidden; background:transparent;
+    position:relative; border-radius:var(--r-lg); overflow:hidden;
+    background:rgba(255,255,255,.34);      /* 图片未加载时的占位，加载后被盖住 */
     transform-style:preserve-3d; will-change:transform,opacity;
     box-shadow:0 34px 70px -30px rgba(28,32,44,.55), 0 2px 10px rgba(28,32,44,.12),
                inset 0 0 0 1px rgba(255,255,255,.60);
@@ -738,8 +739,28 @@ function boot() {
   current = -1;
   layout();
 
-  document.body.classList.remove('booting');   // 先放出舞台，再播进场
-  playIntro();
+  /* 弱网时图片可能还没到。等当前这张和左右邻居就位（最多 1.6s）再放出， */
+  /* 否则用户看到的是几张空框加上一段没有内容的进场动画。 */
+  var sel = nearestIndex();
+  var wait = cards.slice(Math.max(0, sel - 1), Math.min(cards.length, sel + 2))
+                  .map(function (c) { return c.el.querySelector('img'); })
+                  .filter(Boolean);
+  var left = wait.length, settled = false;
+
+  function reveal() {
+    if (settled) return;
+    settled = true;
+    document.body.classList.remove('booting');
+    playIntro();
+  }
+  var guard = setTimeout(reveal, 1600);
+  if (!wait.length) { clearTimeout(guard); reveal(); return; }
+  wait.forEach(function (im) {
+    if (im.complete) { if (--left === 0) { clearTimeout(guard); reveal(); } return; }
+    var tick = function () { if (--left === 0) { clearTimeout(guard); reveal(); } };
+    im.addEventListener('load', tick, { once: true });
+    im.addEventListener('error', tick, { once: true });
+  });
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
