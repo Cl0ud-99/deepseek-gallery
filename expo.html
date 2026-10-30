@@ -172,16 +172,21 @@
   body.mode-grid .head{padding:clamp(14px,2.2vh,26px) 24px 0}
   body.mode-grid .wrap{padding-bottom:0}
   body.mode-grid .track{
-    display:grid; grid-template-columns:repeat(5,1fr); grid-auto-rows:1fr;
+    display:grid; grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:auto; align-content:start;
     gap:clamp(10px,1.2vw,18px);
-    overflow:visible; height:100%;
-    padding:clamp(12px,2vh,26px) clamp(16px,3vw,46px) clamp(16px,2.6vh,32px);
+    /* 高度交给内容，超出时自身滚动 —— 不能用 height:100%，
+       否则行高会被压缩到容器高度以下，卡片互相压住 */
+    max-height:100%; overflow-y:auto; overflow-x:hidden;
+    padding:clamp(12px,2vh,26px) clamp(16px,3vw,46px) clamp(20px,3vh,36px);
     perspective:none; cursor:default;
+    scrollbar-width:none; -ms-overflow-style:none;
   }
+  body.mode-grid .track::-webkit-scrollbar{display:none}
   body.mode-grid .card{
     /* 必须和横向模式同为 16:9：格子是 257x151(1.70)，若拉伸填满格子，
        转场时 sx≠sy 会把卡片压扁一下（'抽'的感觉） */
-    width:100%; height:auto; aspect-ratio:16/9; align-self:center;
+    width:100%; height:auto; aspect-ratio:16/9; align-self:start;
     border-radius:18px; cursor:pointer;
     background:transparent;
     box-shadow:0 6px 16px -12px rgba(28,32,44,.22), inset 0 0 0 1px rgba(255,255,255,.45);
