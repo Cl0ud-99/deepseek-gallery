@@ -196,7 +196,8 @@
     opacity:0; transition:opacity .34s ease; pointer-events:none}
   body.mode-grid .scr{display:block}
   .scr.on{opacity:1}
-  .scr i{position:absolute; left:0; width:100%; border-radius:999px; cursor:grab;
+  .scr.on{pointer-events:auto}
+  .scr i{position:absolute; left:0; width:100%; border-radius:999px; cursor:grab; pointer-events:auto;
     background:rgba(255,255,255,.42);
     border:1px solid rgba(255,255,255,.55);
     -webkit-backdrop-filter:blur(14px) saturate(150%); backdrop-filter:blur(14px) saturate(150%);
@@ -466,8 +467,16 @@ track.addEventListener('scroll', scrShow, { passive: true });
 window.addEventListener('resize', scrSync);
 
 /* 拖动：拉到顶/底时不再触发回弹，让用户看到上下内容 */
-scrThumb.addEventListener('pointerdown', function (e) {
+scr.addEventListener('pointerdown', function (e) {
   e.preventDefault();
+  /* 点在轨道空白处：先跳到对应位置（等于一次"翻页"），再继续跟手拖动 */
+  if (e.target !== scrThumb) {
+    var rect = scr.getBoundingClientRect();
+    var ratio = (e.clientY - rect.top - scrThumb.offsetHeight / 2) /
+                Math.max(1, rect.height - scrThumb.offsetHeight);
+    var max0 = track.scrollHeight - track.clientHeight;
+    track.scrollTop = Math.max(0, Math.min(max0, ratio * max0));
+  }
   scrDragging = true;
   scr.classList.add('on');
   scrThumb.classList.add('drag');
