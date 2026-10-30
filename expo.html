@@ -590,15 +590,24 @@ function setMode(toGrid, focusIndex) {
 
   void track.offsetWidth;
 
+  var wantTop = null;
+
   if (toGrid) {
     /* 图片多了以后网格会超出一屏：进总览时直接停在预选择那张附近，
        不要每次都回到最上面 */
     var sEl = els[lastFocus];
     /* ?noscroll=1 可以关掉"滚到选中项"，用来排查进场动画被拽一下的问题 */
     var noScroll = /[?&]noscroll=1/.test(location.search);
-    if (!noScroll && sEl && track.scrollHeight > track.clientHeight) {
-      var want = sEl.offsetTop - (track.clientHeight - sEl.offsetHeight) / 2;
-      track.scrollTop = Math.max(0, Math.min(want, track.scrollHeight - track.clientHeight));
+    if (!noScroll && sEl) {
+      /* 刚切成网格时 scrollHeight 可能还没算好，滚一次会被夹回 0。
+         先算一版，下一帧再用最终的 scrollHeight 校正一次。 */
+      wantTop = function () {
+        var maxTop = Math.max(0, track.scrollHeight - track.clientHeight);
+        var want = sEl.offsetTop - (track.clientHeight - sEl.offsetHeight) / 2;
+        return Math.max(0, Math.min(want, maxTop));
+      };
+      track.scrollTop = wantTop();
+      requestAnimationFrame(function () { track.scrollTop = wantTop(); });
     }
     void track.offsetWidth;
   }
@@ -739,6 +748,7 @@ function setMode(toGrid, focusIndex) {
     if (!toGrid) { track.style.scrollSnapType = ''; current = -1; layout(); }
     /* 等换字动画（.swap，140ms）在隐形状态下走完再淡入，
        否则头部的淡入和标题的闪换叠在一起，看起来就是"闪一下" */
+    if (toGrid && typeof wantTop === 'function') track.scrollTop = wantTop();
     setTimeout(function () { document.body.classList.remove('is-moving'); }, 170);
   });
 }
