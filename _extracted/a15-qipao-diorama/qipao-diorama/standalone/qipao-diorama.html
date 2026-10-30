@@ -5892,6 +5892,7 @@ console.warn( 'Scripts "build/three.js" and "build/three.min.js" are deprecated 
 </script>
 
 
+
 <!-- AMB:start -->
 <script>window.__AMB_PRESET__="A15";</script>
 <script>
@@ -6243,8 +6244,43 @@ console.warn( 'Scripts "build/three.js" and "build/three.min.js" are deprecated 
 
   var presetId = window.__AMB_PRESET__ || null;
 
+  /* ---------- 试听用：多实例 ---------- */
+  var sharedCtx = null, instances = [];
+
+  function auditionCtx() {
+    if (!sharedCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      sharedCtx = new AC();
+    }
+    if (sharedCtx.state === 'suspended') sharedCtx.resume();
+    return sharedCtx;
+  }
+
   var A = {
     presets: PRESETS,
+    play: function (id) {
+      var p = PRESETS[id];
+      if (!p) return null;
+      var c = auditionCtx();
+      var g = c.createGain(); g.gain.value = 0.9;
+      var comp = c.createDynamicsCompressor();
+      comp.threshold.value = -14; comp.ratio.value = 3; comp.attack.value = 0.01; comp.release.value = 0.25;
+      g.connect(comp); comp.connect(c.destination);
+      var h = build(c, g, p, false);
+      var inst = {
+        id: id,
+        volume: function (v) { g.gain.value = v; },
+        stop: function () {
+          h.stop();
+          try { g.disconnect(); comp.disconnect(); } catch (e) {}
+          instances = instances.filter(function (x) { return x !== inst; });
+        }
+      };
+      instances.push(inst);
+      return inst;
+    },
+    stopAll: function () { instances.slice().forEach(function (i) { i.stop(); }); },
+    active: function () { return instances.map(function (i) { return i.id; }); },
     renderOffline: renderOffline,
     mount: function (id) { presetId = id; },
     start: start,

@@ -416,15 +416,15 @@ const DATA = [
 },
 {
   code:"A19", name:"Hawkins / Upside Down", cn:"怪奇物语 · 双世界镜像",
-  theme:"影视同人", tags:["怪奇物语","上下镜像","霓虹","单文件可读"],
-  size:"188K", zip:"a19-stranger-things.zip", loc:2363, three:"内联", calls:2239, tris:124041,
-  entry:"stranger-things-hawkins-diorama.html", build:"—", open:"direct", edit:"readable",
+  theme:"影视同人", tags:["怪奇物语","上下镜像","霓虹","模块化重构"],
+  size:"3.4M", zip:"a19-stranger-things.zip", loc:2883, three:"r149", calls:2739, tris:200948,
+  entry:"hawkins-mirror/hawkins-mirror.html", build:"node build.js", open:"direct", edit:"module",
   preview:"previews/A19.png", pal:["#5c1a1a","#0a0608"],
-  lede:"霍金斯 / 颠倒世界的双层镜像：上层现实世界（街机厅、拜尔斯老屋、BMX、电话亭），下层同款建筑 180° 倒悬、被藤蔓吞噬。",
-  entryNote:"双击 750KB 单文件，three.js 完整内联，首次 1–2 秒生成贴图。静止 7 秒自动环绕。",
-  tech:"2363 行可读单文件，逐层 layers 数组定义材质；上下两套建筑；程序化藤蔓、孢子、深渊红色雷电、夺心魔剪影、上下路灯同步频闪。",
-  points:"上下两套建筑意味着几何量约等于两份，是最直接的合批对象——下层可以复用上层几何做 180° 变换而非重建。",
-  note:"全库唯一用「上下镜像」做叙事结构的作品，也是唯一全中文命名。188K 做到这个密度，程序化程度很高。"
+  lede:"霍金斯 / 颠倒世界的双层镜像：13×13 双层夹心底座，上层现实世界的 Palace Arcade 街角（霓虹招牌、贩卖机、自行车、斑马线），下层同款建筑 180° 倒悬、被藤蔓吞噬。",
+  entryNote:"双击 hawkins-mirror.html（714KB 单文件，three.js 已内联）。默认仰角仅 9°，压住时才上下同时可见；把镜头绕到板面下方才看得到颠倒世界的室内。静置 5 秒自动环绕。",
+  tech:"重构为 5 个模块（core 675 / world 790 / interior 609 / fx 529 / main 280 行），普通 <script> 顺序加载、无构建依赖，build.js 只做内联。three r149 UMD，ColorManagement.legacyMode=false。上下两套建筑共用一块实心地面；程序化藤蔓、孢子、深渊红色雷电、夺心魔剪影、上下路灯同步频闪。",
+  points:"实测 2,739 calls / 20.1 万三角面（比旧版 2,239 / 12.4 万都更高——重构加了不少细节）。可合批 1,314，但先要处理一处遗留：颠倒世界里有一对同材质、同世界矩阵的网格完全重合，重了 2,400 个三角形。",
+  note:"全库唯一用「上下镜像」做叙事结构的作品。重构后几何量约为两套完整建筑，下层可复用上层几何做 180° 变换而非重建。"
 }
 ];
 
@@ -461,7 +461,7 @@ const LIVE_PATH = {
   A16:"a16-route66-diner/route66-diner/index.html",
   A17:"a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html",
   A18:"a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html",
-  A19:"a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"
+  A19:"a19-stranger-things/hawkins-mirror/hawkins-mirror.html"
 };
 const liveUrl = d => LIVE_BASE + LIVE_PATH[d.code].split("/").map(encodeURIComponent).join("/");
 const EDIT_LABEL = {module:"模块化源码", readable:"单文件可读", locked:"已压缩·不可改"};

@@ -199,12 +199,12 @@
   },
   {
     "id": "A19",
-    "frames": 7,
-    "draws": 15673,
-    "tris": 868284,
-    "callsPerFrame": 2239,
-    "trisPerFrame": 124041,
-    "fps": 2.8,
+    "frames": 3,
+    "draws": 8217,
+    "tris": 602844,
+    "callsPerFrame": 2739,
+    "trisPerFrame": 200948,
+    "fps": 0.6,
     "canvas": "1280x800",
     "errs": []
   }

@@ -42,7 +42,7 @@ Every preview below is a live scene: click a thumbnail or a title to run it in t
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html"><img src="previews/thumbs/A18.jpg" width="280" alt="Sunset Dream Loom"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html"><b>A18 · Sunset Dream Loom</b></a><br><sub>2,606 calls · r186.1 · 15M</sub></td>
 </tr>
 <tr>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"><img src="previews/thumbs/A19.jpg" width="280" alt="Hawkins / Upside Down"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"><b>A19 · Hawkins / Upside Down</b></a><br><sub>2,239 calls · inline · 188K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html"><img src="previews/thumbs/A19.jpg" width="280" alt="Hawkins / Upside Down"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html"><b>A19 · Hawkins / Upside Down</b></a><br><sub>2,739 calls · r149 · 3.4M</sub></td>
 <td></td>
 <td></td>
 </tr>
@@ -156,12 +156,13 @@ space to find surfaces sitting exactly on top of each other.
 
 Collection-wide (full report: [AUDIT.md](AUDIT.md), Chinese):
 
-- 23,313 meshes and 3.25M triangles in total, of which **4,221 meshes are outline shells** — 18% of
+- 23,765 meshes and 3.32M triangles in total, of which **4,307 meshes are outline shells** — 18% of
   everything, each one costing its own draw call.
-- **No real z-fighting.** About 2,700 triangles (0.08%) sit exactly on top of another, and every case
+- **No real z-fighting.** About 4,800 triangles (0.14%) sit exactly on top of another, and every case
   is a prop that was placed twice rather than a modelling mistake. Both copies always share a
-  material, so the cost is triangles, not visible flicker.
-- **13,132 meshes could still be merged** by material — an upper bound that still counts animated
+  material, so the cost is triangles, not visible flicker. Half of them come from one duplicated
+  mesh in the refactored Hawkins scene.
+- **13,378 meshes could still be merged** by material — an upper bound that still counts animated
   objects. A02, A07, A18 and A19 alone account for roughly 6,200 of them.
 - A07 owns the most outline shells (639), not A11 as its own notes assumed (105).
 - A13 uses 723 distinct materials for 1,095 meshes — the lowest material reuse in the archive.
@@ -175,7 +176,7 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## Notes
 
-- Roughly 87 MB of zip archives, 136 MB unpacked, 25 MB of full-size previews, 0.8 MB of thumbnails.
+- Roughly 90 MB of zip archives, 140 MB unpacked, 25 MB of full-size previews, 0.8 MB of thumbnails.
 - `catalog.md` and `profiles.md` are written in Chinese; everything else here is in English.
 - Three filenames had to be repaired during archiving because their zips used a non-UTF-8 encoding
   (`a13-mori-mart`, `a19-stranger-things`, `a18-whale-dream-atelier`). File contents are untouched.
