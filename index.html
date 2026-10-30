@@ -914,7 +914,15 @@ function layout() {
   /* 滑动中暂时收掉毛玻璃，停稳后再出现 */
   document.body.classList.add('scrolling');
   clearTimeout(scrollIdle);
-  scrollIdle = setTimeout(function () { document.body.classList.remove('scrolling'); }, 160);
+  scrollIdle = setTimeout(function () {
+    document.body.classList.remove('scrolling');
+    /* 竖屏没有原生吸附，停下来后自己把最近那张对正 */
+    if (vertical && !overview && !transitioning) {
+      var near = nearestIndex();
+      var off = axisPos(cards[near].el) - (axisScroll() + axisView() / 2);
+      if (Math.abs(off) > 8) center(near);
+    }
+  }, 140);
 
   /* 标题跟着卡片的屏幕中心，不再依赖容器高度 */
   var capEl = document.querySelector('.caption');
@@ -1283,6 +1291,16 @@ document.getElementById('vNext').addEventListener('click', function () { stepVie
 
 /* ---------- 总览：一次连续的位移+缩放，不切镜头 ---------- */
 var transitioning = false;
+
+/* 首尾也要能居中：把轨道上下留白设成 (可视高 - 卡片高)/2 */
+function fixEnds() {
+  if (!vertical || !cards.length) return;
+  var h = cards[0].el.offsetHeight;
+  /* +16：实测两端都差这么多，统一补上 */
+  var want = Math.max(0, (track.clientHeight - h) / 2 + 16);
+  track.style.paddingTop = want + 'px';
+  track.style.paddingBottom = want + 'px';
+}
 
 function jumpTo(i) {
   track.style.scrollSnapType = 'none';
@@ -1881,6 +1899,7 @@ function boot() {
   /* 每次打开随机落在某一件上，而不是永远从第一张开始 */
   var pick = Math.floor(Math.random() * cards.length);
   current = -1;
+  fixEnds();
   layout();
   /* 先让布局稳定，再按索引精确居中（竖屏直接用 top，不做平滑） */
   if (vertical) {
