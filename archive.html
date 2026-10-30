@@ -449,6 +449,30 @@ const DATA = [
   tech:"src/ 8 个模块（core / base / ground / building / interior / street / fx / loop），build.py 把它们拼进单文件 index.html。自研三渲二描边 + 后期；雨、雪、蒸汽、火星、滴水五套粒子；双灵与索道是独立动画。",
   points:"实测 3,350 calls / 9.4 万三角面——**调用数全库第三，但三角面只有别人的零头**，是典型的 draw-call 瓶颈。可合批 1,322。28 个描边外壳不算多，但 ShaderMaterial 特效层占了 13,810 个重复三角形（那是有意为之的描边/辉光层，不是几何错误；实体层只有 37 个）。",
   note:"冰与火在同一块底座上共存：熔岩用自发光 + 噪波动画，冰川用半透明蓝 + 焦散。改 src/ 后 python build.py 重新出单文件。"
+},
+{
+  code:"A22", name:"Floating Lava Glacier", cn:"浮空熔岩 · 冰川断崖箱庭",
+  theme:"原创奇幻", tags:["熔岩","冰川","浮空岛","水下"],
+  size:"581K", zip:"", loc:2047, three:"内联", calls:0, tris:0,
+  entry:"index.html", build:"node build.mjs", open:"local", edit:"module",
+  preview:"previews/A22.png", pal:["#d4562a","#1c2a52"],
+  lede:"方形底座上，浮空火山岛悬在冰川断崖之前，熔岩翻过岛缘坠入冰湖，冰层下还有一整套发光的水下世界。",
+  entryNote:"双击 index.html 即可——Three.js 已内联，免服务器、免联网。",
+  tech:"src/app.js 单文件约 2,000 行；build.mjs 用 esbuild 打包成内联单文件。三渲二描边 + 自发光熔岩流。",
+  points:"本次新增，尚未做 draw-call 基准测试。",
+  note:"浮空岛、冰川断崖、水下世界三层结构，靠同一套相机透视串起来。"
+},
+{
+  code:"A23", name:"Summer Night Carnival", cn:"夏夜游乐园 · 掌上八音盒",
+  theme:"原创奇幻", tags:["游乐园","旋转木马","烟花","夜景"],
+  size:"746K", zip:"", loc:0, three:"r128", calls:0, tris:0,
+  entry:"carnival-miniature/carnival.html", build:"bash build.sh", open:"local", edit:"module",
+  preview:"previews/A23.png", pal:["#e8557a","#241b3a"],
+  lede:"双层旋转木马为中心，售票亭、甜品摊、CARNIVAL 霓虹拱门围着它；围栏、气球、棉花糖机、哈哈镜、长椅散在拼花地砖上，夜空里有烟花。",
+  entryNote:"双击 carnival.html 即可——three.js r128、OrbitControls 与泛光后处理全部内联，离线可跑。",
+  tech:"src/ 六个模块（core / world / carousel / booths / props / anim）+ lib/ 本地化的 Three.js 与后期，build.sh 拼成单文件。",
+  points:"本次新增，尚未做 draw-call 基准测试。",
+  note:"闲置 7 秒镜头自转，一碰即停。"
 }
 ];
 
@@ -487,7 +511,9 @@ const LIVE_PATH = {
   A18:"a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html",
   A19:"a19-stranger-things/hawkins-mirror/hawkins-mirror.html",
   A20:"a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html",
-  A21:"a21-ice-fire-mine-station/ice-fire-mine-station/index.html"
+  A21:"a21-ice-fire-mine-station/ice-fire-mine-station/index.html",
+  A22:"a22-floating-lava-glacier/index.html",
+  A23:"a23-carnival/carnival-miniature/carnival.html"
 };
 const liveUrl = d => LIVE_BASE + LIVE_PATH[d.code].split("/").map(encodeURIComponent).join("/");
 const EDIT_LABEL = {module:"模块化源码", readable:"单文件可读", locked:"已压缩·不可改"};
