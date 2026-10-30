@@ -154,9 +154,7 @@
   /* ---------- 底部 ---------- */
   /* 音效开关：与翻页按钮同一套玻璃样式，圆形、只留小图标 */
   .snd{
-    position:absolute; left:50%; transform:translateX(-50%);
-    bottom:clamp(22px,4.2vh,44px); z-index:7;
-    width:clamp(40px,3.8vw,52px); height:clamp(40px,3.8vw,52px); border-radius:50%; padding:0;
+    width:44px; height:44px; border-radius:50%; padding:0; flex:none;
     display:flex; align-items:center; justify-content:center;
     color:var(--ink); cursor:pointer;
     border:1px solid var(--glass-line);
@@ -166,12 +164,11 @@
     transition:transform .2s, border-color .2s, color .2s, opacity .2s;
     -webkit-user-select:none; user-select:none;
   }
-  .snd:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:translateX(-50%) scale(1.06)}
-  .snd:active{transform:translateX(-50%) scale(.96)}
-  .snd .ico{font-size:clamp(13px,1.4vw,17px); line-height:1; opacity:.9}
+  .snd:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:scale(1.06)}
+  .snd:active{transform:scale(.96)}
+  .snd .ico{font-size:15px; line-height:1; opacity:.9}
   .snd.on{color:var(--accent); border-color:rgba(77,107,254,.55)}
   .snd.on .ico{opacity:1}
-  body.mode-grid .snd{display:none}
 
   .bar{position:absolute; left:50%; transform:translateX(-50%); bottom:clamp(14px,2.4vh,26px);
     width:clamp(150px,16vw,240px); height:4px; border-radius:999px;
@@ -344,9 +341,6 @@
     <div class="track" id="track"></div>
     <button class="nav prev" id="navPrev" aria-label="上一件">‹</button>
     <button class="nav next" id="navNext" aria-label="下一件">›</button>
-    <button class="snd" id="sndBtn" aria-label="Toggle ambience" title="Ambience off">
-      <span class="ico" id="sndIco">🔈</span>
-    </button>
     <div class="bar"><i id="bar"></i></div>
   </div>
 
@@ -361,6 +355,9 @@
   </div>
   <div class="vbar bottom">
     <div class="varrow" id="vPrev">←</div>
+    <button class="snd" id="sndBtn" aria-label="Toggle ambience" title="Ambience off">
+      <span class="ico" id="sndIco">🔈</span>
+    </button>
     <div class="varrow" id="vNext">→</div>
   </div>
 </div>

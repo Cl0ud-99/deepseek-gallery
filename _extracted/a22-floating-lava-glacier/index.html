@@ -4255,6 +4255,7 @@ float fbm(vec2 p){
     }`});Mn.addPass(Ov);Mn.addPass(new No);var Fv=new Ms;function Bv(){let i=Fv.getElapsedTime();for(let e of bt.flowMats)e.uniforms&&e.uniforms.uTime&&(e.uniforms.uTime.value=i);for(let e of bt.hazeMats)e.uniforms&&e.uniforms.uTime&&(e.uniforms.uTime.value=i);for(let e of bt.iceMats)e.uniforms&&e.uniforms.uTime&&(e.uniforms.uTime.value=i);bt.bubbles&&(bt.bubbles.uniforms.uTime.value=i),bt.snow&&(bt.snow.uniforms.uTime.value=i),bt.sparks&&(bt.sparks.uniforms.uTime.value=i);let t=bt.islandGroup;if(t.position.y=bt.islandBaseY+Math.sin(i*.55)*.09,t.rotation.z=Math.sin(i*.31)*.005,t.rotation.x=Math.cos(i*.26)*.004,bt.craterGlow){let e=1+Math.sin(i*2.1)*.06;bt.craterGlow.scale.set(4.2*e,4.2*e,1)}for(let e of bt.debris)e.mesh.position.y=e.baseY+Math.sin(i*e.sp+e.ph)*e.amp,e.mesh.rotation.y+=.0012;for(let e of bt.glowMats)e.mat.opacity!==void 0&&(e.mat.opacity=Ts(e.base*(1+Math.sin(i*e.sp+e.ph)*e.amp),0,1));for(let e of xu)e.mat.opacity=Ts(e.base*(1+Math.sin(i*e.sp+e.ph)*e.amp),0,1);for(let e of bt.rings){let n=(i*e.speed+e.ph)%1,s=.55+n*3.2;e.mesh.scale.set(s,s,1),e.mat.opacity=(1-n)*.18*li(0,.12,n)}for(let e of bt.steam){let n=(i*e.speed+e.ph)%1;e.sp.position.set(In.x+Math.sin(i*.6+e.rot)*n*e.amp*1.3,In.y+n*4.6,In.z+Math.cos(i*.5+e.rot)*n*e.amp*1.3);let s=.9+n*3.4;e.sp.scale.set(s,s,1),e.sp.material.opacity=(1-n)*.34*li(0,.2,n)}if(bt.splashDisc){let e=1+Math.sin(i*3.2)*.05;bt.splashDisc.scale.set(e,e,1)}for(let e of yu){let n=(i*e.userData.sp+e.userData.ph)%1,s=Il.getPointAt(n);e.position.set(s.x+e.userData.off.x,s.y+e.userData.off.y,s.z+e.userData.off.z),e.scale.setScalar(.55+n*1.5),e.material.opacity=(1-n*.85)*.85}for(let e of bt.clouds)e.sprite.position.x=e.baseX+Math.sin(i*e.spd*.5+e.ph)*e.amp,e.sprite.material.opacity=e.baseOp*(1+Math.sin(i*e.spd*.7+e.ph)*.18);ge.update(),Mn.render()}ge.update();Je.updateMatrixWorld(!0);try{ze.compile($e,Je)}catch{}Mn.render();Mn.render();var Tu=ze.domElement;requestAnimationFrame(()=>{Mn.render(),Tu.style.opacity="1",ze.setAnimationLoop(Bv)});setTimeout(()=>{Tu.style.opacity="1"},1200);var Oo=null,eu=window.innerWidth,nu=window.innerHeight;function zv(){Oo=null;let i=window.innerWidth,t=window.innerHeight;i===eu&&t===nu||(eu=i,nu=t,Je.aspect=i/t,Je.updateProjectionMatrix(),ze.setSize(i,t,!1),Mn.setSize(i,t),bu.setSize(i,t),Mn.render())}window.addEventListener("resize",()=>{let i=window.innerWidth,t=window.innerHeight;Je.aspect=i/t,Je.updateProjectionMatrix(),ze.setSize(i,t,!1),Mn.render(),Oo&&clearTimeout(Oo),Oo=setTimeout(zv,110)});
 </script>
 
+
 <!-- AMB:start -->
 <script>window.__AMB_PRESET__="A22";</script>
 <script>
@@ -4610,6 +4611,8 @@ float fbm(vec2 p){
   var ctx = null, graph = null, muted = false, btn = null;
 
   function ui() {
+    /* 被画廊嵌进 iframe 时不生成自带按钮——外层已有音效开关 */
+    if (window.top !== window.self) return;
     var css = 'position:fixed;z-index:2147483000;font:12px/1.4 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;'
       + 'right:14px;bottom:14px;padding:7px 12px;border-radius:999px;cursor:pointer;user-select:none;'
       + 'background:rgba(10,12,17,.72);color:#e9ecf3;border:1px solid rgba(255,255,255,.16);'

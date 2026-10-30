@@ -3796,6 +3796,7 @@ three/build/three.module.js:
 
 
 
+
 <!-- AMB:start -->
 <script>window.__AMB_PRESET__="A13";</script>
 <script>
@@ -4151,6 +4152,8 @@ three/build/three.module.js:
   var ctx = null, graph = null, muted = false, btn = null;
 
   function ui() {
+    /* 被画廊嵌进 iframe 时不生成自带按钮——外层已有音效开关 */
+    if (window.top !== window.self) return;
     var css = 'position:fixed;z-index:2147483000;font:12px/1.4 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;'
       + 'right:14px;bottom:14px;padding:7px 12px;border-radius:999px;cursor:pointer;user-select:none;'
       + 'background:rgba(10,12,17,.72);color:#e9ecf3;border:1px solid rgba(255,255,255,.16);'
