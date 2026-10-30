@@ -244,6 +244,7 @@
     will-change:transform;
   }
   .cardveil.open .cardwipe{transform:translate(-50%,-50%) scale(var(--s,30))}
+  .cardveil{cursor:pointer}
   .cardbox{
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
     width:min(90vw,420px); text-align:center; color:#f2f3f6;
@@ -1181,7 +1182,8 @@ function closeCard() {
 
 document.getElementById('creditBtn').addEventListener('click', openCard);
 document.getElementById('cclose').addEventListener('click', closeCard);
-cardveil.addEventListener('click', function (e) { if (e.target === cardveil) closeCard(); });
+/* 点哪儿都收起；点在链接上时链接照常打开（不 preventDefault） */
+cardveil.addEventListener('click', function () { closeCard(); });
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && cardveil.classList.contains('on')) closeCard();
 });
