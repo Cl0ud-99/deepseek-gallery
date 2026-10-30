@@ -607,7 +607,6 @@ function setMode(toGrid, focusIndex) {
         return Math.max(0, Math.min(want, maxTop));
       };
       track.scrollTop = wantTop();
-      requestAnimationFrame(function () { track.scrollTop = wantTop(); });
     }
     void track.offsetWidth;
   }
@@ -755,7 +754,6 @@ function setMode(toGrid, focusIndex) {
     if (!toGrid) { track.style.scrollSnapType = ''; current = -1; layout(); }
     /* 等换字动画（.swap，140ms）在隐形状态下走完再淡入，
        否则头部的淡入和标题的闪换叠在一起，看起来就是"闪一下" */
-    if (toGrid && typeof wantTop === 'function') track.scrollTop = wantTop();
     setTimeout(function () { document.body.classList.remove('is-moving'); }, 170);
   });
 }
