@@ -574,7 +574,7 @@ WORKS.forEach(function (w, i) {
   el.setAttribute('data-id', w.id);
   el.innerHTML = '<img src="previews/wall/' + w.id + '.jpg" alt="' + w.en + '" draggable="false" decoding="async" ' +
                  'onerror="this.style.display=\'none\';this.parentNode.classList.add(\'noimg\')">' +
-                 '<div class="hint">点击进入</div>';
+                 '';
   el.addEventListener('click', function () {
     if (overview) { setMode(false, i); return; }
     if (el.classList.contains('on')) open(w.id);
