@@ -642,9 +642,11 @@ function setMode(toGrid, focusIndex) {
     anims.forEach(function (a) { a.cancel(); });
     anims = [];
     els.forEach(function (el) { el.style.willChange = ''; el.style.zIndex = ''; });
-    document.body.classList.remove('is-moving');
     transitioning = false;                       // 必须先解锁，否则下面的 layout() 会被拦掉
     if (!toGrid) { track.style.scrollSnapType = ''; current = -1; layout(); }
+    /* 等换字动画（.swap，140ms）在隐形状态下走完再淡入，
+       否则头部的淡入和标题的闪换叠在一起，看起来就是"闪一下" */
+    setTimeout(function () { document.body.classList.remove('is-moving'); }, 170);
   });
 }
 
