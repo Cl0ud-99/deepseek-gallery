@@ -557,6 +557,16 @@ function setMode(toGrid, focusIndex) {
       base = 'none';
       op = 0;
       delay = Math.random() * 120;      // 轻微错峰，保留"一镜"的连贯感
+    } else if (!toGrid && i !== sel && Math.abs(g1[i].x + g1[i].w / 2 - scroll1 + box1.left - vw / 2) > vw * 0.7) {
+      /* 返回时，终点在画面外的卡片不横穿屏幕——原地缩小淡出即可，
+         否则十几张同时掠过，选中那张的"一镜"就被淹没了 */
+      dx = 0; dy = 0; sx = 1; sy = 1;
+      base = 'none';
+      el.animate([
+        { opacity: op, transform: 'scale(1)', borderRadius: rv1 + 'px' },
+        { opacity: 0, transform: 'scale(0.88)', borderRadius: rv1 + 'px' }
+      ], { duration: 300, easing: 'ease-out', fill: 'both' });
+      return;
     } else {
       /* 选中的那张：直接归位。
          用"中心点"算位移（宽度变了，左右边缘差和中心差不是一回事），
