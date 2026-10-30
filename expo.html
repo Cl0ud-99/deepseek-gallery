@@ -180,6 +180,7 @@
     max-height:100%; overflow-y:auto; overflow-x:hidden;
     padding:clamp(12px,2vh,26px) clamp(16px,3vw,46px) clamp(20px,3vh,36px);
     perspective:none; cursor:default;
+    overflow-anchor:none;   /* 关掉滚动锚定：贴底时浏览器会为保持锚点偷偷改 scrollTop */
     scrollbar-width:none; -ms-overflow-style:none;
   }
   body.mode-grid .track::-webkit-scrollbar{display:none}
