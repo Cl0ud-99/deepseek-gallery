@@ -890,13 +890,18 @@ function layout() {
         ? Math.max(0.22, 1 - Math.abs(j - best) * 0.20)   /* 越远越小：0.80 / 0.60 / 0.40 … */
         : 1 - ad * 0.13;
       if (vertical) {
-        /* 缩小后视觉间隙会变大：按缩放差把远处的往中间收，
-           让近处与远处的间隙看起来一致 */
-        /* 位移写在 scale 之前：这样它是"未缩放"的位移，
-           正好抵消卡片缩小后多出来的视觉间隙 —— 近处远处看起来一样宽 */
-        var pull = (1 - sc) * (box.offsetHeight / 2);
-        var pdir = j > best ? -1 : 1;
-        box.style.transform = 'rotateX(' + (-rot).toFixed(2) + 'deg) translateY(' + (pdir * pull).toFixed(1) +
+        /* 远处的卡片要逐级叠上来：按每一对相邻卡片的缩放差累加收拢，
+           并额外叠进 OVER，保证每一档都有重叠面积 */
+        var hh = box.offsetHeight, OVER = 14;
+        var sAt = function (k) { return Math.max(0.22, 1 - Math.abs(k - best) * 0.20); };
+        var cum = 0, kk;
+        if (j > best) {
+          for (kk = best + 1; kk <= j; kk++) cum += (hh * (1 - sAt(kk - 1)) + hh * (1 - sAt(kk))) / 2 + OVER;
+          cum = -cum;
+        } else if (j < best) {
+          for (kk = best - 1; kk >= j; kk--) cum += (hh * (1 - sAt(kk)) + hh * (1 - sAt(kk + 1))) / 2 + OVER;
+        }
+        box.style.transform = 'rotateX(' + (-rot).toFixed(2) + 'deg) translateY(' + cum.toFixed(1) +
           'px) scale(' + sc.toFixed(3) + ')';
       } else {
         box.style.transform = 'rotateY(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + (ad * 10).toFixed(1) + 'px)';
