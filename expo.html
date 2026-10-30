@@ -9,7 +9,20 @@
 <meta property="og:description" content="21 件 Three.js 微缩立体场景，全部由代码生成。点开即可自由旋转。">
 <style>
   :root{ --bg:#07080c; --ink:#f2f0eb; --dim:#8d8f99; --dim2:#585b66; --accent:#e8c79a;
-         --cw: clamp(300px, 60vw, 880px); --gap: clamp(16px, 2vw, 34px); }
+         --cw: clamp(300px, 60vw, 880px); --gap: clamp(16px, 2vw, 34px);
+         --r-lg: 46px; --r-md: 26px; --r-pill: 999px;
+         --glass: rgba(24,26,33,.52);
+         --glass-line: rgba(255,255,255,.14);
+         --glass-hi: inset 0 1px 0 rgba(255,255,255,.13); }
+
+  /* 苹果式毛玻璃：半透明底 + 高斯模糊 + 饱和度提升 + 顶部高光内描边 */
+  .glass{
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+    backdrop-filter: blur(26px) saturate(180%);
+    border: 1px solid var(--glass-line);
+    box-shadow: 0 18px 46px -20px rgba(0,0,0,.85), var(--glass-hi);
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%; overflow:hidden; background:var(--bg); color:var(--ink);
     font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
@@ -35,8 +48,14 @@
     transition:opacity .22s}
   .title .cn{font-size:clamp(11.5px,1.15vw,13px); color:var(--dim); margin-top:7px; transition:opacity .22s}
   .title.swap .en,.title.swap .cn{opacity:0}
-  .sub{margin-top:clamp(12px,1.8vh,20px); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim2)}
-  .sub b{color:var(--dim); font-weight:400}
+  .sub{margin-top:clamp(12px,1.8vh,20px); display:inline-flex; align-items:center; gap:10px;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--dim2);
+    padding:8px 18px; border-radius:var(--r-pill);
+    background:var(--glass); border:1px solid var(--glass-line);
+    -webkit-backdrop-filter:blur(22px) saturate(180%); backdrop-filter:blur(22px) saturate(180%);
+    box-shadow:var(--glass-hi)}
+  .sub b{color:var(--dim); font-weight:400; letter-spacing:.18em}
+  .sub i{width:3px; height:3px; border-radius:50%; background:var(--dim2); font-style:normal}
 
   /* ---------- 横向封面流 ---------- */
   .wrap{flex:1; min-height:0; display:flex; align-items:center; position:relative}
@@ -52,19 +71,43 @@
   .track.dragging{cursor:grabbing; scroll-snap-type:none}
   .card{
     flex:0 0 var(--cw); aspect-ratio:16/9; scroll-snap-align:center;
-    position:relative; border-radius:6px; overflow:hidden; background:#101218;
+    position:relative; border-radius:var(--r-lg); overflow:hidden; background:#101218;
     transform-style:preserve-3d; will-change:transform,opacity;
-    box-shadow:0 26px 70px -34px rgba(0,0,0,.95);
+    box-shadow:0 30px 76px -34px rgba(0,0,0,.95), inset 0 0 0 1px rgba(255,255,255,.07);
   }
-  .card img{width:100%; height:100%; object-fit:cover; filter:saturate(.9) brightness(.86); transition:filter .4s}
+  .card img{width:100%; height:100%; object-fit:cover; filter:saturate(.9) brightness(.86); transition:filter .4s;
+    border-radius:var(--r-lg)}
   .card.on img{filter:saturate(1) brightness(1)}
   .card::after{content:""; position:absolute; inset:0; pointer-events:none;
     background:linear-gradient(to top,rgba(5,6,9,.7),transparent 46%)}
-  .card .hint{position:absolute; left:50%; bottom:clamp(12px,1.8vw,20px); transform:translateX(-50%);
-    font-size:10.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent);
-    opacity:0; transition:opacity .3s; z-index:2; white-space:nowrap}
-  .card.on:hover .hint{opacity:.95}
+  .card .hint{position:absolute; left:50%; bottom:clamp(14px,2vw,24px); transform:translateX(-50%);
+    font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent);
+    padding:8px 16px; border-radius:var(--r-pill); white-space:nowrap; z-index:2;
+    background:var(--glass); border:1px solid var(--glass-line);
+    -webkit-backdrop-filter:blur(20px) saturate(180%); backdrop-filter:blur(20px) saturate(180%);
+    box-shadow:var(--glass-hi);
+    opacity:0; transition:opacity .3s, transform .3s}
+  .card.on:hover .hint{opacity:1; transform:translateX(-50%) translateY(-2px)}
   .card:not(.on){cursor:pointer}
+
+  /* 左右切换按钮 */
+  .nav{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:6;
+    width:clamp(46px,4.4vw,58px); height:clamp(46px,4.4vw,58px); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:clamp(17px,1.7vw,21px); line-height:1; color:var(--ink); cursor:pointer;
+    border:1px solid var(--glass-line);
+    background:var(--glass);
+    -webkit-backdrop-filter:blur(26px) saturate(180%); backdrop-filter:blur(26px) saturate(180%);
+    box-shadow:0 16px 40px -18px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.16);
+    transition:transform .2s, border-color .2s, color .2s, opacity .2s;
+    user-select:none; -webkit-user-select:none;
+  }
+  .nav:hover{border-color:rgba(232,199,154,.55); color:var(--accent); transform:translateY(-50%) scale(1.06)}
+  .nav:active{transform:translateY(-50%) scale(.96)}
+  .nav.prev{left:clamp(10px,2.2vw,34px)}
+  .nav.next{right:clamp(10px,2.2vw,34px)}
+  .nav[disabled]{opacity:.28; pointer-events:none}
 
   /* 地面倒影 */
   .floor{position:absolute; left:0; right:0; bottom:0; height:26vh; pointer-events:none; z-index:2;
@@ -72,7 +115,12 @@
 
   /* ---------- 底部 ---------- */
   .foot{flex:none; display:flex; align-items:center; justify-content:space-between; gap:16px;
-    padding:0 clamp(18px,3vw,40px) clamp(16px,2.6vh,30px); font-size:11.5px; color:var(--dim2)}
+    margin:0 clamp(18px,3vw,40px) clamp(14px,2.4vh,26px);
+    padding:11px clamp(16px,2vw,22px); font-size:11.5px; color:var(--dim2);
+    border-radius:var(--r-pill);
+    background:var(--glass); border:1px solid var(--glass-line);
+    -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%);
+    box-shadow:0 16px 40px -22px rgba(0,0,0,.9), var(--glass-hi)}
   .foot .tip{letter-spacing:.12em}
   .foot .kbd{display:inline-block; padding:2px 7px; border:1px solid rgba(255,255,255,.14); border-radius:4px; margin:0 2px}
   .foot .right{display:flex; gap:18px; align-items:center}
@@ -99,12 +147,14 @@
   .vtitle .en{font-size:14.5px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .vtitle .cn{font-size:11.5px; color:var(--dim); margin-top:2px}
   .vbtn{font:inherit; font-size:11.5px; letter-spacing:.08em; color:var(--ink); cursor:pointer;
-    background:rgba(10,12,17,.55); border:1px solid rgba(255,255,255,.1); border-radius:99px;
-    padding:6px 14px; backdrop-filter:blur(10px); transition:.2s; white-space:nowrap}
+    background:var(--glass); border:1px solid var(--glass-line); border-radius:var(--r-pill);
+    padding:8px 16px; -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%);
+    box-shadow:var(--glass-hi); transition:.2s; white-space:nowrap}
   .vbtn:hover{border-color:rgba(232,199,154,.5); color:var(--accent)}
   .vcount{font-size:11px; letter-spacing:.14em; color:var(--dim2); font-variant-numeric:tabular-nums; padding:0 4px}
-  .varrow{width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,.1);
-    background:rgba(10,12,17,.55); backdrop-filter:blur(10px); color:var(--ink);
+  .varrow{width:44px; height:44px; border-radius:50%; border:1px solid var(--glass-line);
+    background:var(--glass); -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%);
+    box-shadow:var(--glass-hi); color:var(--ink);
     display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; transition:.2s}
   .varrow:hover{border-color:rgba(232,199,154,.55); color:var(--accent)}
 
@@ -129,11 +179,13 @@
       <div class="en" id="tEn">Qipao Diorama</div>
       <div class="cn" id="tCn">1936 上海 · 旗袍与留声</div>
     </div>
-    <div class="sub"><b id="tHall">雨夜与霓虹</b> · <span id="tIdx">01 / 21</span></div>
+    <div class="sub"><b id="tHall">雨夜与霓虹</b><i></i><span id="tIdx">01 / 21</span></div>
   </header>
 
   <div class="wrap">
     <div class="track" id="track"></div>
+    <button class="nav prev" id="navPrev" aria-label="上一件">‹</button>
+    <button class="nav next" id="navNext" aria-label="下一件">›</button>
     <div class="floor"></div>
     <div class="bar"><i id="bar"></i></div>
   </div>
@@ -207,6 +259,8 @@ function layout() {
     box.style.opacity = String(Math.max(0.18, 1 - ad * 0.72));
   }
   for (var q = 0; q < cards.length; q++) cards[q].el.classList.toggle('on', q === best);
+  navPrev.disabled = best <= 0;
+  navNext.disabled = best >= cards.length - 1;
   if (best !== current) setCurrent(best);
   var p = cards.length > 1 ? best / (cards.length - 1) : 0;
   document.getElementById('bar').style.width = (p * 100).toFixed(2) + '%';
@@ -291,6 +345,17 @@ track.addEventListener('scroll', function () {
   raf = requestAnimationFrame(function () { raf = 0; layout(); });
 }, { passive: true });
 window.addEventListener('resize', function () { layout(); });
+
+var navPrev = document.getElementById('navPrev');
+var navNext = document.getElementById('navNext');
+navPrev.addEventListener('click', function () { center(Math.max(nearestIndex() - 1, 0)); });
+navNext.addEventListener('click', function () { center(Math.min(nearestIndex() + 1, cards.length - 1)); });
+
+function syncNav() {
+  var i = nearestIndex();
+  navPrev.disabled = i <= 0;
+  navNext.disabled = i >= cards.length - 1;
+}
 
 document.addEventListener('keydown', function (e) {
   if (document.getElementById('viewer').classList.contains('on')) {

@@ -1,0 +1,107 @@
+[
+ {
+  "id": "A01",
+  "rel": "a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html",
+  "wait": 6000
+ },
+ {
+  "id": "A02",
+  "rel": "a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html",
+  "wait": 8000
+ },
+ {
+  "id": "A03",
+  "rel": "a03-aurora-hourglass/aurora-hourglass/index.html",
+  "wait": 6000
+ },
+ {
+  "id": "A04",
+  "rel": "a04-autumn-farm/index.html",
+  "wait": 8000
+ },
+ {
+  "id": "A05",
+  "rel": "a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html",
+  "wait": 6000
+ },
+ {
+  "id": "A06",
+  "rel": "a06-cloud-post-office/cloud-post-office/index.html",
+  "wait": 6000
+ },
+ {
+  "id": "A07",
+  "rel": "a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html",
+  "wait": 8000
+ },
+ {
+  "id": "A08",
+  "rel": "a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html",
+  "wait": 8000
+ },
+ {
+  "id": "A09",
+  "rel": "a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html",
+  "wait": 7000
+ },
+ {
+  "id": "A10",
+  "rel": "a10-lighthouse/lighthouse-scene/lighthouse.html",
+  "wait": 7000
+ },
+ {
+  "id": "A11",
+  "rel": "a11-lunar-outpost/lunar-outpost/index-offline.html",
+  "wait": 7000
+ },
+ {
+  "id": "A12",
+  "rel": "a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html",
+  "wait": 7000
+ },
+ {
+  "id": "A13",
+  "rel": "a13-mori-mart/mori-mart/index.html",
+  "wait": 6000
+ },
+ {
+  "id": "A14",
+  "rel": "a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html",
+  "wait": 7000
+ },
+ {
+  "id": "A15",
+  "rel": "a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html",
+  "wait": 8000
+ },
+ {
+  "id": "A16",
+  "rel": "a16-route66-diner/route66-diner/index.html",
+  "wait": 6000
+ },
+ {
+  "id": "A17",
+  "rel": "a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html",
+  "wait": 8000
+ },
+ {
+  "id": "A18",
+  "rel": "a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html",
+  "wait": 11000
+ },
+ {
+  "id": "A19",
+  "rel": "a19-stranger-things/hawkins-mirror/hawkins-mirror.html",
+  "wait": 7000
+ },
+ {
+  "id": "A20",
+  "rel": "a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html",
+  "wait": 7000
+ },
+ {
+  "id": "A21",
+  "rel": "a21-ice-fire-mine-station/ice-fire-mine-station/index.html",
+  "wait": 7000
+ }
+]
