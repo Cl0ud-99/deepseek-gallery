@@ -215,6 +215,24 @@
     transition:width .22s ease}
 
   /* ---------- 总览按钮 ---------- */
+  /* 作者标识：左上角，小云 + 名字 + 邮箱 */
+  .credit{
+    position:fixed; top:clamp(14px,2.4vh,26px); left:clamp(14px,2.4vw,30px); z-index:20;
+    display:flex; align-items:center; gap:9px;
+    padding:7px 11px; border-radius:var(--r-pill);
+    background:var(--glass); border:1px solid var(--glass-line);
+    -webkit-backdrop-filter:blur(26px) saturate(180%); backdrop-filter:blur(26px) saturate(180%);
+    box-shadow:0 10px 26px -14px rgba(50,48,42,.5), var(--glass-hi);
+    font-size:12px; letter-spacing:.05em; color:var(--ink);
+    transition:color .3s ease, background-color .5s ease, border-color .5s ease, box-shadow .5s ease;
+  }
+  .credit .who{display:flex; align-items:center; gap:7px; color:inherit; transition:color .2s}
+  .credit .who:hover{color:var(--accent)}
+  .credit svg{display:block; opacity:.85}
+  .credit .mail{display:flex; align-items:center; padding-left:9px; opacity:.55;
+    border-left:1px solid var(--glass-line); transition:opacity .2s, color .2s}
+  .credit .mail:hover{opacity:1; color:var(--accent)}
+
   .topbar{
     position:fixed; top:clamp(14px,2.4vh,26px); right:clamp(14px,2.4vw,30px); z-index:20;
     display:flex; align-items:center; gap:10px;
@@ -378,6 +396,13 @@
       <a class="cta" href="https://github.com/Cl0ud-99/deepseek-gallery/issues/new" target="_blank" rel="noopener">Submit yours →</a>
     </div>
   </header>
+
+  <div class="credit">
+    <a class="who" href="https://github.com/Cl0ud-99/deepseek-gallery" target="_blank" rel="noopener" title="GitHub repository">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 18.5h10.1a3.6 3.6 0 0 0 .3-7.2 5.1 5.1 0 0 0-9.8-1.2 3.9 3.9 0 0 0-.6 8.4z"/></svg><span>Cloud99</span>
+    </a>
+    <a class="mail" href="mailto:cloud990725@gmail.com" title="cloud990725@gmail.com"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.6 7 8.4 5.6L20.4 7"/></svg></a>
+  </div>
 
   <div class="topbar">
   <button class="themebtn" id="themeBtn" aria-label="Toggle theme" title="Dark mode">🌙</button>
