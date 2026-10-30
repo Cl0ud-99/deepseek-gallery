@@ -2,12 +2,16 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" id="themeColor">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234d6bfe'/></svg>">
 <title>DeepSeek Gallery — Programmatic WebGL Dioramas</title>
-<meta name="description" content="A community gallery of dioramas built with code. No model files, no textures — geometry, materials and lighting are generated live in the browser with Three.js.">
+<meta name="description" content="Code-built WebGL dioramas. No model files, no textures — geometry, materials and lighting are generated live in the browser with Three.js.">
 <meta property="og:title" content="DeepSeek Gallery — Programmatic WebGL Dioramas">
-<meta property="og:description" content="A community gallery of code-built dioramas. Open any piece and orbit it freely.">
+<meta property="og:description" content="Code-built WebGL dioramas. Open any piece and orbit it freely.">
 <style>
   :root{ --bg:#b6bac2; --ink:#14161c; --dim:rgba(18,20,28,.60); --dim2:rgba(18,20,28,.38);
          --accent:#4d6bfe; --accent-2:#7a63ff;
@@ -62,11 +66,13 @@
     box-shadow: 0 12px 30px -16px rgba(50,48,42,.38), var(--glass-hi);
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html{background:#ffffff}
   html,body{height:100%; overflow:hidden; color:var(--ink);
     background:
       radial-gradient(130% 86% at 50% -14%, #e9ebf2 0%, #d3d7e0 34%, #b9bec9 62%, #9ba0ac 84%, #8b909c 100%);
     font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
     -webkit-font-smoothing:antialiased; overscroll-behavior:none}
+  @supports (height:100dvh){ html,body{height:100dvh} }
   a{color:inherit;text-decoration:none}
   img{display:block}
 
@@ -115,7 +121,7 @@
   }
 
   /* ---------- 顶部标题（随卡片切换） ---------- */
-  .head{padding:clamp(58px,9.4vh,112px) 24px 0; text-align:center; flex:none;
+  .head{padding:clamp(18px,3vh,30px) 24px 0; text-align:center; flex:none;
     transition:opacity .34s ease}
   body.is-moving .head{opacity:0}      /* 转场时先让位，避免文字压在飞行的卡片上 */
   .eyebrow{font-size:10.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--accent); opacity:.85}
@@ -153,11 +159,18 @@
   .card{
     flex:0 0 var(--cw); aspect-ratio:16/9; scroll-snap-align:center; contain:layout paint;
     position:relative; border-radius:var(--r-lg); overflow:hidden;
-    background:rgba(255,255,255,.34);      /* 图片未加载时的占位，加载后被盖住 */
+    background:transparent;      /* 图片未加载时由 .noimg::before 占位，避免按压内缩时露出白边 */
     transform-style:preserve-3d; will-change:transform,opacity;
     box-shadow:0 34px 70px -30px rgba(28,32,44,.55), 0 2px 10px rgba(28,32,44,.12);
   }
-  .card img{width:100%; height:100%; object-fit:cover}
+  .card-inner{
+    display:flex; flex-direction:column; gap:8px;
+    width:100%; height:100%;
+    transition:transform .22s cubic-bezier(.34,1.56,.64,1);
+    transform:translateZ(0);
+  }
+  .card:active .card-inner{transform:scale(.975)}
+  .card img{width:100%; height:100%; object-fit:cover; border-radius:var(--r-lg)}
   .card.noimg::before{content:attr(data-id); position:absolute; inset:0; display:flex;
     align-items:center; justify-content:center; font-size:12px; letter-spacing:.2em;
     color:var(--dim2); background:rgba(255,255,255,.5)}
@@ -209,9 +222,23 @@
   }
   .snd:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:scale(var(--hover))}
   .snd:active{transform:scale(.96)}
-  .snd .ico{font-size:15px; line-height:1; opacity:.9}
+  .snd .ico{display:block; width:17px; height:17px; opacity:.9}
+  .snd .snd-waves, .snd .snd-mute{transition:opacity .16s ease}
+  .snd .snd-waves{opacity:0}
+  .snd .snd-mute{opacity:1}
+  .snd.on .snd-waves{opacity:1}
+  .snd.on .snd-mute{opacity:0}
   .snd.on{color:var(--accent); border-color:rgba(77,107,254,.55)}
   .snd.on .ico{opacity:1}
+  /* 按钮：按下缩小，松手用轻微过冲回弹 */
+  .credit,.ghost,.themebtn,.ovbtn,.snd,.vclose,.varrow,.cclose,.vbtn,.nav,.crow{
+    transition:transform .24s cubic-bezier(.34,1.56,.64,1),
+      color .2s ease, border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+  }
+  .credit:active,.ghost:active,.themebtn:active,.ovbtn:active,.snd:active,
+  .vclose:active,.varrow:active,.cclose:active,.vbtn:active,.nav:active,.crow:active{
+    transform:scale(.94);
+  }
 
   /* 进度条：贴在页面最下沿，左右通栏 */
   .bar{position:fixed; left:0; right:0; bottom:0; z-index:8;
@@ -268,9 +295,11 @@
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
     width:min(90vw,420px); text-align:center; color:#f2f3f6;
     display:flex; flex-direction:column; align-items:center; gap:14px;
-    opacity:0; transition:opacity .3s ease .26s;
+    opacity:0; transition:opacity .16s ease;
   }
-  .cardveil.open .cardbox{opacity:1}
+  .cardveil.open .cardbox{opacity:1; transition:opacity .3s ease .2s}
+  /* 关闭时文字立即撤掉，只保留圆形擦除动画，避免残留 */
+  .cardveil.closing .cardbox{opacity:0!important; transition:none!important}
   .cardbox .bigcloud{opacity:.9}
   .cname{font-size:clamp(24px,3vw,32px); font-weight:500; letter-spacing:-.01em}
   .crole{font-size:12.5px; letter-spacing:.06em; color:rgba(242,243,246,.55); margin-top:-6px}
@@ -325,16 +354,38 @@
   .ovbtn svg{width:13px; height:13px; opacity:.8}
 
   /* ---------- 总览（网格）模式 ---------- */
-  body.mode-grid .head{display:none}
-  /* 总览：鼠标停留放大，与顶栏按钮同一套手感 */
+  /* 总览也保留品牌，位置与卡片预览一致 */
+  /* 总览：平铺网格，卡片本身不再带 3D/缩放变换；作品名放在图片下方 */
   body.mode-grid .card{
-    transition:transform var(--hover-t), box-shadow var(--hover-t);
-    will-change:transform;
+    display:flex; flex-direction:column; gap:8px;
+    width:auto; height:auto; aspect-ratio:auto; min-width:0;
+    background:transparent; border:0; border-radius:var(--r-lg);
+    box-shadow:0 34px 70px -30px rgba(28,32,44,.55), 0 2px 10px rgba(28,32,44,.12);
+    overflow:visible; contain:none;
+  }
+  body.mode-grid .card img{
+    width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; display:block;
+    border-radius:var(--r-lg); background:transparent;
+    box-shadow:none;
+    transition:transform .22s ease;
   }
   body.mode-grid .card:hover{
-    transform:scale(var(--hover));
-    box-shadow:0 26px 50px -22px rgba(0,0,0,.55);
-    z-index:3;
+    transform:none!important; box-shadow:none; z-index:auto;
+  }
+  body.mode-grid .card:hover img{
+    transform:translateY(-2px);
+    box-shadow:none;
+  }
+  body.mode-grid .card-inner{gap:5px}
+  body.mode-grid .card-title{
+    display:block; position:static; transform:none; opacity:1;
+    width:100%; max-width:100%; min-width:0; padding:0 2px; margin:0;
+    background:none; border:0; border-radius:0; box-shadow:none;
+    -webkit-backdrop-filter:none; backdrop-filter:none; text-shadow:none;
+    color:var(--ink); font-size:8.9px; line-height:1.4; letter-spacing:.16em;
+    text-transform:uppercase; text-align:center;
+    white-space:normal; overflow:hidden; overflow-wrap:anywhere;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
   }
   /* 总览里左右箭头与进度条都没有意义（网格是滚动的，不是翻页） */
   body.mode-grid .nav,
@@ -409,7 +460,16 @@
   .viewer.on{visibility:visible}
   .viewer.on{display:block}
   .viewer.shown{opacity:1}
-  .viewer iframe{width:100%; height:100%; border:0; display:block; background:#05060a}
+  /* 场景本身是 16:9，用 cover 方式放大居中，横竖屏都不留大片黑边 */
+  /* 多数场景是 1280×720 的 16:9 画布居中；iframe 用固定 1280×720，
+     再按屏幕 cover 缩放，场景画布本身才会铺满，而不是画布外再套一层黑边 */
+  /* 场景自身会按 iframe 视口重新渲染（直接打开时 390×844 的 canvas 就是满屏），
+     所以 iframe 必须铺满查看器，不要再给固定 1280×720 再缩放，否则场景被锁成 16:9 */
+  .viewer iframe{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    border:0; display:block; background:#05060a;
+  }
   /* 加载页：底色随主题走（浅色/暗色），项目名用小号字距排版 */
   .veil{position:absolute; inset:0; display:flex; flex-direction:column; gap:22px;
     align-items:center; justify-content:center;
@@ -421,19 +481,52 @@
     max-width:min(92vw,560px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .dot{width:6px; height:6px; border-radius:50%; background:var(--accent); opacity:.35; animation:pulse 1.25s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:.18; transform:scale(.8)}50%{opacity:.85; transform:scale(1.15)}}
-  .vbar{position:absolute; left:0; right:0; display:flex; align-items:center; gap:14px;
-    padding:clamp(13px,2vw,22px) clamp(15px,2.4vw,30px); z-index:4; pointer-events:none}
-  .vbar.top{top:0; background:linear-gradient(to bottom,rgba(4,5,8,.85),transparent)}
-  .vbar.bottom{bottom:0; background:linear-gradient(to top,rgba(4,5,8,.85),transparent); justify-content:center}
-  .vbar > *{pointer-events:auto}
-  .vtitle{flex:1; min-width:0}
+  /* 控件全部浮空，没有左右通栏的上下条；场景可以从 iframe 上沿到下沿 */
+  .vtitle{
+    position:absolute; z-index:5; pointer-events:none; min-width:0;
+    left:calc(clamp(15px,2.4vw,30px) + env(safe-area-inset-left));
+    right:calc(86px + env(safe-area-inset-right));
+    top:calc(clamp(13px,2vw,22px) + env(safe-area-inset-top));
+  }
   .vtitle .en{font-size:14.5px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .vtitle .cn{display:none}
+  .vctl{
+    position:absolute; z-index:5; left:50%; transform:translateX(-50%);
+    bottom:calc(clamp(13px,2vw,22px) + env(safe-area-inset-bottom));
+    display:flex; align-items:center; gap:14px; pointer-events:none;
+  }
+  .vctl > *{pointer-events:auto}
   .vbtn{font:inherit; font-size:11.5px; letter-spacing:.08em; color:var(--ink); cursor:pointer;
     background:var(--glass); border:1px solid var(--glass-line); border-radius:var(--r-pill);
     padding:8px 16px; -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%);
     box-shadow:var(--glass-hi); transition:.2s; white-space:nowrap}
   .vbtn:hover{border-color:rgba(77,107,254,.55); color:var(--accent)}
+  /* 返回：与云朵/太阳同款的圆形玻璃按钮，只留小叉 */
+  .vclose{
+    position:absolute; z-index:6; flex:none;
+    top:calc(clamp(13px,2vw,22px) + env(safe-area-inset-top));
+    right:calc(clamp(15px,2.4vw,30px) + env(safe-area-inset-right));
+    width:44px; height:44px; border-radius:50%; padding:0;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink); cursor:pointer;
+    border:1px solid var(--glass-line); background:var(--glass);
+    -webkit-backdrop-filter:blur(26px) saturate(180%); backdrop-filter:blur(26px) saturate(180%);
+    box-shadow:0 16px 40px -18px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.16);
+    transition:transform .2s, border-color .2s, color .2s;
+  }
+  .vclose:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:scale(var(--hover))}
+  .vclose:active{transform:scale(.94)}
+  .toast{
+    position:fixed; left:50%; bottom:calc(96px + env(safe-area-inset-bottom));
+    transform:translate(-50%,10px); z-index:130;
+    padding:9px 16px; border-radius:999px;
+    background:rgba(10,12,18,.72); color:#f2f4f8;
+    border:1px solid rgba(255,255,255,.18);
+    -webkit-backdrop-filter:blur(18px) saturate(160%); backdrop-filter:blur(18px) saturate(160%);
+    font-size:11.5px; letter-spacing:.08em; pointer-events:none;
+    opacity:0; transition:opacity .2s ease, transform .2s ease;
+  }
+  .toast.on{opacity:1; transform:translate(-50%,0)}
   .varrow{width:44px; height:44px; border-radius:50%; border:1px solid var(--glass-line);
     background:var(--glass); -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%);
     box-shadow:var(--glass-hi); color:var(--ink);
@@ -455,6 +548,241 @@
     *{transition:none!important; animation:none!important}
     .track{scroll-behavior:auto}
   }
+
+  /* 顶部工具组：桌面保持左右两端，移动端由媒体查询改成居中一行 */
+  .dock{display:contents}
+  .ghost{
+    position:fixed; top:clamp(14px,2.4vh,26px);
+    left:calc(clamp(14px,2.4vw,30px) + var(--btn-h) + 10px);
+    z-index:20; width:var(--btn-h); height:var(--btn-h); border-radius:50%;
+    padding:0; box-sizing:border-box; display:flex; align-items:center; justify-content:center;
+    color:var(--ink); cursor:pointer; background:var(--glass); border:1px solid var(--glass-line);
+    -webkit-backdrop-filter:blur(26px) saturate(180%); backdrop-filter:blur(26px) saturate(180%);
+    box-shadow:0 10px 26px -14px rgba(50,48,42,.5), var(--glass-hi);
+    transition:transform .25s, color .25s, border-color .25s;
+  }
+  .ghost:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(var(--hover))}
+  .card-title{display:none}
+  /* 顶栏和参考图一致：总览按钮只留网格图标，不显示文字 */
+  #ovLabel{display:none}
+  .ovbtn{width:var(--btn-h); padding:0; justify-content:center; border-radius:50%}
+
+
+  /* ============================================================
+     移动端移植层
+     - 竖屏：纵向卡片流，卡片轻微叠在上一张后面
+     - 横屏/桌面：保持原来的横向卡片流
+     - 上下毛玻璃边缘只做背景，按钮、鲸鱼进度条永远在上层
+     ============================================================ */
+
+  /* 查看器标题：场景底色深浅不一，标题必须自带对比度 */
+  .vtitle{color:#f2f4f8; text-shadow:0 1px 12px rgba(0,0,0,.65)}
+  .vtitle .cn{color:rgba(242,244,248,.62)}
+
+  /* 查看器上下栏：iframe 是独立文档，backdrop-filter 取不到场景内容，
+     直接用深色半透明渐变，保证在任何场景上都呈现暗玻璃，而不是灰白条 */
+  /* iframe 在移动端合成层里不参与父层半透明混色，深色半透明会被洗成灰白；
+     移动端顶部用实色再渐隐，桌面端保留原来的半透明渐变 */
+  @media (max-width:900px), (max-width:1000px) and (orientation:landscape) and (max-height:520px){
+    .vbar.top{background:linear-gradient(to bottom,#0a0d13 0%,#0a0d13 66%,rgba(10,13,19,0) 100%)}
+    .vbar.bottom{background:linear-gradient(to top,#0a0d13 0%,#0a0d13 66%,rgba(10,13,19,0) 100%)}
+  }
+
+  /* 展厅上下边缘的毛玻璃：z 7，低于进度条(8)与按钮(20) */
+  .edge{position:fixed; left:0; right:0; z-index:2; pointer-events:none; display:none}
+  .edge.top{top:0; height:calc(70px + env(safe-area-inset-top));
+    background:linear-gradient(to bottom,rgba(233,235,242,.62) 0%,rgba(233,235,242,.26) 58%,rgba(233,235,242,0) 100%);
+    -webkit-backdrop-filter:blur(18px) saturate(150%); backdrop-filter:blur(18px) saturate(150%);
+    -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 56%,transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 0%,#000 56%,transparent 100%);
+  }
+  .edge.bottom{bottom:0; height:calc(64px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top,rgba(233,235,242,.66) 0%,rgba(233,235,242,.26) 55%,rgba(233,235,242,0) 100%);
+    -webkit-backdrop-filter:blur(18px) saturate(150%); backdrop-filter:blur(18px) saturate(150%);
+    -webkit-mask-image:linear-gradient(to top,#000 0%,#000 52%,transparent 100%);
+            mask-image:linear-gradient(to top,#000 0%,#000 52%,transparent 100%);
+  }
+  body.dark .edge.top{background:linear-gradient(to bottom,rgba(10,12,18,.66) 0%,rgba(10,12,18,.28) 58%,rgba(10,12,18,0) 100%)}
+  body.dark .edge.bottom{background:linear-gradient(to top,rgba(10,12,18,.70) 0%,rgba(10,12,18,.28) 55%,rgba(10,12,18,0) 100%)}
+
+  /* iOS 打开图标：卡片图克隆 → 全屏 */
+  .launch{position:fixed; z-index:120; overflow:hidden; background:#05060a; pointer-events:none;
+    will-change:transform,opacity; box-shadow:0 30px 90px -18px rgba(0,0,0,.65)}
+  .launch img{width:100%; height:100%; object-fit:cover; display:block}
+  .launch-dim{position:fixed; inset:0; z-index:90; background:#05060a; opacity:0;
+    pointer-events:none; transition:opacity .28s ease}
+  .launch-dim.on{opacity:.52}
+
+  @media (max-width:900px), (max-width:1000px) and (orientation:landscape) and (max-height:520px){
+    .edge{display:block}
+    /* Safari 横屏的标签栏/工具栏：把舞台、查看器、名片限制在 visualViewport 内 */
+    .stage,.viewer,.cardveil,.boot{
+      top:var(--vvt,0); left:0; right:0; bottom:auto;
+      width:100%; height:var(--vvh,100%);
+    }
+    .edge,.head,.dock,.bar{position:absolute}
+    .launch-dim{
+      top:var(--vvt,0); left:0; right:0; bottom:auto;
+      width:100%; height:var(--vvh,100%);
+    }
+    /* 页面本身只允许单指纵向/横向浏览，双指缩放交给 viewer 里的场景自己 */
+    html,body{touch-action:pan-y}
+    body:not(.mode-vertical):not(.mode-grid) .track{touch-action:pan-x}
+    /* 轨道自成一个层，卡片内部的 z-index 不会越过上下玻璃 */
+    body.mode-vertical .track, body.mode-grid .track{position:relative; z-index:0; isolation:isolate}
+    :root{--btn-h:44px; --cw:92vw}
+    /* 顶栏参考图：云朵+上传 在左，品牌居中，主题+总览 在右，同一行 */
+    .head{position:fixed; top:calc(14px + env(safe-area-inset-top)); left:0; right:0;
+      height:44px; padding:0; display:flex; align-items:center; justify-content:center;
+      z-index:21; pointer-events:none; text-align:center}
+    body.mode-vertical .head, body.mode-grid .head{opacity:1!important}
+    .eyebrow{font-size:10px; letter-spacing:.28em; margin-right:-.28em}
+    .lead{display:none}
+    .dock{display:flex; position:fixed; top:calc(14px + env(safe-area-inset-top)); left:0; right:0;
+      transform:none; z-index:20; gap:8px; align-items:center; white-space:nowrap;
+      padding-left:calc(12px + env(safe-area-inset-left));
+      padding-right:calc(12px + env(safe-area-inset-right))}
+    .dock .credit{position:static; top:auto; left:auto; width:44px; height:44px}
+    .dock .ghost{position:static; top:auto; left:auto; width:44px; height:44px}
+    .dock .topbar{position:static; top:auto; right:auto; margin-left:auto; gap:8px}
+    .themebtn{width:44px; height:44px}
+    .ovbtn{width:44px; height:44px; padding:0}
+    .snd{width:48px; height:48px}
+    .bar{bottom:env(safe-area-inset-bottom)}
+    /* 全屏：去掉底部标题区，标题进卡片 */
+    .caption{display:none}
+    .nav{display:none}
+    .wrap{padding-bottom:0}
+    .edge.top{height:calc(99px + env(safe-area-inset-top))}
+    .edge.bottom{height:calc(83px + env(safe-area-inset-bottom))}
+    /* 作品名：卡片正中，小号玻璃胶囊，只在当前卡片上出现 */
+    .card-title{
+      display:block; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      z-index:3; pointer-events:none; opacity:0; transition:opacity .25s ease;
+      max-width:82%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+      font-size:10.5px; letter-spacing:.24em; text-transform:uppercase; color:#fff;
+      padding:5px 11px; border-radius:999px;
+      background:rgba(10,12,18,.34); border:1px solid rgba(255,255,255,.22);
+      -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+      text-shadow:0 1px 8px rgba(0,0,0,.55);
+    }
+    .card.on .card-title{opacity:1}
+    /* 手机上加载页用深色，避免 iOS 放大动画收尾时闪白 */
+    .veil{background:#05060a; color:#eef0f4}
+    .vbar.top{padding-top:calc(clamp(13px,2vw,22px) + env(safe-area-inset-top));
+      padding-left:calc(clamp(15px,2.4vw,30px) + env(safe-area-inset-left));
+      padding-right:calc(clamp(15px,2.4vw,30px) + env(safe-area-inset-right))}
+    .vbar.bottom{padding-bottom:calc(clamp(13px,2vw,22px) + env(safe-area-inset-bottom))}
+    .vbtn{min-height:44px; padding:11px 18px; display:inline-flex; align-items:center}
+    .varrow{width:48px; height:48px}
+    .vtitle .en{font-size:13px}
+    /* 放在固定定位声明之后，确保它们相对 stage（visualViewport）定位 */
+    .edge,.head,.dock,.bar{position:absolute}
+  }
+
+  /* 竖屏：纵向卡片流 */
+  @media (max-width:900px){
+    body.mode-vertical .wrap{align-items:stretch; padding-bottom:0}
+    body.mode-vertical .track{
+      flex-direction:column; height:100%;
+      overflow-y:auto; overflow-x:hidden;
+      padding-inline:0; padding-block:0; gap:20px;
+      perspective:none; scroll-snap-type:none;
+      touch-action:pan-y; overscroll-behavior-y:contain;
+      -webkit-overflow-scrolling:touch;
+      -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 7%,#000 93%,transparent 100%);
+              mask-image:linear-gradient(to bottom,transparent 0%,#000 7%,#000 93%,transparent 100%);
+    }
+    /* 卡片固定 16:9：高度直接按宽度算，不依赖图片固有比例 */
+    body.mode-vertical:not(.mode-grid) .card{
+      flex:0 0 auto; width:var(--cw);
+      height:calc(var(--cw) * 9 / 16); aspect-ratio:16/9;
+    }
+    body.mode-vertical .card{transform-origin:50% 50%}
+    body.mode-vertical .card .hint{display:none}
+    body.mode-vertical .track.dragging{scroll-snap-type:none}
+  }
+
+  /* 总览：手机上 2 列、平板上 3 列，并且真正铺满可用高度 */
+  @media (max-width:900px), (max-width:1000px) and (orientation:landscape) and (max-height:520px){
+    body.mode-grid .wrap{align-items:stretch; padding-bottom:0}
+    body.mode-grid .track{
+      display:grid; height:auto; max-height:100%;
+      grid-template-columns:repeat(2,1fr); gap:14px;
+      padding:calc(134px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom));
+      overflow-y:auto; overflow-x:hidden; scroll-snap-type:none;
+      perspective:none; touch-action:pan-y;
+    }
+    body.mode-grid .card{width:auto; height:auto; flex:none}
+    body.mode-grid .tilt{display:none}
+    body.mode-grid .scr{display:none}
+    /* 总览：只留图片与图标，没有文字；4 个圆形按钮居中 */
+  }
+  @media (min-width:520px) and (max-width:900px), (min-width:520px) and (max-width:1000px) and (max-height:520px){
+    body.mode-grid .track{grid-template-columns:repeat(3,1fr)}
+  }
+
+  /* 横屏手机：标题让位，卡片按可用高度取景，避免轨道溢出盖住文字 */
+  @media (max-height:520px) and (max-width:1000px){
+    .head{top:calc(12px + env(safe-area-inset-top))}
+    /* 横屏玻璃边：让模糊在更大范围内渐隐，避免出现一条清晰的马赛克分界 */
+    .edge.top{
+      height:calc(67px + env(safe-area-inset-top));
+      -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 18%,rgba(0,0,0,.55) 55%,transparent 100%);
+              mask-image:linear-gradient(to bottom,#000 0%,#000 18%,rgba(0,0,0,.55) 55%,transparent 100%);
+    }
+    .edge.bottom{
+      height:calc(55px + env(safe-area-inset-bottom));
+      -webkit-mask-image:linear-gradient(to top,#000 0%,#000 18%,rgba(0,0,0,.55) 55%,transparent 100%);
+              mask-image:linear-gradient(to top,#000 0%,#000 18%,rgba(0,0,0,.55) 55%,transparent 100%);
+    }
+    .dock{top:calc(12px + env(safe-area-inset-top))}
+    .caption{display:none}
+    .wrap{padding-bottom:0}
+    /* 横屏卡片按可视高度的 56% 取景：Safari 标签栏占了高度也不会被切 */
+    :root{--cw:min(72vw, calc(var(--vvh, 56vh) * 0.56 * 16 / 9))}
+    body:not(.mode-grid) .track{padding-block:10px}
+    body.mode-grid .track{padding:calc(80px + env(safe-area-inset-top)) 16px calc(65px + env(safe-area-inset-bottom))}
+    body.mode-grid .dock{top:calc(12px + env(safe-area-inset-top))}
+    body.mode-grid .edge.top{height:calc(67px + env(safe-area-inset-top))}
+    /* 横屏个人名片：限制在可视高度内，内容多时内部滚动，不能顶出屏幕 */
+    .cardbox{
+      width:min(86vw, 520px); max-height:calc(100% - 24px);
+      gap:8px; padding:8px 4px;
+      overflow-y:auto; overscroll-behavior:contain;
+      -webkit-overflow-scrolling:touch; touch-action:pan-y;
+      scrollbar-width:none;
+    }
+    .cardbox::-webkit-scrollbar{display:none}
+    .cardbox .bigcloud{width:34px; height:34px}
+    .cname{font-size:22px}
+    .crole{font-size:11px; margin-top:-4px}
+    .crow{padding:8px 12px; font-size:11.5px}
+    .crow .ck{font-size:9.5px}
+    .cclose{margin-top:2px; padding:6px 16px; font-size:10.5px}
+    /* 横屏：底部按钮收进 X 那一列，右侧纵向排列 */
+    .vctl{
+      left:auto; right:calc(clamp(15px,2.4vw,30px) + env(safe-area-inset-right));
+      top:calc(clamp(13px,2vw,22px) + env(safe-area-inset-top) + 58px);
+      bottom:auto; transform:none;
+      flex-direction:column; gap:10px;
+    }
+  }
+
+  @media (max-width:370px){
+    .eyebrow{font-size:9px; letter-spacing:.22em; margin-right:-.22em}
+  }
+
+  /* 触摸设备：:hover 会粘住，全部收掉；用 :active 给触感 */
+  @media (hover:none){
+    /* 横屏也用 JS 吸附：原生 x snap 会和入场对中/可视高度变化互相抢，导致卡片来回跳 */
+    body:not(.mode-vertical):not(.mode-grid) .track{scroll-snap-type:none}
+    .nav:hover,.snd:hover,.credit:hover,.themebtn:hover,.ovbtn:hover,.ghost:hover{transform:none}
+    body.mode-grid .card:hover{transform:none!important; box-shadow:none}
+    body.mode-grid .card:hover img{transform:none}
+    .card.on:hover .hint{opacity:0}
+    .snd:active,.credit:active,.themebtn:active,.ovbtn:active,.varrow:active,.ghost:active{transform:scale(.94)}
+  }
 </style>
 </head>
 <body class="booting">
@@ -467,25 +795,28 @@
 </div>
 
 <div class="stage">
+  <div class="edge top" aria-hidden="true"></div>
+  <div class="edge bottom" aria-hidden="true"></div>
   <header class="head">
     <div class="eyebrow">DeepSeek Gallery</div>
-    <div class="lead">A community gallery of dioramas built entirely in code.
-      <a class="cta" href="https://github.com/Cl0ud-99/deepseek-gallery/issues/new" target="_blank" rel="noopener">Submit yours →</a>
-    </div>
   </header>
 
-  <button class="credit" id="creditBtn" aria-label="About Cloud99" title="Cloud99">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 18.5h10.1a3.6 3.6 0 0 0 .3-7.2 5.1 5.1 0 0 0-9.8-1.2 3.9 3.9 0 0 0-.6 8.4z"/></svg>
-  </button>
-
-  <div class="topbar">
-  <button class="themebtn" id="themeBtn" aria-label="Toggle theme" title="Dark mode">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.6A8.6 8.6 0 1 1 9.4 3.8a7 7 0 0 0 10.8 10.8z"/></svg>
-  </button>
-  <button class="ovbtn" id="ovBtn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-    <span id="ovLabel">All Works</span>
-  </button>
+  <div class="dock">
+    <button class="credit" id="creditBtn" aria-label="About Cloud99" title="Cloud99">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 18.5h10.1a3.6 3.6 0 0 0 .3-7.2 5.1 5.1 0 0 0-9.8-1.2 3.9 3.9 0 0 0-.6 8.4z"/></svg>
+    </button>
+    <button class="ghost" id="ghostBtn" type="button" aria-label="Upload" title="Upload">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg>
+    </button>
+    <div class="topbar">
+    <button class="themebtn" id="themeBtn" aria-label="Toggle theme" title="Dark mode">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.6A8.6 8.6 0 1 1 9.4 3.8a7 7 0 0 0 10.8 10.8z"/></svg>
+    </button>
+    <button class="ovbtn" id="ovBtn" aria-label="Show all works">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span id="ovLabel">All Works</span>
+    </button>
+    </div>
   </div>
 
   <div class="wrap">
@@ -519,6 +850,9 @@
     <a class="crow" href="mailto:cloud990725@gmail.com">
       <span class="ck">Email</span><span class="cv">cloud990725@gmail.com</span>
     </a>
+    <a class="crow" href="https://github.com/Cl0ud-99/deepseek-gallery/issues/new" target="_blank" rel="noopener">
+      <span class="ck">Issue</span><span class="cv">Submit a scene</span>
+    </a>
     <button class="cclose" id="cclose">Close</button>
   </div>
 </div>
@@ -526,19 +860,47 @@
 <div class="viewer" id="viewer">
   <div class="veil" id="veil"><div class="vname" id="vname"></div><div class="dot"></div></div>
   <iframe id="frame" title="scene"></iframe>
-  <div class="vbar top">
-    <div class="vtitle"><div class="en" id="vEn"></div><div class="cn" id="vCn"></div></div>
-    <button class="vbtn" id="vClose">Back to gallery ✕</button>
-  </div>
-  <div class="vbar bottom">
+  <div class="vtitle"><div class="en" id="vEn"></div><div class="cn" id="vCn"></div></div>
+  <button class="vclose" id="vClose" aria-label="Back to gallery" title="Back to gallery">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <div class="vctl">
     <div class="varrow" id="vPrev">←</div>
     <button class="snd" id="sndBtn" aria-label="Toggle ambience" title="Ambience off">
-      <span class="ico" id="sndIco">🔈</span>
+      <svg class="ico" id="sndIco" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M11 5 6 9H3v6h3l5 4V5z"/>
+        <g class="snd-waves"><path d="M15.4 9.2a4 4 0 0 1 0 5.6"/><path d="M18 6.7a8 8 0 0 1 0 10.6"/></g>
+        <g class="snd-mute"><path d="M16 9.5l5 5M21 9.5l-5 5"/></g>
+      </svg>
+    </button>
+    <button class="snd" id="shotBtn" aria-label="Save screenshot" title="Save screenshot">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 8.5h3l1.6-2.2h6.8L17 8.5h3a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5a1 1 0 0 1 1-1z"/>
+        <circle cx="12" cy="13.5" r="3.4"/>
+      </svg>
     </button>
     <div class="varrow" id="vNext">→</div>
   </div>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<!-- 完整环境声库挂在画廊自己的窗口里，iOS 的手势才能真正解锁 AudioContext -->
+<script>window.__AMB_PRESET__ = 'A07';</script>
+<script src="ambience.js"></script>
+<script>
+(function () {
+  function killAmbUI() {
+    var nodes = document.querySelectorAll('div[title^="程序化环境声"]');
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].parentNode) nodes[i].parentNode.removeChild(nodes[i]);
+    }
+  }
+  killAmbUI();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', killAmbUI);
+  setTimeout(killAmbUI, 300);
+  setTimeout(killAmbUI, 1200);
+})();
+</script>
 <script>
 var WORKS = [
   {id:"A07",en:"FBC Quarry 07",cn:"倒悬巨构采石场"},
@@ -570,14 +932,41 @@ var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks
 var track = document.getElementById('track');
 var cards = [];
 
+/* ---------- 响应式轴：竖屏纵向，横屏/桌面横向 ---------- */
+var mqVert = window.matchMedia('(max-width: 900px) and (orientation: portrait)');
+var mqNarrow = window.matchMedia('(max-width: 600px)');
+var mqTouch = window.matchMedia('(hover: none)');
+var VERT = mqVert.matches;
+var isTouch = mqTouch.matches;
+/* iOS Safari 横屏时标签栏/工具栏会占掉一大截；用 visualViewport 把舞台限制在真正可见的区域 */
+function syncViewportVars() {
+  var vv = window.visualViewport;
+  var w = vv ? vv.width : window.innerWidth;
+  var h = vv ? vv.height : window.innerHeight;
+  var t = vv ? vv.offsetTop : 0;
+  var l = vv ? vv.offsetLeft : 0;
+  var de = document.documentElement;
+  de.style.setProperty('--vvw', Math.round(w) + 'px');
+  de.style.setProperty('--vvh', Math.round(h) + 'px');
+  de.style.setProperty('--vvt', Math.round(t) + 'px');
+  de.style.setProperty('--vvl', Math.round(l) + 'px');
+}
+syncViewportVars();
+var imgTier = 'wall';
+document.body.classList.toggle('mode-vertical', VERT);
+
+function previewSrc(id) { return 'previews/' + imgTier + '/' + id + '.jpg'; }
+
 WORKS.forEach(function (w, i) {
   var el = document.createElement('article');
   el.className = 'card';
   el.dataset.id = w.id;
   el.setAttribute('data-id', w.id);
-  el.innerHTML = '<img src="previews/wall/' + w.id + '.jpg" alt="' + w.en + '" draggable="false" decoding="async" ' +
-                 'onerror="this.style.display=\'none\';this.parentNode.classList.add(\'noimg\')">' +
-                 '';
+  el.innerHTML = '<div class="card-inner">' +
+                 '<img src="' + previewSrc(w.id) + '" alt="' + w.en + '" draggable="false" decoding="async" ' +
+                 'onerror="this.style.display=\'none\';var c=this.closest(\'.card\');if(c)c.classList.add(\'noimg\')">' +
+                 '<span class="card-title">' + w.en + '</span>' +
+                 '</div>';
   el.addEventListener('click', function () {
     if (overview) { setMode(false, i); return; }
     if (el.classList.contains('on')) open(w.id);
@@ -599,24 +988,46 @@ var lastFocus = 0;   // 进入总览前聚焦的那一张，返回时用
 
 function layout() {
   if (overview || transitioning) return;
-  var mid = track.scrollLeft + track.clientWidth / 2;
-  var half = Math.max(track.clientWidth * 0.5, 1);
+  var pos = VERT ? track.scrollTop : track.scrollLeft;
+  var size = VERT ? track.clientHeight : track.clientWidth;
+  var mid = pos + size / 2;
+  var half = Math.max(size * 0.5, 1);
   var best = 0, bestD = 1e9;
   for (var k = 0; k < cards.length; k++) {
     var c = cards[k];
     var box = c.el;
-    var d = (box.offsetLeft + box.offsetWidth / 2 - mid) / half;
+    var bp = VERT ? box.offsetTop : box.offsetLeft;
+    var bs = VERT ? box.offsetHeight : box.offsetWidth;
+    var d = (bp + bs / 2 - mid) / half;
     if (Math.abs(d) < bestD) { bestD = Math.abs(d); best = k; }
     var ad = Math.min(1, Math.abs(d));
     if (!reduce) {
-      // d 可以到 ±10（列表总宽 19000px），必须钳制：
-      // 之前没钳制会算出 rotateY(±200°)，到 90° 时卡片被压成一条线
-      var rot = -Math.max(-1, Math.min(1, d)) * 20;
-      var sc = 1 - ad * 0.13;
-      var ty = ad * 10;
-      box.style.transform = 'rotateY(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + ty.toFixed(1) + 'px)';
+      if (VERT) {
+        /* 竖屏：中间大、上下小；相邻卡片朝中心收，轻轻叠在主卡后面。
+           非主卡加一点 rotateX + perspective，上宽下窄，做出立体层叠感。 */
+        var pull = -Math.max(-1, Math.min(1, d)) * box.offsetHeight * 0.55;
+        var vsc = 1 - ad * 0.34;
+        /* 主卡不变；其余卡片面积增加 10%（线性尺寸 ×√1.10） */
+        if (k !== best) vsc *= Math.sqrt(1.10);
+        /* 主卡上方：上宽下窄（负角）；主卡下方：上窄下宽（正角），形成环绕的立体层叠 */
+        var tilt = ad < 0.015 ? 0 : (10 + ad * 12) * (d < 0 ? -1 : 1);
+        box.style.transform = tilt
+          ? 'perspective(900px) translateY(' + pull.toFixed(1) + 'px) rotateX(' + tilt.toFixed(2) + 'deg) scale(' + vsc.toFixed(3) + ')'
+          : 'translateY(0px) scale(1)';
+        box.style.zIndex = String(10 - Math.round(ad * 5));
+      } else {
+        // d 可以到 ±10（列表总宽 19000px），必须钳制：
+        // 之前没钳制会算出 rotateY(±200°)，到 90° 时卡片被压成一条线
+        var rot = -Math.max(-1, Math.min(1, d)) * 20;
+        var sc = 1 - ad * 0.13;
+        var ty = ad * 10;
+        box.style.transform = 'rotateY(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + ty.toFixed(1) + 'px)';
+        box.style.zIndex = '';
+      }
     }
-    box.style.opacity = String(Math.max(0.34, 1 - ad * 0.58));
+    box.style.opacity = VERT
+      ? String(Math.max(0.46, 1 - ad * 0.52))
+      : String(Math.max(0.34, 1 - ad * 0.58));
   }
   for (var q = 0; q < cards.length; q++) cards[q].el.classList.toggle('on', q === best);
   navPrev.disabled = best <= 0;
@@ -644,9 +1055,14 @@ function setCurrent(i) {
 }
 
 function nearestIndex() {
-  var mid = track.scrollLeft + track.clientWidth / 2, best = 0, bd = 1e9;
+  var mid = (VERT ? track.scrollTop : track.scrollLeft) +
+            (VERT ? track.clientHeight : track.clientWidth) / 2;
+  var best = 0, bd = 1e9;
   for (var k = 0; k < cards.length; k++) {
-    var d = Math.abs(cards[k].el.offsetLeft + cards[k].el.offsetWidth / 2 - mid);
+    var el = cards[k].el;
+    var p = VERT ? el.offsetTop + el.offsetHeight / 2
+                 : el.offsetLeft + el.offsetWidth / 2;
+    var d = Math.abs(p - mid);
     if (d < bd) { bd = d; best = k; }
   }
   return best;
@@ -657,11 +1073,16 @@ function nearestIndex() {
 var snapTimer = 0;
 function center(i) {
   var c = cards[i];
-  var target = c.el.offsetLeft + c.el.offsetWidth / 2 - track.clientWidth / 2;
+  var target = VERT
+    ? c.el.offsetTop + c.el.offsetHeight / 2 - track.clientHeight / 2
+    : c.el.offsetLeft + c.el.offsetWidth / 2 - track.clientWidth / 2;
   track.style.scrollSnapType = 'none';
   clearTimeout(snapTimer);
-  track.scrollTo({ left: target, behavior: reduce ? 'auto' : 'smooth' });
-  snapTimer = setTimeout(function () { track.style.scrollSnapType = 'x mandatory'; }, reduce ? 40 : 640);
+  track.scrollTo(VERT
+    ? { top: target, behavior: reduce ? 'auto' : 'smooth' }
+    : { left: target, behavior: reduce ? 'auto' : 'smooth' });
+  /* 清空 inline 值，恢复 CSS 里按轴定义的吸附方向 */
+  snapTimer = setTimeout(function () { track.style.scrollSnapType = ''; }, reduce ? 40 : 640);
 }
 
 /* ---------- 总览的自定义滚动条 ---------- */
@@ -799,13 +1220,20 @@ track.addEventListener('wheel', function (e) {
   center(Math.max(0, Math.min(cards.length - 1, i)));
 }, { passive: false });
 
-/* ---------- 拖动 ---------- */
+/* ---------- 鼠标拖动（触摸交给原生滚动） ---------- */
 var down = false, startX = 0, startL = 0, moved = 0;
 track.addEventListener('pointerdown', function (e) {
   if (e.button !== 0) return;
+  if (e.pointerType && e.pointerType !== 'mouse') return;   // 触摸/手写笔不参与
+  if (VERT) return;                                        // 竖屏交给原生纵向滚动
   down = true; moved = 0; startX = e.clientX; startL = track.scrollLeft;
   track.classList.add('dragging');
 });
+function endDrag() {
+  if (!down) return;
+  down = false;
+  track.classList.remove('dragging');
+}
 window.addEventListener('pointermove', function (e) {
   if (!down) return;
   var dx = e.clientX - startX;
@@ -814,24 +1242,83 @@ window.addEventListener('pointermove', function (e) {
 });
 window.addEventListener('pointerup', function () {
   if (!down) return;
-  down = false;
-  track.classList.remove('dragging');
+  endDrag();
   if (moved < 6) return;
-  var idx = 0, bestD = 1e9;
-  var mid2 = track.scrollLeft + track.clientWidth / 2;
-  for (var k = 0; k < cards.length; k++) {
-    var dd = Math.abs(cards[k].el.offsetLeft + cards[k].el.offsetWidth / 2 - mid2);
-    if (dd < bestD) { bestD = dd; idx = k; }
-  }
-  center(idx);
+  center(nearestIndex());
 });
+/* 触摸滚动被浏览器接管时只会发 pointercancel，必须在这里复位，
+   否则 .dragging 与 scroll-snap-type:none 会一直留在轨道上 */
+window.addEventListener('pointercancel', endDrag);
 
 var raf = 0;
 track.addEventListener('scroll', function () {
   if (raf) return;
   raf = requestAnimationFrame(function () { raf = 0; layout(); });
 }, { passive: true });
-window.addEventListener('resize', function () { layout(); });
+
+/* 竖屏不用原生 snap（它按缩放/旋转后的盒子吸附，会把主卡卡在半倾斜状态），
+   松手后再平滑吸到最近一张的布局中心，主卡保持正面、侧卡保持斜度 */
+var vertSnapTimer = 0, vertSnapAt = 0;
+track.addEventListener('scroll', function () {
+  if (!VERT || overview) return;
+  clearTimeout(vertSnapTimer);
+  vertSnapTimer = setTimeout(function () {
+    if (!VERT || overview || performance.now() < vertSnapAt) return;
+    var i = nearestIndex();
+    var c = cards[i] && cards[i].el;
+    if (!c) return;
+    var target = c.offsetTop + c.offsetHeight / 2 - track.clientHeight / 2;
+    if (Math.abs(track.scrollTop - target) > 4.4) {
+      vertSnapAt = performance.now() + 500;
+      center(i);
+    }
+  }, 300);
+}, { passive: true });
+
+/* 滑动惯性还在时，第一次点击只负责停下来，不触发卡片/按钮 */
+var lastScrollAt = 0, settleUntil = 0, stopTapUntil = 0;
+track.addEventListener('scroll', function () {
+  if (!isTouch) return;
+  if (performance.now() < settleUntil) return;
+  lastScrollAt = performance.now();
+}, { passive: true });
+
+document.addEventListener('pointerdown', function (e) {
+  if (!isTouch) return;
+  if (e.pointerType && e.pointerType !== 'touch') return;
+  var now = performance.now();
+  if (now - lastScrollAt > 220) return;
+  settleUntil = now + 300;
+  lastScrollAt = 0;
+  var y = track.scrollTop, x = track.scrollLeft;
+  track.style.scrollBehavior = 'auto';
+  try { track.scrollTo({ top: y, left: x, behavior: 'auto' }); }
+  catch (err) { track.scrollTop = y; track.scrollLeft = x; }
+
+  /* 按钮/链接属于明确操作：滑动惯性中第一次点也必须生效，只顺手停住滚动 */
+  var ui = e.target && e.target.closest &&
+           e.target.closest('button,a,.credit,.ovbtn,.themebtn,.snd,.varrow,.vclose,.vctl,.dock,.head,.bar,.cardbox,.crow,.cclose,.ghost,.upload,.nav');
+  if (ui) { stopTapUntil = 0; return; }
+  stopTapUntil = now + 420;
+}, true);
+
+document.addEventListener('click', function (e) {
+  if (!stopTapUntil) return;
+  if (performance.now() > stopTapUntil) { stopTapUntil = 0; return; }
+  if (e.target && /input|textarea/i.test(e.target.tagName)) return;
+  e.preventDefault();
+  e.stopPropagation();
+  stopTapUntil = 0;
+}, true);
+
+window.addEventListener('resize', function () { syncViewportVars(); syncAxis(); layout(); syncVerticalPad(); syncSceneCover(); });
+window.addEventListener('orientationchange', function () {
+  setTimeout(function () { syncViewportVars(); syncAxis(); layout(); syncVerticalPad(); syncSceneCover(); }, 160);
+});
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', function () { syncViewportVars(); layout(); syncVerticalPad(); syncSceneCover(); });
+  window.visualViewport.addEventListener('scroll', function () { syncViewportVars(); layout(); syncSceneCover(); });
+}
 
 var navPrev = document.getElementById('navPrev');
 var navNext = document.getElementById('navNext');
@@ -852,8 +1339,10 @@ document.addEventListener('keydown', function (e) {
     return;
   }
   if (overview) { if (e.key === 'Escape') setMode(false); return; }
-  if (e.key === 'ArrowRight') { e.preventDefault(); center(Math.min(nearestIndex() + 1, cards.length - 1)); }
-  if (e.key === 'ArrowLeft') { e.preventDefault(); center(Math.max(nearestIndex() - 1, 0)); }
+  var nextKey = VERT ? 'ArrowDown' : 'ArrowRight';
+  var prevKey = VERT ? 'ArrowUp' : 'ArrowLeft';
+  if (e.key === nextKey) { e.preventDefault(); center(Math.min(nearestIndex() + 1, cards.length - 1)); }
+  if (e.key === prevKey) { e.preventDefault(); center(Math.max(nearestIndex() - 1, 0)); }
 });
 
 /* ---------- 进入 / 退出 ---------- */
@@ -870,18 +1359,114 @@ function open(id) {
     console.warn('[diorama] 缺少源码路径：', id);
     return;
   }
+  var wasOpen = viewer.classList.contains('on');
   vIndex = i;
   openedFromGrid = overview;
+  /* 竖屏手机保留 iOS 式卡片放大；横屏与桌面一致，直接淡入查看器。
+     横屏的 iframe 是 cover 裁切尺寸，再叠克隆放大容易产生一帧抽搐。 */
+  var launchDone = (!wasOpen && isTouch && VERT && !reduce) ? launchFromCard(cards[i].el) : null;
   paintViewer();
+  veil.style.transition = '';
   veil.classList.remove('off');
   viewer.classList.add('on');
   requestAnimationFrame(function () { viewer.classList.add('shown'); });
   frame.src = SRC[id];
   frame.onload = function () {
-    setTimeout(function () { veil.classList.add('off'); }, 240);
+    setTimeout(function () {
+      if (launchDone) {
+        /* 场景已就绪，加载页直接撤掉（不要和克隆层交叉淡出，否则会透出底色） */
+        veil.style.transition = 'none';
+        veil.classList.add('off');
+        setTimeout(launchDone, 80);
+      } else {
+        veil.classList.add('off');
+      }
+    }, 240);
     if (soundOn) setTimeout(applySoundToScene, 600);   // 场景就绪后再尝试起声
   };
+  if (launchDone) setTimeout(launchDone, 4200);   // 兜底：场景迟迟不全也不一直挡着
   if (history.replaceState) history.replaceState(null, '', '#' + id);
+}
+
+/* 类似 iOS 打开 App：卡片图从原位置放大到全屏，再交给场景 */
+function launchFromCard(cardEl) {
+  if (!cardEl) return null;
+  var img = cardEl.querySelector('img');
+  if (!img || !img.complete || !img.naturalWidth) return null;
+  var r = cardEl.getBoundingClientRect();
+  if (r.width < 40 || r.height < 20) return null;
+  var vv0 = window.visualViewport;
+  var vw0 = vv0 ? vv0.width : innerWidth, vh0 = vv0 ? vv0.height : innerHeight;
+  var vt0 = vv0 ? vv0.offsetTop : 0, vl0 = vv0 ? vv0.offsetLeft : 0;
+  if (r.bottom < vt0 || r.top > vt0 + vh0 || r.right < vl0 || r.left > vl0 + vw0) return null;
+
+  var cs = getComputedStyle(cardEl);
+  var clone = document.createElement('div');
+  clone.className = 'launch';
+  clone.style.left = r.left + 'px';
+  clone.style.top = r.top + 'px';
+  clone.style.width = r.width + 'px';
+  clone.style.height = r.height + 'px';
+  clone.style.borderRadius = cs.borderRadius;
+
+  /* 放大的是整张卡片（图片 + 作品名），不是抽出来的截图 */
+  var cardCopy = cardEl.cloneNode(true);
+  cardCopy.setAttribute('aria-hidden', 'true');
+  cardCopy.style.position = 'absolute';
+  cardCopy.style.inset = '0';
+  cardCopy.style.width = '100%';
+  cardCopy.style.height = '100%';
+  cardCopy.style.margin = '0';
+  cardCopy.style.flex = 'none';
+  cardCopy.style.aspectRatio = 'auto';
+  cardCopy.style.transform = 'none';
+  cardCopy.style.opacity = '1';
+  cardCopy.style.zIndex = 'auto';
+  cardCopy.style.pointerEvents = 'none';
+  cardCopy.style.cursor = 'default';
+  cardCopy.style.borderRadius = cs.borderRadius;
+  cardCopy.style.boxShadow = 'none';
+  cardCopy.style.overflow = 'hidden';
+  clone.appendChild(cardCopy);
+
+  var dim = document.createElement('div');
+  dim.className = 'launch-dim';
+  document.body.appendChild(dim);
+  document.body.appendChild(clone);
+  requestAnimationFrame(function () { dim.classList.add('on'); });
+
+  var scale = Math.max(vw0 / r.width, vh0 / r.height);
+  var dx = vl0 + vw0 / 2 - (r.left + r.width / 2);
+  var dy = vt0 + vh0 / 2 - (r.top + r.height / 2);
+  var anim = null;
+  try {
+    anim = clone.animate([
+      { transform: 'translate(0px,0px) scale(1)', borderRadius: cs.borderRadius },
+      { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + scale + ')', borderRadius: '0px' }
+    ], { duration: 500, easing: 'cubic-bezier(.18,.9,.24,1.02)', fill: 'forwards' });
+  } catch (e) {}
+
+  var finished = false, animDone = !anim, asked = false;
+  function fadeNow() {
+    if (finished) return;
+    finished = true;
+    clone.style.transition = 'opacity .26s ease';
+    dim.style.transition = 'opacity .26s ease';
+    clone.style.opacity = '0';
+    dim.style.opacity = '0';
+    setTimeout(function () { clone.remove(); dim.remove(); }, 300);
+  }
+  function maybe() { if (asked && animDone) fadeNow(); }
+  if (anim) anim.onfinish = function () { animDone = true; maybe(); };
+  setTimeout(function () { animDone = true; maybe(); }, 900);
+
+  /* 返回一个「可以交棒了」的闭包：等 iframe 出画后再淡出，
+     这样放大过程中不会露出后面的白色加载页 */
+  return function () {
+    if (!clone.isConnected) { finished = true; return; }
+    asked = true;
+    maybe();
+  };
 }
 
 function paintViewer() {
@@ -889,6 +1474,15 @@ function paintViewer() {
   document.getElementById('vEn').textContent = w.en;
   document.getElementById('vname').textContent = w.en;
   document.getElementById('vCn').textContent = w.cn;
+  syncSceneCover();
+}
+
+function syncSceneCover() {
+  if (!viewer) return;
+  var vw = viewer.clientWidth || innerWidth;
+  var vh = viewer.clientHeight || innerHeight;
+  var s = Math.max(vw / 1280, vh / 720);
+  viewer.style.setProperty('--scene-cover', s.toFixed(4));
 }
 
 function stepViewer(d) {
@@ -899,6 +1493,8 @@ function stepViewer(d) {
 }
 
 function closeViewer() {
+  /* 进场动画还没跑完就返回时，先把克隆层清掉 */
+  document.querySelectorAll('.launch,.launch-dim').forEach(function (el) { el.remove(); });
   /* 场景里翻过页的话，回到展厅要停在最后看的那一件上 */
   var backTo = vIndex;
   viewer.classList.remove('shown');
@@ -931,8 +1527,65 @@ var transitioning = false;
 
 function jumpTo(i) {
   track.style.scrollSnapType = 'none';
-  track.scrollTop = 0;
-  track.scrollLeft = cards[i].el.offsetLeft + cards[i].el.offsetWidth / 2 - track.clientWidth / 2;
+  if (VERT) {
+    track.scrollLeft = 0;
+    track.scrollTop = cards[i].el.offsetTop + cards[i].el.offsetHeight / 2 - track.clientHeight / 2;
+  } else {
+    track.scrollTop = 0;
+    track.scrollLeft = cards[i].el.offsetLeft + cards[i].el.offsetWidth / 2 - track.clientWidth / 2;
+  }
+}
+
+/* ---------- 竖屏的上下留白：让首尾卡片也能停在正中 ---------- */
+function syncVerticalPad() {
+  if (!VERT || overview) return;
+  var h = cards[0] ? cards[0].el.offsetHeight : 0;
+  var pad = Math.max(10, Math.round((track.clientHeight - h) / 2));
+  track.style.paddingTop = pad + 'px';
+  track.style.paddingBottom = pad + 'px';
+}
+
+/* 现在手机卡片也放大到 92vw，统一用 1200 宽的墙图保证清晰度；
+   旧的 thumbs 逻辑保留为空函数，后续要省流量时可以在这里切回来 */
+function syncImgTier() { return; }
+
+/* ---------- 轴向切换（旋转屏幕 / 改变窗口宽度） ---------- */
+var axisRaf = 0;
+function syncAxis(force) {
+  var v = mqVert.matches;
+  isTouch = mqTouch.matches;
+  if (!force && v === VERT) {
+    syncImgTier();
+    if (!overview) syncVerticalPad();
+    return;
+  }
+  var idx = current >= 0 ? current : nearestIndex();
+  VERT = v;
+  document.body.classList.toggle('mode-vertical', v);
+  cards.forEach(function (c) {
+    c.el.style.transform = '';
+    c.el.style.opacity = '';
+    c.el.style.zIndex = '';
+  });
+  if (!v) {
+    track.style.paddingTop = '';
+    track.style.paddingBottom = '';
+  }
+  if (overview) {
+    syncImgTier();
+    if (v) syncVerticalPad();
+    return;
+  }
+  cancelAnimationFrame(axisRaf);
+  axisRaf = requestAnimationFrame(function () {
+    syncImgTier();
+    if (VERT) syncVerticalPad();
+    jumpTo(Math.max(0, Math.min(cards.length - 1, idx)));
+    current = -1;
+    layout();
+    syncVerticalPad();
+    setTimeout(function () { track.style.scrollSnapType = ''; }, 80);
+  });
 }
 
 function setMode(toGrid, focusIndex) {
@@ -980,7 +1633,8 @@ function setMode(toGrid, focusIndex) {
   document.body.classList.toggle('mode-grid', toGrid);
   morphOvBtn(toGrid);
   els.forEach(function (el) { el.style.transform = ''; el.style.opacity = ''; });
-
+  /* 网格用 CSS 自己的 padding；竖屏的上下留白是 inline 的，切走时要清掉 */
+  if (toGrid) { track.style.paddingTop = ''; track.style.paddingBottom = ''; }
 
   void track.offsetWidth;
 
@@ -1019,6 +1673,7 @@ function setMode(toGrid, focusIndex) {
   }
 
   if (!toGrid) {
+    if (VERT) syncVerticalPad();
     jumpTo(focusIndex);
     void track.offsetWidth;
     transitioning = false;
@@ -1127,20 +1782,20 @@ function setMode(toGrid, focusIndex) {
       var midRv = rv0 + (rv1 - rv0) * 0.7;
       var midR = Math.max(2, midRv / Math.max(midS, 0.02));
       frames = [
-        { transform: compose(dx, dy, sx, sy, base), opacity: 0, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
-        { transform: midTf, opacity: 0, borderRadius: midR.toFixed(2) + 'px', offset: 0.68 },
+        { transform: compose(dx, dy, sx, sy, base), opacity: 0, offset: 0 },
+        { transform: midTf, opacity: 0, offset: 0.68 },
         /* 终点写成与起点同构的 translate+scale（不是 none），
            保证逐函数插值——否则浏览器会退回矩阵插值，路径会拐弯 */
-        { transform: 'translate(0px,0px) scale(1,1)', opacity: 1, borderRadius: rv1 + 'px', offset: 1 }
+        { transform: 'translate(0px,0px) scale(1,1)', opacity: 1, offset: 1 }
       ];
     } else {
       frames = [
-        { transform: compose(dx, dy, sx, sy, base), opacity: op, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
+        { transform: compose(dx, dy, sx, sy, base), opacity: op, offset: 0 },
         { transform: culled ? 'scale(0.88)'
                            : (t1[i] === 'none'
                                 ? (toGrid ? 'translate(0px,0px) scale(1,1)' : 'none')
                                 : t1[i]),
-          opacity: endOp, borderRadius: rv1 + 'px', offset: 1 }
+          opacity: endOp, offset: 1 }
       ];
     }
     el.style.transform = frames[0].transform;          // 先把起点落到内联，避免中间帧闪一下
@@ -1173,22 +1828,12 @@ var ovBtnEl = document.getElementById('ovBtn');
 var ovLabelEl = document.getElementById('ovLabel');
 
 function morphOvBtn(toGrid) {
-  var start = ovBtnEl.offsetWidth;              // offsetWidth 不含 transform 缩放
-  ovBtnEl.style.width = start + 'px';
-
-  ovLabelEl.style.opacity = '0';                 // 先淡出，避免文字跳变
-  setTimeout(function () {
-    ovLabelEl.textContent = toGrid ? 'Back' : 'All Works';
-    /* 量一下新文案需要的宽度，再从当前宽度过渡过去 */
-    ovBtnEl.style.width = 'auto';
-    var end = ovBtnEl.offsetWidth;
-    ovBtnEl.style.width = start + 'px';
-    void ovBtnEl.offsetWidth;
-    ovBtnEl.style.width = end + 'px';
-    ovLabelEl.style.opacity = '1';
-    /* 过渡结束后交还给内容自适应，避免字体变化时被写死的宽度裁掉 */
-    setTimeout(function () { ovBtnEl.style.width = ''; }, 340);
-  }, 130);
+  /* 总览里只要图案：隐藏文字，按钮变成 44px 圆形；
+     卡片模式恢复 All Works 文字，宽度交给内容自适应 */
+  ovLabelEl.textContent = toGrid ? 'Back' : 'All Works';
+  ovLabelEl.style.opacity = '1';
+  ovBtnEl.style.width = '';
+  ovBtnEl.setAttribute('aria-label', toGrid ? 'Back to gallery' : 'Show all works');
 }
 
 /* ---------- 音效总开关（横向页面底部正中） ---------- */
@@ -1198,21 +1843,61 @@ var sndIco = document.getElementById('sndIco');
 var soundOn = localStorage.getItem('gallery-sound') === '1';
 
 function paintSound() {
-  sndIco.textContent = soundOn ? '🔊' : '🔈';
   sndBtn.classList.toggle('on', soundOn);
   sndBtn.title = soundOn ? 'Ambience on — click to mute' : 'Click to enable ambience';
 }
 
 /* 向当前场景注入意图；场景是 same-origin，可直接调它的 Ambience */
 function applySoundToScene() {
+  /* 优先用画廊自己窗口里的完整环境声库：
+     真实用户手势发生在 parent，iframe 里的 AudioContext 在 iOS 上可能永远解不开。 */
+  var host = window.Ambience;
+  var work = WORKS[vIndex];
+  if (host && host.play && work) {
+    try {
+      if (soundOn) {
+        if (window.__hostAudio) { try { window.__hostAudio.stop(); } catch (e) {} }
+        window.__hostAudio = host.play(work.id);
+      } else if (window.__hostAudio) {
+        try { window.__hostAudio.stop(); } catch (e) {}
+        window.__hostAudio = null;
+      }
+      return true;
+    } catch (e) {}
+  }
   var w = frame && frame.contentWindow;
   if (!w || !w.Ambience) return false;
   try {
     var A = w.Ambience;
-    if (soundOn) { if (A.on) A.on(); else A.start(); }
-    else { if (A.off) A.off(); else A.stopAll(); }
+    if (soundOn) {
+      var st = (A.state && A.state()) || {};
+      if (A.play && st.preset) {
+        if (w.__galleryAudio) { try { w.__galleryAudio.stop(); } catch (e) {} }
+        w.__galleryAudio = A.play(st.preset);
+        return true;
+      }
+      if (A.on) A.on(); else if (A.start) A.start();
+    } else {
+      if (w.__galleryAudio) { try { w.__galleryAudio.stop(); } catch (e) {} w.__galleryAudio = null; }
+      if (A.off) A.off();
+      if (A.stopAll) A.stopAll();
+    }
     return true;
   } catch (e) { return false; }
+}
+
+function audioBeep() {
+  try {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    var c = new AC();
+    if (c.state === 'suspended') c.resume();
+    var o = c.createOscillator(), g = c.createGain();
+    o.frequency.value = 523.25;
+    g.gain.value = 0.05;
+    o.connect(g); g.connect(c.destination);
+    o.start(); o.stop(c.currentTime + 0.15);
+  } catch (e) {}
 }
 
 sndBtn.addEventListener('click', function () {
@@ -1220,7 +1905,101 @@ sndBtn.addEventListener('click', function () {
   localStorage.setItem('gallery-sound', soundOn ? '1' : '0');
   paintSound();
   applySoundToScene();
+  if (soundOn && /(?:^|[?&])audiotest=1/.test(location.search)) audioBeep();
 });
+
+/* ---------- 截屏：优先抓当前场景 canvas，抓不到就退回该作品的墙图 ---------- */
+var toastEl = document.getElementById('toast');
+var toastTimer = 0;
+function galleryToast(msg) {
+  if (!toastEl) return;
+  toastEl.textContent = msg;
+  toastEl.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { toastEl.classList.remove('on'); }, 1600);
+}
+
+function captureSceneShot() {
+  var w = WORKS[vIndex];
+  if (!w) return;
+  var live = null;
+  try {
+    var doc = frame.contentDocument;
+    if (doc) {
+      var list = Array.prototype.slice.call(doc.querySelectorAll('canvas'));
+      list.sort(function (a, b) { return b.width * b.height - a.width * a.height; });
+      for (var i = 0; i < list.length; i++) {
+        try {
+          var u = list[i].toDataURL('image/png');
+          if (u && u.length > 8000) { live = u; break; }
+        } catch (e) {}
+      }
+    }
+  } catch (e) {}
+
+  var fallback = 'previews/wall/' + w.id + '.jpg';
+  function compose(src) {
+  var img = new Image();
+  img.onload = function () {
+    var W = 1600, H = 900;
+    var c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    var x = c.getContext('2d');
+    x.fillStyle = '#05060a'; x.fillRect(0, 0, W, H);
+    var s = Math.max(W / img.width, H / img.height);
+    var dw = img.width * s, dh = img.height * s;
+    x.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
+
+    var g = x.createLinearGradient(0, H - 190, 0, H);
+    g.addColorStop(0, 'rgba(3,4,7,0)');
+    g.addColorStop(1, 'rgba(3,4,7,.78)');
+    x.fillStyle = g; x.fillRect(0, H - 190, W, 190);
+
+    x.textAlign = 'center';
+    x.fillStyle = 'rgba(255,255,255,.94)';
+    x.font = '500 34px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+    x.fillText(w.en, W / 2, H - 62);
+    x.fillStyle = 'rgba(255,255,255,.55)';
+    x.font = '500 15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+    x.fillText('DEEPSEEK GALLERY', W / 2, H - 28);
+
+    c.toBlob(function (blob) {
+      if (!blob) { galleryToast('Save failed'); return; }
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'deepseek-gallery-' + w.id + '.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 3000);
+      galleryToast('Saved');
+    }, 'image/png');
+  };
+  img.onerror = function () { galleryToast('Save failed'); };
+  img.src = src;
+  }
+
+  /* WebGL canvas 在多数场景下 toDataURL 是黑的；先抽样判断，黑图就退回干净的墙图 */
+  function useLive(url) {
+    if (!url) { compose(fallback); return; }
+    var probe = new Image();
+    probe.onload = function () {
+      try {
+        var c = document.createElement('canvas'); c.width = 24; c.height = 14;
+        var x = c.getContext('2d'); x.drawImage(probe, 0, 0, 24, 14);
+        var d = x.getImageData(0, 0, 24, 14).data, sum = 0, n = 0;
+        for (var i = 0; i < d.length; i += 4) { sum += d[i] + d[i + 1] + d[i + 2]; n++; }
+        compose((n && sum / n > 22) ? url : fallback);
+      } catch (e) { compose(fallback); }
+    };
+    probe.onerror = function () { compose(fallback); };
+    probe.src = url;
+  }
+  useLive(live);
+}
+
+document.getElementById('shotBtn').addEventListener('click', captureSceneShot);
 
 paintSound();
 
@@ -1230,26 +2009,37 @@ var cardveil = document.getElementById('cardveil');
 function openCard() {
   var btn = document.getElementById('creditBtn');
   var r = btn.getBoundingClientRect();
-  var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  var vr = cardveil.getBoundingClientRect();
+  var cx = r.left + r.width / 2 - vr.left, cy = r.top + r.height / 2 - vr.top;
   cardveil.style.setProperty('--cx', Math.round(cx) + 'px');
   cardveil.style.setProperty('--cy', Math.round(cy) + 'px');
   /* 圆足够大，最远那个角也要盖住（120px 的圆 * scale） */
-  var far = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));
+  var vv1 = window.visualViewport;
+  var vw1 = vv1 ? vv1.width : innerWidth, vh1 = vv1 ? vv1.height : innerHeight;
+  var far = Math.hypot(Math.max(cx, vw1 - cx), Math.max(cy, vh1 - cy));
   cardveil.style.setProperty('--s', (far * 2 / 120 + 1).toFixed(2));
+  cardveil.classList.remove('closing');
   cardveil.classList.add('on');
   void cardveil.offsetWidth;          // 强制一次布局，避免首帧直接画到终态（闪烁）
   cardveil.classList.add('open');
 }
 
 function closeCard() {
+  cardveil.classList.add('closing');
   cardveil.classList.remove('open');
-  setTimeout(function () { cardveil.classList.remove('on'); }, 620);
+  setTimeout(function () {
+    if (!cardveil.classList.contains('closing')) return;   // 期间又打开了，别把新名片关掉
+    cardveil.classList.remove('on');
+    cardveil.classList.remove('closing');
+  }, 620);
 }
 
 document.getElementById('creditBtn').addEventListener('click', openCard);
 document.getElementById('cclose').addEventListener('click', closeCard);
 /* 点哪儿都收起；点在链接上时链接照常打开（不 preventDefault） */
 cardveil.addEventListener('click', function () { closeCard(); });
+/* 横屏名片内部需要滚动/点链接，点名片本体不要顺手关掉 */
+document.querySelector('.cardbox').addEventListener('click', function (e) { e.stopPropagation(); });
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && cardveil.classList.contains('on')) closeCard();
 });
@@ -1264,6 +2054,10 @@ function paintTheme() {
   document.body.classList.toggle('dark', darkOn);
   themeBtn.innerHTML = darkOn ? ICON_SUN : ICON_MOON;   /* 暗色时显示太阳（可切回） */
   themeBtn.title = darkOn ? 'Switch to light' : 'Switch to dark';
+  var tc = document.getElementById('themeColor');
+  if (tc) tc.setAttribute('content', darkOn ? '#05060a' : '#ffffff');
+  /* 连同 html 一起换底，Chrome iOS 横屏两侧的留白也跟随主题，不会闪白 */
+  document.documentElement.style.background = darkOn ? '#05060a' : '#ffffff';
 }
 themeBtn.addEventListener('click', function () {
   darkOn = !darkOn;
@@ -1281,6 +2075,18 @@ document.addEventListener('selectstart', function (e) {
   if (e.target && /input|textarea/i.test(e.target.tagName)) return;
   e.preventDefault();
 }, true);
+/* 双指缩放、长按菜单、双击缩放也关掉；viewer 里的场景在 iframe 内不受影响 */
+['gesturestart', 'gesturechange', 'gestureend'].forEach(function (n) {
+  document.addEventListener(n, function (e) { e.preventDefault(); }, { passive: false });
+});
+document.addEventListener('contextmenu', function (e) {
+  if (e.target && /input|textarea/i.test(e.target.tagName)) return;
+  e.preventDefault();
+}, { passive: false });
+document.addEventListener('dblclick', function (e) {
+  if (e.target && /input|textarea/i.test(e.target.tagName)) return;
+  e.preventDefault();
+}, { passive: false });
 
 /* ---------- 启动 ---------- */
 /* 进场：整个展廊淡入放大，卡片按离中心的距离依次浮现 */
@@ -1293,22 +2099,34 @@ function playIntro() {
       var d = i - sel;
       var base = c.el.style.transform || 'none';
       var endOp = c.el.style.opacity ? parseFloat(c.el.style.opacity) : 1;
-      var dx = 0, dy = 0;
+      var dx = 0, dy = 0, introScale = 1;
 
-      if (d === 0) {
+      if (VERT) {
+        /* 竖屏入场：主卡从下方升起，上下两张从外侧向中间挤进来 */
+        if (d === 0) {
+          dy = Math.min(window.innerHeight * 0.12, 100);
+          introScale = 0.97;
+        } else {
+          var ad = Math.min(Math.abs(d), 4);
+          dy = (d < 0 ? -1 : 1) * (55 + ad * 26);
+          introScale = 0.87;
+        }
+      } else if (d === 0) {
         dy = Math.min(window.innerHeight * 0.22, 200);        // 从下往上
       } else {
         dx = (d < 0 ? -1 : 1) * (130 + Math.min(Math.abs(d), 7) * 92);   // 左右分侧
         dy = 46;
       }
 
-      var start = 'translate(' + dx + 'px,' + dy + 'px)' + (base !== 'none' ? ' ' + base : '');
+      var start = 'translate(' + dx + 'px,' + dy + 'px)' +
+                  (introScale !== 1 ? ' scale(' + introScale + ')' : '') +
+                  (base !== 'none' ? ' ' + base : '');
       var a = c.el.animate([
         { transform: start, opacity: 0 },
         { transform: base, opacity: endOp }
       ], {
-        duration: 760,
-        delay: Math.min(Math.abs(d) * 45, 380),
+        duration: 720,
+        delay: Math.min(Math.abs(d) * 38, 260),
         easing: 'cubic-bezier(.22,.8,.24,1)',
         fill: 'both'
       });
@@ -1350,6 +2168,7 @@ function boot() {
   selfCheck();
 
   if (id && SRC[id]) {
+    syncVerticalPad();
     layout();
     document.body.classList.remove('booting');
     open(id);
@@ -1357,11 +2176,13 @@ function boot() {
   }
 
   /* 每次打开随机落在某一件上，而不是永远从第一张开始 */
+  syncVerticalPad();
   jumpTo(Math.floor(Math.random() * cards.length));
   void track.offsetWidth;
   track.style.scrollSnapType = '';
   current = -1;
   layout();
+  syncVerticalPad();
 
   /* 弱网时图片可能还没到。等当前这张和左右邻居就位（最多 1.6s）再放出， */
   /* 否则用户看到的是几张空框加上一段没有内容的进场动画。 */
@@ -1374,6 +2195,16 @@ function boot() {
   function reveal() {
     if (settled) return;
     settled = true;
+    /* 图片加载/字体就位后滚动余量可能变化；入场前把当前卡精确对中，
+       主卡才会以正面进入，侧卡从外侧往中间挤 */
+    /* 横竖屏都在入场前精确对中，否则横屏的原生 snap 会把卡片再拽到别处 */
+    var idx = nearestIndex();
+    syncVerticalPad();
+    jumpTo(idx);
+    void track.offsetWidth;
+    track.style.scrollSnapType = '';
+    layout();
+    syncVerticalPad();
     document.body.classList.remove('booting');
     playIntro();
   }
@@ -1389,8 +2220,11 @@ function boot() {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
 else boot();
-requestAnimationFrame(function () { layout(); });
-setTimeout(layout, 240);
+requestAnimationFrame(function () { syncVerticalPad(); layout(); });
+setTimeout(function () { syncVerticalPad(); layout(); }, 240);
+
+if (mqVert.addEventListener) mqVert.addEventListener('change', function () { syncAxis(); layout(); syncVerticalPad(); });
+if (mqNarrow.addEventListener) mqNarrow.addEventListener('change', syncImgTier);
 </script>
 </body>
 </html>

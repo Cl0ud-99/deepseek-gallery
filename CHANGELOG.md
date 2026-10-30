@@ -1,5 +1,11 @@
 # Changelog
 
+## test 0.1.7 — 2026-10-31
+
+Mobile gallery pass: vertical card spacing and snap timing, full-screen viewer,
+grid FLIP both ways, press feedback, 23 new card previews, and the complete A07
+ambience wired into the gallery host.
+
 ## 0.0.7 — 2026-10-30
 
 ### A05 and A16 are no longer locked — full source recovered
