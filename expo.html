@@ -167,7 +167,7 @@
       <div class="en" id="tEn">Qipao Diorama</div>
       <div class="cn" id="tCn">1936 上海 · 旗袍与留声</div>
     </div>
-    <div class="sub"><b id="tHall">雨夜与霓虹</b><i></i><span id="tIdx">01 / 21</span></div>
+    <div class="sub"><span id="tIdx">01 / 21</span></div>
   </header>
 
   <div class="wrap">
@@ -195,8 +195,29 @@
 </div>
 
 <script>
-var HALLS = ["雨夜与霓虹","钢铁与混凝土","云上与星空","海与极地","光与昼"];
-var WORKS = [{"id":"A15","en":"Qipao Diorama","cn":"1936 上海 · 旗袍与留声","hall":0},{"id":"A01","en":"Black Lodge","cn":"双峰 · 黑色旅舍","hall":0},{"id":"A13","en":"Mori Mart","cn":"萤火雨夜便利店","hall":0},{"id":"A17","en":"The Red Room","cn":"双峰 · 红房间","hall":0},{"id":"A19","en":"Hawkins / Upside Down","cn":"怪奇物语 · 双世界镜像","hall":0},{"id":"A08","en":"Redshift Archive","cn":"悬浮档案大厅","hall":1},{"id":"A02","en":"Ashtray Maze","cn":"烟灰缸迷宫","hall":1},{"id":"A07","en":"FBC Quarry 07","cn":"倒悬巨构采石场","hall":1},{"id":"A21","en":"Ice-Fire Mine Station","cn":"冰火交融 · 矿山街角驿站","hall":1},{"id":"A18","en":"Sunset Dream Loom","cn":"晚霞织梦染坊","hall":2},{"id":"A03","en":"Aurora Hourglass","cn":"极光星海 · 倒置沙漏天文台","hall":2},{"id":"A06","en":"Cloud Post Office","cn":"云端蒸汽飞艇邮政局","hall":2},{"id":"A09","en":"Grand Hotel","cn":"阿尔卑斯缆车站酒店","hall":2},{"id":"A11","en":"Lunar Outpost","cn":"月球前哨站","hall":2},{"id":"A05","en":"Cliff Lighthouse Café","cn":"海崖灯塔咖啡馆","hall":3},{"id":"A10","en":"The Lighthouse","cn":"灯塔","hall":3},{"id":"A14","en":"Polar Icebreaker","cn":"极地科考破冰船","hall":3},{"id":"A20","en":"Moonlit Perfume Atelier","cn":"月光琉璃花灵香水工坊 · 白天","hall":4},{"id":"A04","en":"Autumn Farm","cn":"秋日农场","hall":4},{"id":"A16","en":"Route 66 Diner","cn":"66 号公路复古餐厅","hall":4},{"id":"A12","en":"Stutter Lab","cn":"时间断裂实验舱","hall":4}];
+var WORKS = [
+  {id:"A07",en:"FBC Quarry 07",cn:"倒悬巨构采石场"},
+  {id:"A12",en:"Stutter Lab",cn:"时间断裂实验舱"},
+  {id:"A15",en:"Qipao Diorama",cn:"1936 上海 · 旗袍与留声"},
+  {id:"A04",en:"Autumn Farm",cn:"秋日农场"},
+  {id:"A11",en:"Lunar Outpost",cn:"月球前哨站"},
+  {id:"A08",en:"Redshift Archive",cn:"悬浮档案大厅"},
+  {id:"A03",en:"Aurora Hourglass",cn:"极光星海 · 倒置沙漏天文台"},
+  {id:"A06",en:"Cloud Post Office",cn:"云端蒸汽飞艇邮政局"},
+  {id:"A19",en:"Hawkins / Upside Down",cn:"怪奇物语 · 双世界镜像"},
+  {id:"A20",en:"Moonlit Perfume Atelier",cn:"月光琉璃花灵香水工坊 · 白天"},
+  {id:"A10",en:"The Lighthouse",cn:"灯塔"},
+  {id:"A13",en:"Mori Mart",cn:"萤火雨夜便利店"},
+  {id:"A01",en:"Black Lodge",cn:"双峰 · 黑色旅舍"},
+  {id:"A14",en:"Polar Icebreaker",cn:"极地科考破冰船"},
+  {id:"A21",en:"Ice-Fire Mine Station",cn:"冰火交融 · 矿山街角驿站"},
+  {id:"A05",en:"Cliff Lighthouse Café",cn:"海崖灯塔咖啡馆"},
+  {id:"A17",en:"The Red Room",cn:"双峰 · 红房间"},
+  {id:"A02",en:"Ashtray Maze",cn:"烟灰缸迷宫"},
+  {id:"A09",en:"Grand Hotel",cn:"阿尔卑斯缆车站酒店"},
+  {id:"A16",en:"Route 66 Diner",cn:"66 号公路复古餐厅"},
+  {id:"A18",en:"Sunset Dream Loom",cn:"晚霞织梦染坊"}
+];
 var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"_extracted/a04-autumn-farm/index.html","A05":"_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"_extracted/a13-mori-mart/mori-mart/index.html","A14":"_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"_extracted/a16-route66-diner/route66-diner/index.html","A17":"_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html"};
 
 var track = document.getElementById('track');
@@ -219,7 +240,7 @@ WORKS.forEach(function (w, i) {
 
 /* ---------- 排版：按距离做透视 ---------- */
 var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var current = 0;
+var current = -1;   // -1 让首次 layout() 必定刷新标题（否则首屏显示 HTML 占位文字）
 
 function layout() {
   var mid = track.scrollLeft + track.clientWidth / 2;
@@ -254,7 +275,6 @@ function setCurrent(i) {
   setTimeout(function () {
     document.getElementById('tEn').textContent = cards[i].w.en;
     document.getElementById('tCn').textContent = cards[i].w.cn;
-    document.getElementById('tHall').textContent = HALLS[cards[i].w.hall];
     document.getElementById('tIdx').textContent =
       String(i + 1).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0');
     t.classList.remove('swap');
