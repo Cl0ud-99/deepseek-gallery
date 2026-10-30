@@ -1,6 +1,6 @@
 # Diorama Archive
 
-Nineteen procedural Three.js dioramas. No Blender, no model files, no image assets — every mesh,
+Twenty-one procedural Three.js dioramas. No Blender, no model files, no image assets — every mesh,
 material, canvas texture, GLSL shader and animation is generated in the browser at runtime.
 
 **[Open the archive →](https://cl0ud-99.github.io/diorama-archive/)** — filterable index with
@@ -18,7 +18,7 @@ Every preview below is a live scene: click a thumbnail or a title to run it in t
 </tr>
 <tr>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a04-autumn-farm/index.html"><img src="previews/thumbs/A04.jpg" width="280" alt="Autumn Farm"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a04-autumn-farm/index.html"><b>A04 · Autumn Farm</b></a><br><sub>2,123 calls · r169 · 1.8M</sub></td>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html"><img src="previews/thumbs/A05.jpg" width="280" alt="Cliff Lighthouse Café"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html"><b>A05 · Cliff Lighthouse Café</b></a><br><sub>2,154 calls · inline · 152K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html"><img src="previews/thumbs/A05.jpg" width="280" alt="Cliff Lighthouse Café"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html"><b>A05 · Cliff Lighthouse Café</b></a><br><sub>2,154 calls · r160 · 450K</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a06-cloud-post-office/cloud-post-office/index.html"><img src="previews/thumbs/A06.jpg" width="280" alt="Cloud Post Office"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a06-cloud-post-office/cloud-post-office/index.html"><b>A06 · Cloud Post Office</b></a><br><sub>1,154 calls · inline UMD · 2.9M</sub></td>
 </tr>
 <tr>
@@ -37,19 +37,19 @@ Every preview below is a live scene: click a thumbnail or a title to run it in t
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html"><img src="previews/thumbs/A15.jpg" width="280" alt="Qipao Diorama"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html"><b>A15 · Qipao Diorama</b></a><br><sub>940 calls · r150 · 17M</sub></td>
 </tr>
 <tr>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><img src="previews/thumbs/A16.jpg" width="280" alt="Route 66 Diner"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><b>A16 · Route 66 Diner</b></a><br><sub>2,355 calls · inline · 156K</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><img src="previews/thumbs/A16.jpg" width="280" alt="Route 66 Diner"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a16-route66-diner/route66-diner/index.html"><b>A16 · Route 66 Diner</b></a><br><sub>2,355 calls · r160 · 459K</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html"><img src="previews/thumbs/A17.jpg" width="280" alt="The Red Room"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html"><b>A17 · The Red Room</b></a><br><sub>1,754 calls · r150 · 15M</sub></td>
 <td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html"><img src="previews/thumbs/A18.jpg" width="280" alt="Sunset Dream Loom"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html"><b>A18 · Sunset Dream Loom</b></a><br><sub>2,606 calls · r186.1 · 15M</sub></td>
 </tr>
 <tr>
-<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"><img src="previews/thumbs/A19.jpg" width="280" alt="Hawkins / Upside Down"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"><b>A19 · Hawkins / Upside Down</b></a><br><sub>2,239 calls · inline · 188K</sub></td>
-<td></td>
-<td></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html"><img src="previews/thumbs/A19.jpg" width="280" alt="Hawkins / Upside Down"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html"><b>A19 · Hawkins / Upside Down</b></a><br><sub>2,739 calls · r149 · 3.4M</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html"><img src="previews/thumbs/A20.jpg" width="280" alt="Moonlit Perfume Atelier"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html"><b>A20 · Moonlit Perfume Atelier</b></a><br><sub>1,027 calls · r160 · 1.3M</sub></td>
+<td align="center" width="280"><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html"><img src="previews/thumbs/A21.jpg" width="280" alt="Ice-Fire Mine Station"></a><br><a href="https://cl0ud-99.github.io/diorama-archive/_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html"><b>A21 · Ice-Fire Mine Station</b></a><br><sub>3,350 calls · r160 · 586K</sub></td>
 </tr>
 </table>
 
 Draw calls are measured, not estimated — see [Performance baseline](#performance-baseline).
-All nineteen now ship readable source. A05 and A16 were originally minified-only exports; both gained
+All twenty-one now ship readable source. A05 and A16 were originally minified-only exports; both gained
 `src/scene.js` plus a local `lib/` on 2026-10-30, with the built single file left byte-identical.
 
 ## Repository layout
@@ -115,12 +115,13 @@ Frame rates under software rendering are only meaningful relative to each other.
 | # | Diorama | Draw calls | three.js | Size |
 |---|---|---:|---|---:|
 | A01 | Black Lodge | 3,523 | r169 | 516K |
+| A21 | Ice-Fire Mine Station | 3,350 | r160 | 586K |
 | A02 | Ashtray Maze | 3,218 | r152 | 4.8M |
 | A07 | FBC Quarry 07 | 3,043 | r150 | 15M |
+| A19 | Hawkins / Upside Down | 2,739 | r149 | 3.4M |
 | A18 | Sunset Dream Loom | 2,606 | r186.1 | 15M |
-| A16 | Route 66 Diner | 2,355 | inline | 156K |
-| A19 | Hawkins / Upside Down | 2,239 | inline | 188K |
-| A05 | Cliff Lighthouse Café | 2,154 | inline | 152K |
+| A16 | Route 66 Diner | 2,355 | r160 | 459K |
+| A05 | Cliff Lighthouse Café | 2,154 | r160 | 450K |
 | A04 | Autumn Farm | 2,123 | r169 | 1.8M |
 | A13 | Mori Mart | 1,775 | r160 | 1.3M |
 | A17 | The Red Room | 1,754 | r150 | 15M |
@@ -128,6 +129,7 @@ Frame rates under software rendering are only meaningful relative to each other.
 | A08 | Redshift Archive | 1,502 | r186 | 12M |
 | A14 | Polar Icebreaker | 1,249 | r169 | 568K |
 | A06 | Cloud Post Office | 1,154 | inline UMD | 2.9M |
+| A20 | Moonlit Perfume Atelier | 1,027 | r160 | 1.3M |
 | A09 | Grand Hotel | 1,009 | r160 | 468K |
 | A15 | Qipao Diorama | 940 | r150 | 17M |
 | A11 | Lunar Outpost | 889 | r169 | 896K |
@@ -156,12 +158,13 @@ space to find surfaces sitting exactly on top of each other.
 
 Collection-wide (full report: [AUDIT.md](AUDIT.md), Chinese):
 
-- 23,313 meshes and 3.25M triangles in total, of which **4,221 meshes are outline shells** — 18% of
+- 26,251 meshes and 3.64M triangles in total, of which **4,639 meshes are outline shells** — 18% of
   everything, each one costing its own draw call.
-- **No real z-fighting.** About 2,700 triangles (0.08%) sit exactly on top of another, and every case
+- **No real z-fighting.** About 4,900 triangles (0.13%) sit exactly on top of another, and every case
   is a prop that was placed twice rather than a modelling mistake. Both copies always share a
-  material, so the cost is triangles, not visible flicker.
-- **13,132 meshes could still be merged** by material — an upper bound that still counts animated
+  material, so the cost is triangles, not visible flicker. Half of them come from one duplicated
+  mesh in the refactored Hawkins scene.
+- **14,704 meshes could still be merged** by material — an upper bound that still counts animated
   objects. A02, A07, A18 and A19 alone account for roughly 6,200 of them.
 - A07 owns the most outline shells (639), not A11 as its own notes assumed (105).
 - A13 uses 723 distinct materials for 1,095 meshes — the lowest material reuse in the archive.
@@ -175,7 +178,7 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## Notes
 
-- Roughly 87 MB of zip archives, 136 MB unpacked, 25 MB of full-size previews, 0.8 MB of thumbnails.
+- Roughly 92 MB of zip archives, 143 MB unpacked, 25 MB of full-size previews, 0.9 MB of thumbnails.
 - `catalog.md` and `profiles.md` are written in Chinese; everything else here is in English.
 - Three filenames had to be repaired during archiving because their zips used a non-UTF-8 encoding
   (`a13-mori-mart`, `a19-stranger-things`, `a18-whale-dream-atelier`). File contents are untouched.

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>HAWKINS / THE UPSIDE DOWN</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #04060c; }
+  body {
+    background:
+      radial-gradient(115% 85% at 50% 36%, #17263f 0%, #0b1322 36%, #04060c 72%, #010204 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  #stage { position: fixed; inset: 0; }
+  canvas { display: block; touch-action: none; opacity: 0; transition: opacity 1.4s ease; cursor: grab; }
+  canvas:active { cursor: grabbing; }
+  body.ready canvas { opacity: 1; }
+  .vig {
+    position: fixed; inset: 0; pointer-events: none;
+    background: radial-gradient(72% 62% at 50% 46%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.5) 100%);
+  }
+  .glowfloor {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 26%; pointer-events: none;
+    background: radial-gradient(60% 100% at 50% 100%, rgba(90,20,20,0.22) 0%, rgba(0,0,0,0) 70%);
+    mix-blend-mode: screen;
+  }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div class="glowfloor"></div>
+<div class="vig"></div>
+<script>
+  window.addEventListener('error', function (e) {
+    document.body.setAttribute('data-err', (e.message || '') + ' @' + (e.filename || '').split('/').pop() + ':' + e.lineno);
+  });
+</script>
+<script src="vendor/three.min.js"></script>
+<script src="src/core.js"></script>
+<script src="src/world.js"></script>
+<script src="src/interior.js"></script>
+<script src="src/fx.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>

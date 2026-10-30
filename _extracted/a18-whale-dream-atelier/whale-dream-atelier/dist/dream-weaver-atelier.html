@@ -4987,5 +4987,434 @@ void main() {
 `;function FT(i,e){let t=new xt({uniforms:{uTime:{value:0},uA:{value:new q(i[0])},uB:{value:new q(i[1])},uC:{value:new q(i[2])}},vertexShader:NT,fragmentShader:UT}),n=new W(new oi(e,48),t);return n.rotation.x=-Math.PI/2,n.position.y=.54,n}function k_({x:i,y:e,z:t,scale:n=1,colors:s,seed:r=1}){let o=new ce;o.position.set(i,e,t),o.scale.setScalar(n),o.userData={seed:r};let a=ft(r);for(let M=0;M<5;M++){let T=N(ze(.3,2),me(M%2?"#ffe2dd":"#fff4e9"),{pos:[(M%3-.5)*.45,-.08,(M%2-.5)*.35],scale:[1.4,.35,1.05]});T.castShadow=!1,o.add(T)}let l=new W(new Oi([new J(.31,0),new J(.38,.04),new J(.47,.2),new J(.49,.42),new J(.46,.55),new J(.42,.6)],24),new Ht({color:"#fff2dd",map:Pt.wood,gradientMap:Zt}));l.castShadow=!0,l.receiveShadow=!0,o.add(l);for(let M=0;M<14;M++){let T=M/14*xe,x=N(ve(.032,.52,.055,.012),k.woodWarm,{pos:[Math.cos(T)*.473,.3,Math.sin(T)*.473],rot:[0,-T,.015]});x.castShadow=!1,o.add(x)}for(let M of[.14,.47]){let T=new W(new dt(.473,.022,5,36),k.brass);T.rotation.x=Math.PI/2,T.position.y=M,o.add(T)}let c=new W(new dt(.425,.038,6,36),k.brassDeep);c.rotation.x=Math.PI/2,c.position.y=.595,o.add(c);let h=new W(new xn(.4,.37,.06,24,1,!0),k.woodDark);h.position.y=.56,o.add(h);let u=FT(s,.42);u.position.y=.615,o.add(u);let d=pt(s[2]==="#ffd15b"?"gold":"pink",2.7,.4);d.position.y=.62,o.add(d);for(let M=0;M<5;M++){let T=pt(M%2?"pink":"gold",1+M*.25,.16);T.position.set(Math.cos(M*1.6)*.3,.82+M*.08,Math.sin(M*1.6)*.3),o.add(T)}let f=new Yt(s[1],1.6,3,2);f.position.set(0,.9,0),o.add(f);for(let M=0;M<9;M++){let T=a()*xe,x=a()*.3,S=N(new Rt(.026+a()*.055,10,8),new hn({color:"#ffffff",transparent:!0,opacity:.36,roughness:.02,metalness:0,clearcoat:1,iridescence:1,iridescenceIOR:1.35,envMapIntensity:1.8,depthWrite:!1,side:De}),{pos:[Math.cos(T)*x,.6+a()*.03,Math.sin(T)*x],scale:[1,.7,1]});S.castShadow=!1,o.add(S)}for(let M=0;M<2;M++){let T=.4+M*2.4,x=new W(new et(new je([ne(Math.cos(T)*.44,.55,Math.sin(T)*.44),ne(Math.cos(T)*.47,.38,Math.sin(T)*.47),ne(Math.cos(T)*.46,.22,Math.sin(T)*.46)]),8,.017,4,!1),Yn(s[1],.8,.8));x.castShadow=!1,o.add(x)}let p=new ce;p.rotation.z=.36,p.rotation.y=-.4;let _=N(Oe(.023,.028,1.15,7),k.wood,{pos:[0,.55,0]});p.add(_);let g=N(ve(.17,.26,.035,.02),k.woodWarm,{pos:[0,-.05,0]});p.add(g),p.position.set(.18,.05,.08),o.add(p);let m=N(Oe(.035,.045,.12,8),k.brass,{pos:[.38,.14,.27],rot:[0,0,Math.PI/2]});o.add(m);let v=N(new dt(.055,.012,4,12,Math.PI),k.brass,{pos:[.46,.18,.27],rot:[0,0,Math.PI/2]});o.add(v);let E=[];for(let M=0;M<7;M++){let T=pt(M%2?"pink":"gold",.18,0);T.position.set((a()-.5)*.4,.7,(a()-.5)*.4),T.userData={phase:a()*xe,base:T.position.clone()},o.add(T),E.push(T)}for(let M=0;M<3;M++){let T=M/3*xe,x=N(ze(.035,1),fn.gold,{pos:[Math.cos(T)*.23,.62,Math.sin(T)*.23]});x.castShadow=!1,o.add(x)}let y=new A(i,e+.62*n,t);return{group:o,update:M=>{u.material.uniforms.uTime.value=M,E.forEach((T,x)=>{let S=(M*.11+x/7*.7)%1;T.position.x=T.userData.base.x+Math.sin(M*.5+x)*.08+S*.1,T.position.y=.68+S*.65,T.position.z=T.userData.base.z+Math.cos(M*.4+x)*.06,T.material.opacity=.12*Math.sin(Math.min(1,S)*Math.PI),T.scale.setScalar(.15+S*.25)})},source:y}}function G_(i,e,t,n=1,s=3,r=null){let o=new ce;o.position.set(i,e,t),o.scale.setScalar(n);let a=new W(new Oi([new J(.22,0),new J(.25,.01),new J(.33,.12),new J(.4,.3),new J(.42,.36)],24),new Ht({color:"#ffffff",map:Pt.basket,gradientMap:Zt}));a.material.side=De,a.castShadow=!0,a.receiveShadow=!0,o.add(a);let l=new W(new dt(.42,.035,5,28),k.woodWarm);l.rotation.x=Math.PI/2,l.position.y=.35,o.add(l);for(let f of[-1,1]){let p=new W(new dt(.37,.023,5,28,Math.PI),k.woodWarm);p.position.set(0,.34,0),p.rotation.x=-.12,p.rotation.z=f>0?0:Math.PI,p.rotation.y=0,o.add(p);break}let c=ft(s),h=r||["#ffc6d7","#ffe0a3","#c9b8ff","#b8ebdf","#fff0dc","#ffd2b5"];for(let f=0;f<11;f++){let p=c()*xe,_=c()*.26,g=N(ze(.11+c()*.1,2),me(h[f%h.length]),{pos:[Math.cos(p)*_,.42+c()*.2,Math.sin(p)*_],scale:[1.15,.8,1],rot:[0,c()*xe,c()*.2]});g.castShadow=!0,o.add(g)}let u=N(Oe(.006,.006,.4,4),k.brass,{pos:[.18,.55,.18],rot:[0,0,-.75]});o.add(u);let d=N(new dt(.18,.018,4,12,Math.PI*1.3),me("#ffc9d7"),{pos:[.32,.42,-.08],rot:[.4,.2,.2]});return o.add(d),o}function V_(){let i=new ce;i.name="cloud-dye-vats";let e=[],t=[],n=k_({x:-2.82,y:2.79,z:2.56,scale:1.15,seed:12,colors:["#ff78ad","#b18cff","#ffd164"]});i.add(n.group),e.push(n.update),t.push(n.source);let s=k_({x:2.56,y:2.78,z:2.52,scale:.92,seed:22,colors:["#72d9df","#b995ff","#ffc8db"]});i.add(s.group),e.push(s.update),t.push(s.source);let r=G_(-1.48,2.8,2.4,1.04,3);i.add(r);let o=G_(-4.6,.44,8.7,1.12,8,["#ffb7d0","#d2c0ff","#9fe6db","#ffe09a"]);i.add(o);for(let d=0;d<3;d++){let f=N(ze(.22+d*.05,2),me(d%2?"#fff2e7":"#ffd9dc",{emissive:"#ffc5b8",emissiveIntensity:.05}),{pos:[-4.6+(d%2-.5)*.4,.34+d*.02,8.7+(d%3-1)*.25],scale:[1.5,.4,1.2]});i.add(f)}let a=new ce;a.position.set(2.35,2.79,-1.15);let l=N(ve(.62,.32,.46,.04),k.woodDark,{pos:[0,.16,0]});a.add(l);for(let d=0;d<5;d++){let f=N(Oe(.07,.07,.52,10),me(["#ffbfd2","#cbb7ff","#ffd48b","#a8e6dc","#ffc9b0"][d]),{pos:[-.24+d*.12,.36,.04],rot:[Math.PI/2,0,0]});a.add(f)}let c=N(new cn(.7,.4,8,6),new Ht({color:"#ffd8c7",map:Pt.rug,gradientMap:Zt,side:De}),{pos:[0,.33,-.23],rot:[.2,0,.1]});a.add(c),i.add(a);let h=new Qe({color:"#634956",transparent:!0,opacity:.18,depthWrite:!1});for(let[d,f,p,_]of[[-2.82,2.56,.9,.8],[2.56,2.52,.75,.65],[-1.48,2.4,.7,.55]]){let g=new W(new oi(1,32),h);g.rotation.x=-Math.PI/2,g.scale.set(p,_,1),g.position.set(d,2.805,f),i.add(g)}function u(d){e.forEach(f=>f(d))}return{group:i,update:u,sources:t}}function BT(){let i=new ce;i.name="wildflower-meadow";let e=ft(992),t=new vn(.014,.16,3);t.translate(0,.08,0);let n=new En(t,me("#a8d8b8"),90),s=new Tn(.035,1),r=new En(s,new Ht({color:"#ffffff",gradientMap:Zt}),70),o=new En(new Tn(.012,1),k.brass,70),a=new _t,l=["#ffc3d8","#fff1d0","#d9c5ff","#ffd7a6","#d5f1e4"],c=new q,h=0,u=0;function d(p,_,g,m=1,v=0){h>=90||(a.position.set(p,_,g),a.rotation.set((e()-.5)*.2,v,(e()-.5)*.25),a.scale.set(.8+e()*.7,m,1),a.updateMatrix(),n.setMatrixAt(h++,a.matrix))}function f(p,_,g,m=1){u>=70||(a.position.set(p,_,g),a.rotation.set(0,e()*xe,0),a.scale.setScalar(m),a.updateMatrix(),r.setMatrixAt(u,a.matrix),c.set(l[u%l.length]),r.setColorAt(u,c),a.position.set(p,_+.005,g),a.scale.setScalar(.7),a.updateMatrix(),o.setMatrixAt(u,a.matrix),u++)}for(let p=0;p<85;p++){let _=e()*xe,g=.88+e()*.1,m=Math.cos(_)*3.28*g,v=Math.sin(_)*2.58*g+.08;Math.abs(m)<2.93&&v>-1.98&&v<2.36||(d(m,2.715,v,.6+e()*.65,_),e()<.64&&f(m,2.84,v,.48+e()*.5))}for(let p=0;p<60;p++){let _=e()*xe,g=8.95+e()*.75,m=Math.cos(_)*g,v=Math.sin(_)*g;Math.abs(m)>9.85||Math.abs(v)>9.85||(d(m,.31+e()*.12,v,.45+e()*.4,_),e()<.5&&f(m,.43+e()*.1,v,.32+e()*.4))}return d(-1.26,2.73,2.42,.55,.3),d(1.46,2.73,2.36,.6,-.4),f(1.1,2.87,2.44,.6),f(-.92,2.86,2.47,.5),n.instanceMatrix.needsUpdate=!0,r.instanceMatrix.needsUpdate=!0,o.instanceMatrix.needsUpdate=!0,n.castShadow=!0,r.castShadow=!0,o.castShadow=!1,n.frustumCulled=!1,r.frustumCulled=!1,o.frustumCulled=!1,i.add(n,r,o),i}function OT(i,e,t=.27,n=1,s=1){let r=new ce;r.position.set(i,t,e),r.scale.setScalar(n);let o=ft(s),a=me(o()<.5?"#a9dfc9":"#c7e8ce",{side:De});for(let u=0;u<3;u++){let d=N(new oi(.24,16,.22,Math.PI*1.72),a,{pos:[u*.17-.17,.006*u,u*.08],rot:[-Math.PI/2,0,o()*xe]});d.castShadow=!1,r.add(d)}let l=new ce;l.position.y=.035;let c=N(ze(.05,2),fn.gold,{pos:[0,.03,0]});l.add(c);for(let u=0;u<6;u++){let d=u/6*xe,f=N(new Rt(.075,10,6,0,Math.PI*2,0,Math.PI/2),me(["#ffe3ec","#fff0d1","#e1d1ff"][u%3]),{pos:[Math.cos(d)*.075,0,Math.sin(d)*.075],scale:[1,.42,.65],rot:[.25,-d,.25]});l.add(f)}let h=pt("gold",.45,.16);return h.position.y=.12,l.add(h),r.add(l),r}function W_(){let i=new ce;i.name="flora",i.add(BT());let e=[[-6.8,4.4,.42,11],[7.5,-3.9,.36,12],[3.3,6.4,.32,13],[-3.7,6.6,.38,14],[5.2,-5.6,.3,15],[-7.55,.3,.3,16],[7.55,2.2,.26,17],[-5.2,-6.1,.28,18]];for(let[a,l,c,h]of e)i.add(OT(a,l,.365,c,h));let t=ft(147),n=me("#ffd6df",{side:De});for(let a=0;a<28;a++){let l=t()*xe,c=4.6+t()*3.1,h=Math.cos(l)*c,u=Math.sin(l)*c;if(Math.abs(h)<3.2&&Math.abs(u)<3)continue;let d=N(new oi(.05+t()*.06,7),n,{pos:[h,.365,u],rot:[-Math.PI/2,0,t()*xe],scale:[1.4,.4,1]});d.castShadow=!1,i.add(d)}let s=new ce;for(let a=0;a<8;a++){let l=t()*xe,c=9.8+t()*2.5,h=N(ze(.2+t()*.28,2),me(a%2?"#ffe1e2":"#fff4e9"),{pos:[Math.cos(l)*c,-.35+t()*4.4,Math.sin(l)*c],scale:[1.3,.5,1]});h.castShadow=!1,s.add(h)}i.add(s);let r=s.children.map(a=>a.position.clone());function o(a){s.children.forEach((l,c)=>{l.position.y=r[c].y+Math.sin(a*.16+c*1.8)*.15,l.position.x=r[c].x+Math.cos(a*.11+c)*.08})}return{group:i,update:o}}var q_=document.getElementById("stage"),ei=new Dc({canvas:q_,antialias:!0,alpha:!1,powerPreference:"high-performance"}),Z_=1.5;ei.setPixelRatio(Math.min(window.devicePixelRatio||1,Z_));ei.setSize(window.innerWidth,window.innerHeight);ei.outputColorSpace=Wt;ei.toneMapping=Js;ei.toneMappingExposure=.98;ei.shadowMap.enabled=!1;var Nn=new yr,ga=new on(35,window.innerWidth/window.innerHeight,.1,220),J_=new A(17.4,8.15,28.1),K_=new A(0,2.72,.12);ga.position.copy(J_);var gd=l_(Nn,ei),$_=new Rr("#ffeadb","#9b9ed0",.64);Nn.add($_);var qn=new Ms("#ffe0b7",1.5);qn.position.set(8.5,18.5,12);qn.target.position.set(0,2.5,0);qn.castShadow=!0;qn.shadow.mapSize.set(2048,2048);qn.shadow.camera.left=-14;qn.shadow.camera.right=14;qn.shadow.camera.top=14;qn.shadow.camera.bottom=-14;qn.shadow.camera.near=2;qn.shadow.camera.far=55;qn.shadow.bias=-4e-4;qn.shadow.normalBias=.035;qn.shadow.radius=4.5;Nn.add(qn,qn.target);var Gp=new Ms("#b9c9ff",.38);Gp.position.set(-12,7,10);Nn.add(Gp);var Vp=new Ms("#ffb98b",.46);Vp.position.set(-9,10,-14);Nn.add(Vp);var Wp=new Yt("#ffad91",3,13,2);Wp.position.set(-2.2,-1.65,-.6);Nn.add(Wp);var Xp=new Yt("#ffd0ac",2,12,2);Xp.position.set(5.2,-2.1,3.6);Nn.add(Xp);var Yp=new Yt("#ffc58d",3.1,5.5,2);Yp.position.set(-7.1,4,-3.6);Nn.add(Yp);var qp=p_();Nn.add(qp.group);var _a=y_();Nn.add(_a.group);var xa=P_();xa.group.position.set(-.05,Vr,.18);_a.group.add(xa.group);var j_=L_(xa.silkAnchors);xa.group.add(j_.group);var _d=V_();_a.group.add(_d.group);var Zp=z_();_a.group.add(Zp.group);var Jp=O_();Nn.add(Jp.group);var Kp=B_();Nn.add(Kp.group);var $p=W_();Nn.add($p.group);var jp=N_(_d.sources,112);Nn.add(jp.group);var Qp=new ce,HT=gd.dust.material.map,Hc=(()=>{let i=123456789;return()=>(i^=i<<13,i^=i>>>17,i^=i<<5,(i>>>0)/4294967296)})();for(let i=0;i<26;i++){let e=new ln({map:HT,color:i%2?"#ffe4b4":"#ffd2e0",transparent:!0,opacity:.22,depthWrite:!1,blending:wt,toneMapped:!1}),t=new Dn(e);t.position.set((Hc()-.5)*24,-1+Hc()*12,(Hc()-.5)*24),t.scale.setScalar(.15+Hc()*.25),t.userData={base:t.position.clone(),phase:Hc()*7},Qp.add(t)}Nn.add(Qp);Nn.add((()=>{let i=new Dn(new ln({map:gd.dust.material.map,color:"#ffd5b1",transparent:!0,opacity:.16,depthWrite:!1,blending:wt,toneMapped:!1}));return i.position.set(-1.5,Vr+.12,2.2),i.scale.set(6,2.3,1),i})());var hi=new sd(ga,ei.domElement);hi.target.copy(K_);hi.enableDamping=!0;hi.dampingFactor=.055;hi.enablePan=!1;hi.minDistance=13.5;hi.maxDistance=48;hi.minPolarAngle=.28;hi.maxPolarAngle=Math.PI*.488;hi.rotateSpeed=.62;hi.zoomSpeed=.7;hi.autoRotate=!1;hi.update();var ss,md;function zT(){let i=ei.getDrawingBufferSize(new J),e=new Qt(i.x,i.y,{type:yn,samples:2});ss=new ad(ei,e),ss.setPixelRatio(ei.getPixelRatio()),ss.setSize(window.innerWidth,window.innerHeight);let t=new ld(Nn,ga);ss.addPass(t),md=new da(new J(window.innerWidth,window.innerHeight),.14,.38,1.08),ss.addPass(md);let n=new cd;ss.addPass(n)}zT();window.__dream={THREE:Xn,scene:Nn,camera:ga,renderer:ei,controls:hi,composer:ss,bloomPass:md,sky:gd,base:qp,whale:_a,atelier:xa,jellies:Kp,wishingTree:Jp,dockAndBoat:Zp,vats:_d,flora:$p,bubbles:jp,lights:{hemi:$_,key:qn,fill:Gp,rim:Vp,underA:Wp,underB:Xp,treeLight:Yp},home:J_.clone(),look:K_.clone()};function kT(){let i=window.innerWidth,e=window.innerHeight;ga.aspect=i/e,ga.updateProjectionMatrix(),ei.setSize(i,e),ei.setPixelRatio(Math.min(window.devicePixelRatio||1,Z_)),ss.setPixelRatio(ei.getPixelRatio()),ss.setSize(i,e),md?.setSize(i,e)}window.addEventListener("resize",kT,{passive:!0});var X_=0,Y_=!0,kp=performance.now();function Q_(i=performance.now()){requestAnimationFrame(Q_);let e=Math.min((i-kp)/1e3,.05);kp=i,X_+=e;let t=X_;gd.update(t),qp.update(t),_a.update(t),xa.update(t),j_.update(t),_d.update(t),Zp.update(t),Jp.update(t),Kp.update(t),$p.update(t),jp.update(t),Qp.children.forEach((n,s)=>{n.position.y=n.userData.base.y+Math.sin(t*.18+n.userData.phase)*.45,n.position.x=n.userData.base.x+Math.cos(t*.12+n.userData.phase)*.25,n.material.opacity=.1+.13*(.5+.5*Math.sin(t*.5+s))}),hi.update(),ss.render(),Y_&&(Y_=!1,q_.classList.add("is-ready"),document.documentElement.classList.add("ready"))}requestAnimationFrame(Q_);document.addEventListener("visibilitychange",()=>{kp=performance.now()});})();
 
 </script>
+
+
+
+
+<!-- AMB:start -->
+<script>window.__AMB_PRESET__="A18";</script>
+<script>
+/* ============================================================
+ *  ambience.js — 程序化环境声
+ *
+ *  不引入任何音频文件：所有声音都由 Web Audio 现场合成。
+ *  每个场景一个 preset：噪声床（雨/风/海）、低频 drone、随机事件（钟、滴水、雷、鸟、金属）。
+ *
+ *  用法：window.__AMB_PRESET__ = 'A09'; 然后加载本文件。
+ *  URL 加 ?nosound=1 可关闭（截图 / 测量时用）。
+ * ============================================================ */
+(function () {
+  var PRESETS = {
+    A01: { g: .55, bed: { n:'pink',  t:'bandpass', f:1100, q:.55, v:.50, lfo:[.06,.30] },
+                 drone:{ f:[55,82.5,110], type:'sine', v:.16, lp:240, lfo:[.05,.45] },
+                 ev:[[ 'drip', 2.0, 6.5, .22 ], [ 'thunder', 18, 40, .10 ]] },
+    A02: { g: .52, bed: { n:'brown', t:'lowpass',  f:420,  q:.7,  v:.42, lfo:[.04,.25] },
+                 drone:{ f:[49,98,147], type:'sawtooth', v:.075, lp:190, lfo:[.03,.35] },
+                 ev:[[ 'buzz', 1.2, 4.0, .10 ], [ 'clank', 3.0, 9.0, .18 ]] },
+    A03: { g: .48, bed: { n:'pink',  t:'highpass', f:900,  q:.5,  v:.22, lfo:[.08,.55] },
+                 drone:{ f:[110,165,220,330], type:'sine', v:.085, lp:900, lfo:[.11,.3] },
+                 ev:[[ 'bell', 2.2, 7.0, .16 ], [ 'chime', 4.0, 11, .10 ]] },
+    A04: { g: .55, bed: { n:'pink',  t:'bandpass', f:2600, q:.8,  v:.26, lfo:[.13,.45] },
+                 drone:{ f:[62,93], type:'triangle', v:.06, lp:300, lfo:[.06,.3] },
+                 ev:[[ 'chirp', .8, 3.2, .16 ], [ 'buzz', 3.0, 8.0, .07 ], [ 'splash', 2.5, 7.0, .12 ]] },
+    A05: { g: .58, bed: { n:'brown', t:'lowpass',  f:600,  q:.6,  v:.55, lfo:[.075,.75] },
+                 drone:{ f:[42,63], type:'sine', v:.10, lp:180, lfo:[.04,.4] },
+                 ev:[[ 'splash', 3.5, 9.0, .20 ], [ 'gull', 7, 18, .12 ]] },
+    A06: { g: .55, bed: { n:'pink',  t:'bandpass', f:800,  q:.5,  v:.40, lfo:[.10,.5] },
+                 drone:{ f:[46,69], type:'triangle', v:.09, lp:220, lfo:[.055,.4] },
+                 ev:[[ 'steam', 3.0, 8.0, .16 ], [ 'clank', 5.0, 13, .10 ]] },
+    A07: { g: .55, bed: { n:'brown', t:'lowpass',  f:300,  q:.7,  v:.52, lfo:[.035,.3] },
+                 drone:{ f:[36.7,55,73.4], type:'sawtooth', v:.085, lp:150, lfo:[.025,.3] },
+                 ev:[[ 'clank', 2.5, 8.0, .16 ], [ 'alarm', 12, 26, .09 ]] },
+    A08: { g: .52, bed: { n:'brown', t:'lowpass',  f:260,  q:.8,  v:.40, lfo:[.03,.25] },
+                 drone:{ f:[41,61.5,82], type:'sine', v:.13, lp:200, lfo:[.04,.35] },
+                 ev:[[ 'paper', 1.5, 5.0, .14 ], [ 'bell', 9, 20, .07 ]] },
+    A09: { g: .52, bed: { n:'pink',  t:'bandpass', f:700,  q:.5,  v:.34, lfo:[.09,.55] },
+                 drone:{ f:[65.4,98], type:'sine', v:.09, lp:280, lfo:[.05,.35] },
+                 ev:[[ 'steam', 4.0, 10, .14 ], [ 'bell', 6.0, 15, .13 ]] },
+    A10: { g: .60, bed: { n:'brown', t:'lowpass',  f:700,  q:.55, v:.60, lfo:[.06,.7] },
+                 drone:{ f:[38,57], type:'sine', v:.12, lp:160, lfo:[.035,.45] },
+                 ev:[[ 'thunder', 9, 22, .26 ], [ 'gull', 8, 20, .10 ], [ 'splash', 2.0, 6.0, .18 ]] },
+    A11: { g: .42, bed: { n:'white', t:'bandpass', f:2400, q:2.0, v:.10, lfo:[.02,.2] },
+                 drone:{ f:[43,64.5,86], type:'sine', v:.14, lp:180, lfo:[.02,.25] },
+                 ev:[[ 'radio', 3.0, 9.0, .12 ], [ 'steam', 11, 24, .10 ]] },
+    A12: { g: .45, bed: { n:'white', t:'highpass', f:3200, q:.6,  v:.09, lfo:[.05,.4] },
+                 drone:{ f:[110,164.8,220.5], type:'sine', v:.075, lp:700, lfo:[.08,.3] },
+                 ev:[[ 'glitch', 1.6, 5.0, .16 ], [ 'bell', 5.0, 12, .08 ]] },
+    A13: { g: .55, bed: { n:'pink',  t:'bandpass', f:2200, q:.6,  v:.40, lfo:[.11,.4] },
+                 drone:{ f:[58,87], type:'sine', v:.07, lp:260, lfo:[.05,.3] },
+                 ev:[[ 'drip', 1.2, 4.0, .16 ], [ 'chime', 6.0, 14, .10 ], [ 'frog', 2.0, 6.0, .10 ]] },
+    A14: { g: .55, bed: { n:'brown', t:'bandpass', f:520,  q:.5,  v:.50, lfo:[.05,.6] },
+                 drone:{ f:[34,51], type:'triangle', v:.11, lp:140, lfo:[.03,.35] },
+                 ev:[[ 'ice', 4.0, 11, .22 ], [ 'clank', 7.0, 16, .12 ]] },
+    A15: { g: .56, bed: { n:'pink',  t:'bandpass', f:1500, q:.55, v:.44, lfo:[.09,.4] },
+                 drone:{ f:[61,91.5], type:'sine', v:.09, lp:260, lfo:[.04,.3] },
+                 ev:[[ 'tram', 8.0, 18, .14 ], [ 'gramo', 9.0, 20, .13 ], [ 'drip', 2.0, 5.0, .10 ]] },
+    A16: { g: .52, bed: { n:'brown', t:'lowpass',  f:520,  q:.5,  v:.44, lfo:[.045,.6] },
+                 drone:{ f:[48,72], type:'sine', v:.07, lp:220, lfo:[.04,.3] },
+                 ev:[[ 'truck', 9, 22, .16 ], [ 'buzz', 3.0, 8.0, .06 ], [ 'chime', 7.0, 16, .07 ]] },
+    A17: { g: .56, bed: { n:'pink',  t:'bandpass', f:900,  q:.5,  v:.34, lfo:[.07,.4] },
+                 drone:{ f:[36.7,55,73.4,110], type:'sine', v:.16, lp:200, lfo:[.03,.5] },
+                 ev:[[ 'tick', 1.0, 1.0, .09 ], [ 'thunder', 14, 30, .14 ], [ 'drip', 2.5, 6.5, .14 ]] },
+    A18: { g: .48, bed: { n:'pink',  t:'highpass', f:600,  q:.5,  v:.22, lfo:[.07,.5] },
+                 drone:{ f:[82.5,123.5,165,247], type:'sine', v:.085, lp:1100, lfo:[.09,.35] },
+                 ev:[[ 'chime', 3.0, 8.0, .14 ], [ 'bubble', 1.6, 5.0, .10 ], [ 'bell', 8.0, 18, .10 ]] },
+    A19: { g: .55, bed: { n:'pink',  t:'bandpass', f:1400, q:.55, v:.40, lfo:[.08,.35] },
+                 drone:{ f:[41,55,82.4], type:'sawtooth', v:.065, lp:200, lfo:[.04,.45] },
+                 ev:[[ 'arcade', 2.2, 6.0, .13 ], [ 'thunder', 15, 30, .12 ], [ 'drip', 2.0, 6.0, .12 ]] },
+    /* 白天：琉璃水池 + 水晶莲花 + 花园。空气感为主，玻璃泛音，水声当点缀。 */
+    A20: { g: .46, bed: { n:'pink',  t:'bandpass', f:2600, q:.50, v:.22, lfo:[.10,.45] },
+                 drone:{ f:[330,495,660], type:'sine', v:.050, lp:1500, lfo:[.07,.55] },
+                 ev:[[ 'chime', 2.2, 6.5, .12 ], [ 'bubble', 1.6, 4.5, .09 ],
+                      [ 'drip', 3.0, 8.0, .09 ], [ 'chirp', 3.5, 10, .07 ],
+                      [ 'splash', 7, 16, .09 ]] },
+    /* 冰火对立：熔岩在脚下、冰川贴着脸，中间是矿山机械。低频同时承担"地热"和"坑道"。 */
+    A21: { g: .55, bed: { n:'brown', t:'lowpass',  f:360,  q:.65, v:.46, lfo:[.04,.32] },
+                 drone:{ f:[36.7,55,73.4], type:'sawtooth', v:.075, lp:158, lfo:[.03,.35] },
+                 ev:[[ 'lava', 1.6, 4.5, .17 ], [ 'ice', 5.0, 12, .14 ],
+                      [ 'steam', 4.0, 10, .10 ], [ 'clank', 3.5, 9.0, .10 ]] }
+  };
+
+  /* ---------- 噪声缓冲 ---------- */
+  function noiseBuf(ctx, kind, secs) {
+    var n = Math.floor(ctx.sampleRate * secs), buf = ctx.createBuffer(1, n, ctx.sampleRate), d = buf.getChannelData(0);
+    var b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0, last = 0;
+    for (var i = 0; i < n; i++) {
+      var w = Math.random() * 2 - 1;
+      if (kind === 'white') d[i] = w * 0.5;
+      else if (kind === 'pink') {
+        b0 = 0.99886 * b0 + w * 0.0555179; b1 = 0.99332 * b1 + w * 0.0750759;
+        b2 = 0.96900 * b2 + w * 0.1538520; b3 = 0.86650 * b3 + w * 0.3104856;
+        b4 = 0.55000 * b4 + w * 0.5329522; b5 = -0.7616 * b5 - w * 0.0168980;
+        d[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11; b6 = w * 0.115926;
+      } else { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+    }
+    /* 首尾交叉淡化，循环时不爆音 */
+    var fade = Math.floor(ctx.sampleRate * 0.05);
+    for (var k = 0; k < fade; k++) { var a = k / fade; d[k] *= a; d[n - 1 - k] *= a; }
+    return buf;
+  }
+
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
+  /* ---------- 单次事件合成 ---------- */
+  function fire(ctx, dest, kind, t, gain) {
+    function env(node, peak, atk, dec, dur) {
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t + atk);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      node.connect(g); g.connect(dest); return g;
+    }
+    var o, f;
+    switch (kind) {
+      case 'bell': case 'chime':
+        f = kind === 'bell' ? rnd(520, 880) : rnd(1200, 2200);
+        o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f;
+        env(o, gain, 0.006, 0, kind === 'bell' ? 2.4 : 1.4);
+        o.start(t); o.stop(t + 2.6);
+        var o2 = ctx.createOscillator(); o2.type = 'sine'; o2.frequency.value = f * 2.01;
+        env(o2, gain * 0.35, 0.006, 0, 1.2); o2.start(t); o2.stop(t + 1.4);
+        break;
+      case 'drip':
+        o = ctx.createOscillator(); o.type = 'sine';
+        o.frequency.setValueAtTime(rnd(900, 1500), t);
+        o.frequency.exponentialRampToValueAtTime(rnd(380, 620), t + 0.09);
+        env(o, gain, 0.004, 0, 0.16); o.start(t); o.stop(t + 0.2);
+        break;
+      case 'bubble':
+        o = ctx.createOscillator(); o.type = 'sine';
+        o.frequency.setValueAtTime(rnd(300, 520), t);
+        o.frequency.exponentialRampToValueAtTime(rnd(700, 1100), t + 0.07);
+        env(o, gain * 0.8, 0.005, 0, 0.12); o.start(t); o.stop(t + 0.16);
+        break;
+      case 'thunder':
+        var s1 = ctx.createBufferSource(); s1.buffer = noiseBuf(ctx, 'brown', 0.5); s1.loop = true;
+        var lp1 = ctx.createBiquadFilter(); lp1.type = 'lowpass'; lp1.frequency.value = 220;
+        s1.connect(lp1); env(lp1, gain * 2.2, 0.25, 0, 3.2); s1.start(t); s1.stop(t + 3.4);
+        break;
+      case 'splash':
+        var s2 = ctx.createBufferSource(); s2.buffer = noiseBuf(ctx, 'pink', 0.4); s2.loop = true;
+        var bp2 = ctx.createBiquadFilter(); bp2.type = 'bandpass'; bp2.frequency.value = rnd(900, 2400); bp2.Q.value = 1.1;
+        s2.connect(bp2); env(bp2, gain * 1.6, 0.06, 0, 0.7); s2.start(t); s2.stop(t + 0.8);
+        break;
+      case 'clank':
+        var s3 = ctx.createBufferSource(); s3.buffer = noiseBuf(ctx, 'white', 0.2); s3.loop = true;
+        var bp3 = ctx.createBiquadFilter(); bp3.type = 'bandpass'; bp3.frequency.value = rnd(600, 1600); bp3.Q.value = 9;
+        s3.connect(bp3); env(bp3, gain * 2.4, 0.003, 0, 0.32); s3.start(t); s3.stop(t + 0.36);
+        var o3 = ctx.createOscillator(); o3.type = 'triangle'; o3.frequency.value = rnd(180, 420);
+        env(o3, gain * 0.5, 0.004, 0, 0.5); o3.start(t); o3.stop(t + 0.55);
+        break;
+      case 'chirp':
+        for (var c = 0; c < 2; c++) {
+          var tt = t + c * 0.13;
+          var oc = ctx.createOscillator(); oc.type = 'sine';
+          oc.frequency.setValueAtTime(rnd(1800, 2600), tt);
+          oc.frequency.exponentialRampToValueAtTime(rnd(2600, 3600), tt + 0.05);
+          oc.frequency.exponentialRampToValueAtTime(rnd(1500, 2000), tt + 0.11);
+          var gc = ctx.createGain();
+          gc.gain.setValueAtTime(0.0001, tt);
+          gc.gain.exponentialRampToValueAtTime(Math.max(gain, 0.0002), tt + 0.012);
+          gc.gain.exponentialRampToValueAtTime(0.0001, tt + 0.12);
+          oc.connect(gc); gc.connect(dest); oc.start(tt); oc.stop(tt + 0.14);
+        }
+        break;
+      case 'gull':
+        o = ctx.createOscillator(); o.type = 'sawtooth';
+        o.frequency.setValueAtTime(rnd(700, 900), t);
+        o.frequency.exponentialRampToValueAtTime(rnd(380, 520), t + 0.42);
+        var gbp = ctx.createBiquadFilter(); gbp.type = 'bandpass'; gbp.frequency.value = 1200; gbp.Q.value = 2.2;
+        o.connect(gbp); env(gbp, gain, 0.05, 0, 0.5); o.start(t); o.stop(t + 0.55);
+        break;
+      case 'steam':
+        var s4 = ctx.createBufferSource(); s4.buffer = noiseBuf(ctx, 'white', 0.6); s4.loop = true;
+        var hp4 = ctx.createBiquadFilter(); hp4.type = 'highpass'; hp4.frequency.value = 2600;
+        s4.connect(hp4); env(hp4, gain * 0.9, 0.12, 0, 0.9); s4.start(t); s4.stop(t + 1.0);
+        break;
+      case 'buzz':
+        o = ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = 120;
+        var lpz = ctx.createBiquadFilter(); lpz.type = 'lowpass'; lpz.frequency.value = 900;
+        o.connect(lpz); env(lpz, gain * 0.8, 0.02, 0, 0.28); o.start(t); o.stop(t + 0.32);
+        break;
+      case 'tick':
+        o = ctx.createOscillator(); o.type = 'square'; o.frequency.value = rnd(1400, 2000);
+        env(o, gain, 0.002, 0, 0.035); o.start(t); o.stop(t + 0.05);
+        break;
+      case 'paper':
+        var s5 = ctx.createBufferSource(); s5.buffer = noiseBuf(ctx, 'white', 0.3); s5.loop = true;
+        var bp5 = ctx.createBiquadFilter(); bp5.type = 'bandpass'; bp5.frequency.value = rnd(3000, 6000); bp5.Q.value = 1.6;
+        s5.connect(bp5); env(bp5, gain * 1.1, 0.05, 0, 0.38); s5.start(t); s5.stop(t + 0.42);
+        break;
+      case 'radio':
+        o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = rnd(400, 1200);
+        var trem = ctx.createGain(); trem.gain.value = 0.5;
+        var lfo = ctx.createOscillator(); lfo.type = 'square'; lfo.frequency.value = rnd(3, 9);
+        lfo.connect(trem.gain); o.connect(trem); env(trem, gain, 0.03, 0, 0.6);
+        o.start(t); lfo.start(t); o.stop(t + 0.65); lfo.stop(t + 0.65);
+        break;
+      case 'glitch':
+        o = ctx.createOscillator(); o.type = 'square'; o.frequency.value = rnd(200, 900);
+        env(o, gain, 0.001, 0, 0.06); o.start(t); o.stop(t + 0.08);
+        var o4 = ctx.createOscillator(); o4.type = 'square'; o4.frequency.value = rnd(200, 900);
+        env(o4, gain * 0.7, 0.001, 0, 0.05); o4.start(t + 0.09); o4.stop(t + 0.16);
+        break;
+      case 'alarm':
+        o = ctx.createOscillator(); o.type = 'sine';
+        o.frequency.setValueAtTime(440, t); o.frequency.linearRampToValueAtTime(330, t + 0.9);
+        env(o, gain * 0.8, 0.2, 0, 1.0); o.start(t); o.stop(t + 1.05);
+        break;
+      case 'ice':
+        var s6 = ctx.createBufferSource(); s6.buffer = noiseBuf(ctx, 'white', 0.5); s6.loop = true;
+        var bp6 = ctx.createBiquadFilter(); bp6.type = 'bandpass'; bp6.frequency.value = rnd(1800, 4200); bp6.Q.value = 3;
+        s6.connect(bp6); env(bp6, gain * 1.8, 0.01, 0, 0.45); s6.start(t); s6.stop(t + 0.5);
+        break;
+      case 'tram':
+        o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = rnd(660, 760);
+        env(o, gain * 0.9, 0.01, 0, 0.7); o.start(t); o.stop(t + 0.75);
+        var o5 = ctx.createOscillator(); o5.type = 'sine'; o5.frequency.value = 520;
+        env(o5, gain * 0.5, 0.01, 0, 0.5); o5.start(t + 0.12); o5.stop(t + 0.65);
+        break;
+      case 'gramo':
+        var s7 = ctx.createBufferSource(); s7.buffer = noiseBuf(ctx, 'white', 1.2); s7.loop = true;
+        var bp7 = ctx.createBiquadFilter(); bp7.type = 'bandpass'; bp7.frequency.value = 1400; bp7.Q.value = 0.9;
+        s7.connect(bp7); env(bp7, gain * 0.5, 0.4, 0, 1.6); s7.start(t); s7.stop(t + 1.7);
+        var om = ctx.createOscillator(); om.type = 'triangle'; om.frequency.value = rnd(220, 330);
+        var fm = ctx.createBiquadFilter(); fm.type = 'lowpass'; fm.frequency.value = 1400;
+        om.connect(fm); env(fm, gain * 0.55, 0.15, 0, 1.4); om.start(t); om.stop(t + 1.5);
+        break;
+      case 'lava':
+        var s9 = ctx.createBufferSource(); s9.buffer = noiseBuf(ctx, 'brown', 0.35); s9.loop = true;
+        var lp9 = ctx.createBiquadFilter(); lp9.type = 'lowpass'; lp9.frequency.value = rnd(180, 430);
+        s9.connect(lp9); env(lp9, gain * 1.8, 0.025, 0, 0.5); s9.start(t); s9.stop(t + 0.55);
+        var o9 = ctx.createOscillator(); o9.type = 'sine';
+        o9.frequency.setValueAtTime(rnd(80, 150), t);
+        o9.frequency.exponentialRampToValueAtTime(rnd(38, 62), t + 0.24);
+        env(o9, gain * 0.7, 0.006, 0, 0.3); o9.start(t); o9.stop(t + 0.35);
+        break;
+      case 'truck':
+        var s8 = ctx.createBufferSource(); s8.buffer = noiseBuf(ctx, 'brown', 1.5); s8.loop = true;
+        var lp8 = ctx.createBiquadFilter(); lp8.type = 'lowpass'; lp8.frequency.value = 340;
+        s8.connect(lp8); env(lp8, gain * 1.4, 1.2, 0, 3.4); s8.start(t); s8.stop(t + 3.6);
+        break;
+      case 'frog':
+        for (var q = 0; q < 2; q++) {
+          var of = ctx.createOscillator(); of.type = 'square'; of.frequency.value = rnd(160, 260);
+          var gf = ctx.createGain();
+          var tq = t + q * 0.16;
+          gf.gain.setValueAtTime(0.0001, tq);
+          gf.gain.exponentialRampToValueAtTime(Math.max(gain * 0.5, 0.0002), tq + 0.01);
+          gf.gain.exponentialRampToValueAtTime(0.0001, tq + 0.09);
+          of.connect(gf); gf.connect(dest); of.start(tq); of.stop(tq + 0.11);
+        }
+        break;
+    }
+  }
+
+  /* ---------- 构建整条链路 ---------- */
+  function build(ctx, dest, p, offline) {
+    var master = ctx.createGain(); master.gain.value = p.g;
+    var comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -18; comp.ratio.value = 3.5; comp.attack.value = 0.01; comp.release.value = 0.3;
+    master.connect(comp); comp.connect(dest);
+
+    /* 噪声床 */
+    if (p.bed) {
+      var b = p.bed;
+      var src = ctx.createBufferSource();
+      src.buffer = noiseBuf(ctx, b.n, 4); src.loop = true;
+      var flt = ctx.createBiquadFilter(); flt.type = b.t; flt.frequency.value = b.f; flt.Q.value = b.q || 0.7;
+      var bg = ctx.createGain(); bg.gain.value = b.v;
+      src.connect(flt); flt.connect(bg); bg.connect(master);
+      if (b.lfo) {
+        var l = ctx.createOscillator(); l.type = 'sine'; l.frequency.value = b.lfo[0];
+        var lg = ctx.createGain(); lg.gain.value = b.lfo[1] * b.v;
+        l.connect(lg); lg.connect(bg.gain); l.start();
+      }
+      src.start();
+    }
+
+    /* 低频 drone */
+    if (p.drone) {
+      var d = p.drone;
+      var dlp = ctx.createBiquadFilter(); dlp.type = 'lowpass'; dlp.frequency.value = d.lp || 300;
+      var dg = ctx.createGain(); dg.gain.value = d.v;
+      dlp.connect(dg); dg.connect(master);
+      for (var i = 0; i < d.f.length; i++) {
+        var o = ctx.createOscillator();
+        o.type = d.type; o.frequency.value = d.f[i];
+        o.detune.value = (i - 1) * 7;
+        o.connect(dlp); o.start();
+      }
+      if (d.lfo) {
+        var l2 = ctx.createOscillator(); l2.type = 'sine'; l2.frequency.value = d.lfo[0];
+        var lg2 = ctx.createGain(); lg2.gain.value = d.lfo[1] * d.v * 0.8;
+        l2.connect(lg2); lg2.connect(dg.gain); l2.start();
+      }
+    }
+
+    /* 事件调度 */
+    var timers = [];
+    (p.ev || []).forEach(function (e) {
+      var kind = e[0], lo = e[1], hi = e[2], g = e[3];
+      if (offline) {
+        var t = 0;
+        while (t < offline.duration) { t += rnd(lo, hi); if (t < offline.duration) fire(ctx, master, kind, t, g); }
+      } else {
+        (function loop() {
+          var wait = rnd(lo, hi) * 1000;
+          timers.push(setTimeout(function () {
+            try { fire(ctx, master, kind, ctx.currentTime + 0.02, g); } catch (err) {}
+            loop();
+          }, wait));
+        })();
+      }
+    });
+
+    return { master: master, stop: function () {
+      timers.forEach(clearTimeout);
+      try { master.disconnect(); } catch (e) {}
+    } };
+  }
+
+  /* ---------- 离线渲染（自检用） ---------- */
+  function renderOffline(id, secs) {
+    var p = PRESETS[id]; if (!p) return Promise.resolve(null);
+    var SR = 44100;
+    var ctx = new OfflineAudioContext(2, Math.floor(SR * secs), SR);
+    build(ctx, ctx.destination, p, { duration: secs - 0.2 });
+    return ctx.startRendering().then(function (buf) {
+      var d = buf.getChannelData(0), sum = 0, peak = 0;
+      for (var i = 0; i < d.length; i++) { sum += d[i] * d[i]; var a = Math.abs(d[i]); if (a > peak) peak = a; }
+      return { rms: Math.sqrt(sum / d.length), peak: peak };
+    });
+  }
+
+  /* ---------- 运行时挂载 ---------- */
+  var ctx = null, graph = null, muted = false, btn = null;
+
+  function ui() {
+    var css = 'position:fixed;z-index:2147483000;font:12px/1.4 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;'
+      + 'right:14px;bottom:14px;padding:7px 12px;border-radius:999px;cursor:pointer;user-select:none;'
+      + 'background:rgba(10,12,17,.72);color:#e9ecf3;border:1px solid rgba(255,255,255,.16);'
+      + 'backdrop-filter:blur(8px);opacity:.55;transition:opacity .2s';
+    btn = document.createElement('div');
+    btn.title = '程序化环境声（?nosound=1 可关闭）';
+    btn.style.cssText = css;
+    btn.textContent = '🔈 点击开启环境声';
+    btn.onmouseenter = function () { btn.style.opacity = 1; };
+    btn.onmouseleave = function () { if (ctx) btn.style.opacity = .55; };
+    btn.onclick = start;
+    document.body.appendChild(btn);
+  }
+
+  function start() {
+    if (ctx) { muted = !muted; if (graph) graph.master.gain.value = muted ? 0 : PRESETS[presetId].g; btn.textContent = muted ? '🔇 环境声已静音' : '🔊 环境声'; return; }
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) { btn.textContent = '浏览器不支持 Web Audio'; return; }
+    ctx = new AC();
+    var p = PRESETS[presetId];
+    if (!p) { btn.textContent = '（此场景暂无环境声）'; return; }
+    graph = build(ctx, ctx.destination, p, false);
+    btn.textContent = '🔊 环境声';
+    btn.style.opacity = .55;
+    if (ctx.state === 'suspended') ctx.resume();
+  }
+
+  var presetId = window.__AMB_PRESET__ || null;
+
+  /* ---------- 试听用：多实例 ---------- */
+  var sharedCtx = null, instances = [];
+
+  function auditionCtx() {
+    if (!sharedCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      sharedCtx = new AC();
+    }
+    if (sharedCtx.state === 'suspended') sharedCtx.resume();
+    return sharedCtx;
+  }
+
+  var A = {
+    presets: PRESETS,
+    play: function (id) {
+      var p = PRESETS[id];
+      if (!p) return null;
+      var c = auditionCtx();
+      var g = c.createGain(); g.gain.value = 0.9;
+      var comp = c.createDynamicsCompressor();
+      comp.threshold.value = -14; comp.ratio.value = 3; comp.attack.value = 0.01; comp.release.value = 0.25;
+      g.connect(comp); comp.connect(c.destination);
+      var h = build(c, g, p, false);
+      var inst = {
+        id: id,
+        volume: function (v) { g.gain.value = v; },
+        stop: function () {
+          h.stop();
+          try { g.disconnect(); comp.disconnect(); } catch (e) {}
+          instances = instances.filter(function (x) { return x !== inst; });
+        }
+      };
+      instances.push(inst);
+      return inst;
+    },
+    stopAll: function () { instances.slice().forEach(function (i) { i.stop(); }); },
+    active: function () { return instances.map(function (i) { return i.id; }); },
+    renderOffline: renderOffline,
+    mount: function (id) { presetId = id; },
+    start: start,
+    state: function () {
+      return { preset: presetId, started: !!ctx, ctxState: ctx ? ctx.state : null,
+               muted: muted, presetCount: Object.keys(PRESETS).length };
+    }
+  };
+  window.Ambience = A;
+
+  if (!presetId) return;
+  if (/(?:^|[?&])nosound=1/.test(location.search)) return;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ui);
+  else ui();
+})();
+</script>
+<!-- AMB:end -->
 </body>
 </html>

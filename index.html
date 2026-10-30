@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>微缩场景作品归档 · 19 件</title>
+<title>微缩场景作品归档 · 21 件</title>
 <style>
   :root{
     --bg:#0a0c11;
@@ -163,14 +163,14 @@
 <header>
   <div class="hwrap">
     <div class="eyebrow">Archive · Three.js Diorama</div>
-    <h1>微缩场景作品归档 <span>/ 19 件</span></h1>
+    <h1>微缩场景作品归档 <span>/ 21 件</span></h1>
     <p class="lede">全部为纯代码程序化生成的 Three.js 微缩立体场景——没有 Blender、没有外部模型、没有贴图文件。几何、材质、Canvas 贴图、GLSL 着色器与动效都在浏览器里实时构建。按「能不能改」和「怎么打开」筛选，挑下一件要继续优化的。</p>
     <div class="stats">
-      <div class="stat"><b>19</b><span>作品</span></div>
-      <div class="stat"><b>87 MB</b><span>压缩包合计</span></div>
-      <div class="stat"><b>11</b><span>模块化可维护</span></div>
-      <div class="stat"><b>16</b><span>双击即看</span></div>
-      <div class="stat"><b>r150–r186</b><span>three.js 跨度</span></div>
+      <div class="stat"><b>21</b><span>作品</span></div>
+      <div class="stat"><b>92 MB</b><span>压缩包合计</span></div>
+      <div class="stat"><b>16</b><span>模块化可维护</span></div>
+      <div class="stat"><b>17</b><span>双击即看</span></div>
+      <div class="stat"><b>r149–r186</b><span>three.js 跨度</span></div>
       <div class="stat"><b>3,523</b><span>最高 draw call / 帧</span></div>
     </div>
   </div>
@@ -416,15 +416,39 @@ const DATA = [
 },
 {
   code:"A19", name:"Hawkins / Upside Down", cn:"怪奇物语 · 双世界镜像",
-  theme:"影视同人", tags:["怪奇物语","上下镜像","霓虹","单文件可读"],
-  size:"188K", zip:"a19-stranger-things.zip", loc:2363, three:"内联", calls:2239, tris:124041,
-  entry:"stranger-things-hawkins-diorama.html", build:"—", open:"direct", edit:"readable",
+  theme:"影视同人", tags:["怪奇物语","上下镜像","霓虹","模块化重构"],
+  size:"3.4M", zip:"a19-stranger-things.zip", loc:2883, three:"r149", calls:2739, tris:200948,
+  entry:"hawkins-mirror/hawkins-mirror.html", build:"node build.js", open:"direct", edit:"module",
   preview:"previews/A19.png", pal:["#5c1a1a","#0a0608"],
-  lede:"霍金斯 / 颠倒世界的双层镜像：上层现实世界（街机厅、拜尔斯老屋、BMX、电话亭），下层同款建筑 180° 倒悬、被藤蔓吞噬。",
-  entryNote:"双击 750KB 单文件，three.js 完整内联，首次 1–2 秒生成贴图。静止 7 秒自动环绕。",
-  tech:"2363 行可读单文件，逐层 layers 数组定义材质；上下两套建筑；程序化藤蔓、孢子、深渊红色雷电、夺心魔剪影、上下路灯同步频闪。",
-  points:"上下两套建筑意味着几何量约等于两份，是最直接的合批对象——下层可以复用上层几何做 180° 变换而非重建。",
-  note:"全库唯一用「上下镜像」做叙事结构的作品，也是唯一全中文命名。188K 做到这个密度，程序化程度很高。"
+  lede:"霍金斯 / 颠倒世界的双层镜像：13×13 双层夹心底座，上层现实世界的 Palace Arcade 街角（霓虹招牌、贩卖机、自行车、斑马线），下层同款建筑 180° 倒悬、被藤蔓吞噬。",
+  entryNote:"双击 hawkins-mirror.html（714KB 单文件，three.js 已内联）。默认仰角仅 9°，压住时才上下同时可见；把镜头绕到板面下方才看得到颠倒世界的室内。静置 5 秒自动环绕。",
+  tech:"重构为 5 个模块（core 675 / world 790 / interior 609 / fx 529 / main 280 行），普通 <script> 顺序加载、无构建依赖，build.js 只做内联。three r149 UMD，ColorManagement.legacyMode=false。上下两套建筑共用一块实心地面；程序化藤蔓、孢子、深渊红色雷电、夺心魔剪影、上下路灯同步频闪。",
+  points:"实测 2,739 calls / 20.1 万三角面（比旧版 2,239 / 12.4 万都更高——重构加了不少细节）。可合批 1,314，但先要处理一处遗留：颠倒世界里有一对同材质、同世界矩阵的网格完全重合，重了 2,400 个三角形。",
+  note:"全库唯一用「上下镜像」做叙事结构的作品。重构后几何量约为两套完整建筑，下层可复用上层几何做 180° 变换而非重建。"
+},
+{
+  code:"A20", name:"Moonlit Perfume Atelier", cn:"月光琉璃花灵香水工坊 · 白天",
+  theme:"原创奇幻", tags:["香水工坊","水晶莲花","荧光水池","白天版"],
+  size:"1.3M", zip:"a20-moonlit-perfume-atelier.zip", loc:2951, three:"r160", calls:1027, tris:273054,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A20.png", pal:["#3f8d78","#d98fa8"],
+  lede:"白天主题的琉璃水园：翡翠苔藓底座托着一池荧光水，中央是水晶莲花与玻璃花萼工坊，金色浑天环绕花而转。",
+  entryNote:"双击 index.html，5 个经典 <script> 顺序加载，离线可用。拖拽旋转、滚轮缩放。白天版用蓝天渐变 + 暖阳光晕 + fbm 云层，日光主光配天光补光。",
+  tech:"core（渲染器 / 轨道相机 / 自研泛光后期 / 天空 / 三渲二着色器 / 程序化贴图）、world（双层荧光水池、苔藓底座、鹅卵石花瓣滩、水下水晶簇与长尾金鱼）、lotus（水晶莲花、玻璃花萼、螺旋蒸馏器、琉璃香水瓶阵列）、garden（蝶翼风车、铃兰铜管、王莲步道、蒲公英灯、藤蔓彩窗拱桥、天鹅船、紫藤花瀑）、life（彩蝶尾迹、露珠涟漪、花露气泡、蒲公英绒毛、金鱼游动、主循环）。",
+  points:"实测 1,027 calls / 27.3 万三角面。可合批只有 4——说明作者已经做过分组，网格基本都并进批里了。304 个描边外壳占网格 41%，是下一刀最直接的目标。实体层没有重合三角形。",
+  note:"同一套代码另有夜景版（不在归档内），两版可对照。全库唯一以「白昼花园」为基调的一件。"
+},
+{
+  code:"A21", name:"Ice-Fire Mine Station", cn:"冰火交融 · 矿山街角驿站",
+  theme:"原创奇幻", tags:["矿山","熔岩","冰川","雨夜"],
+  size:"586K", zip:"a21-ice-fire-mine-station.zip", loc:3142, three:"r160", calls:3350, tris:94300,
+  entry:"index.html", build:"python build.py", open:"net", edit:"module",
+  preview:"previews/A21.png", pal:["#7d3a1e","#0c1520"],
+  lede:"左侧熔岩河与瀑布、右侧冰川深潭，中间夹着一间屋顶积雪的矿山驿站：关东煮、咖啡机、冰封柜、龙晶展台，矿车与钻探机停在街头。",
+  entryNote:"双击 index.html——但 **需要联网**，three.js r160 走 jsdelivr CDN。雨雪蒸汽火星同时开，静置缓慢自转。",
+  tech:"src/ 8 个模块（core / base / ground / building / interior / street / fx / loop），build.py 把它们拼进单文件 index.html。自研三渲二描边 + 后期；雨、雪、蒸汽、火星、滴水五套粒子；双灵与索道是独立动画。",
+  points:"实测 3,350 calls / 9.4 万三角面——**调用数全库第三，但三角面只有别人的零头**，是典型的 draw-call 瓶颈。可合批 1,322。28 个描边外壳不算多，但 ShaderMaterial 特效层占了 13,810 个重复三角形（那是有意为之的描边/辉光层，不是几何错误；实体层只有 37 个）。",
+  note:"冰与火在同一块底座上共存：熔岩用自发光 + 噪波动画，冰川用半透明蓝 + 焦散。改 src/ 后 python build.py 重新出单文件。"
 }
 ];
 
@@ -461,7 +485,9 @@ const LIVE_PATH = {
   A16:"a16-route66-diner/route66-diner/index.html",
   A17:"a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html",
   A18:"a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html",
-  A19:"a19-stranger-things/stranger-things/stranger-things-hawkins-diorama.html"
+  A19:"a19-stranger-things/hawkins-mirror/hawkins-mirror.html",
+  A20:"a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html",
+  A21:"a21-ice-fire-mine-station/ice-fire-mine-station/index.html"
 };
 const liveUrl = d => LIVE_BASE + LIVE_PATH[d.code].split("/").map(encodeURIComponent).join("/");
 const EDIT_LABEL = {module:"模块化源码", readable:"单文件可读", locked:"已压缩·不可改"};

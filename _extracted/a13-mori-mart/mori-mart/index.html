@@ -3791,5 +3791,434 @@ three/build/three.module.js:
 */
 
 </script>
+
+
+
+
+<!-- AMB:start -->
+<script>window.__AMB_PRESET__="A13";</script>
+<script>
+/* ============================================================
+ *  ambience.js — 程序化环境声
+ *
+ *  不引入任何音频文件：所有声音都由 Web Audio 现场合成。
+ *  每个场景一个 preset：噪声床（雨/风/海）、低频 drone、随机事件（钟、滴水、雷、鸟、金属）。
+ *
+ *  用法：window.__AMB_PRESET__ = 'A09'; 然后加载本文件。
+ *  URL 加 ?nosound=1 可关闭（截图 / 测量时用）。
+ * ============================================================ */
+(function () {
+  var PRESETS = {
+    A01: { g: .55, bed: { n:'pink',  t:'bandpass', f:1100, q:.55, v:.50, lfo:[.06,.30] },
+                 drone:{ f:[55,82.5,110], type:'sine', v:.16, lp:240, lfo:[.05,.45] },
+                 ev:[[ 'drip', 2.0, 6.5, .22 ], [ 'thunder', 18, 40, .10 ]] },
+    A02: { g: .52, bed: { n:'brown', t:'lowpass',  f:420,  q:.7,  v:.42, lfo:[.04,.25] },
+                 drone:{ f:[49,98,147], type:'sawtooth', v:.075, lp:190, lfo:[.03,.35] },
+                 ev:[[ 'buzz', 1.2, 4.0, .10 ], [ 'clank', 3.0, 9.0, .18 ]] },
+    A03: { g: .48, bed: { n:'pink',  t:'highpass', f:900,  q:.5,  v:.22, lfo:[.08,.55] },
+                 drone:{ f:[110,165,220,330], type:'sine', v:.085, lp:900, lfo:[.11,.3] },
+                 ev:[[ 'bell', 2.2, 7.0, .16 ], [ 'chime', 4.0, 11, .10 ]] },
+    A04: { g: .55, bed: { n:'pink',  t:'bandpass', f:2600, q:.8,  v:.26, lfo:[.13,.45] },
+                 drone:{ f:[62,93], type:'triangle', v:.06, lp:300, lfo:[.06,.3] },
+                 ev:[[ 'chirp', .8, 3.2, .16 ], [ 'buzz', 3.0, 8.0, .07 ], [ 'splash', 2.5, 7.0, .12 ]] },
+    A05: { g: .58, bed: { n:'brown', t:'lowpass',  f:600,  q:.6,  v:.55, lfo:[.075,.75] },
+                 drone:{ f:[42,63], type:'sine', v:.10, lp:180, lfo:[.04,.4] },
+                 ev:[[ 'splash', 3.5, 9.0, .20 ], [ 'gull', 7, 18, .12 ]] },
+    A06: { g: .55, bed: { n:'pink',  t:'bandpass', f:800,  q:.5,  v:.40, lfo:[.10,.5] },
+                 drone:{ f:[46,69], type:'triangle', v:.09, lp:220, lfo:[.055,.4] },
+                 ev:[[ 'steam', 3.0, 8.0, .16 ], [ 'clank', 5.0, 13, .10 ]] },
+    A07: { g: .55, bed: { n:'brown', t:'lowpass',  f:300,  q:.7,  v:.52, lfo:[.035,.3] },
+                 drone:{ f:[36.7,55,73.4], type:'sawtooth', v:.085, lp:150, lfo:[.025,.3] },
+                 ev:[[ 'clank', 2.5, 8.0, .16 ], [ 'alarm', 12, 26, .09 ]] },
+    A08: { g: .52, bed: { n:'brown', t:'lowpass',  f:260,  q:.8,  v:.40, lfo:[.03,.25] },
+                 drone:{ f:[41,61.5,82], type:'sine', v:.13, lp:200, lfo:[.04,.35] },
+                 ev:[[ 'paper', 1.5, 5.0, .14 ], [ 'bell', 9, 20, .07 ]] },
+    A09: { g: .52, bed: { n:'pink',  t:'bandpass', f:700,  q:.5,  v:.34, lfo:[.09,.55] },
+                 drone:{ f:[65.4,98], type:'sine', v:.09, lp:280, lfo:[.05,.35] },
+                 ev:[[ 'steam', 4.0, 10, .14 ], [ 'bell', 6.0, 15, .13 ]] },
+    A10: { g: .60, bed: { n:'brown', t:'lowpass',  f:700,  q:.55, v:.60, lfo:[.06,.7] },
+                 drone:{ f:[38,57], type:'sine', v:.12, lp:160, lfo:[.035,.45] },
+                 ev:[[ 'thunder', 9, 22, .26 ], [ 'gull', 8, 20, .10 ], [ 'splash', 2.0, 6.0, .18 ]] },
+    A11: { g: .42, bed: { n:'white', t:'bandpass', f:2400, q:2.0, v:.10, lfo:[.02,.2] },
+                 drone:{ f:[43,64.5,86], type:'sine', v:.14, lp:180, lfo:[.02,.25] },
+                 ev:[[ 'radio', 3.0, 9.0, .12 ], [ 'steam', 11, 24, .10 ]] },
+    A12: { g: .45, bed: { n:'white', t:'highpass', f:3200, q:.6,  v:.09, lfo:[.05,.4] },
+                 drone:{ f:[110,164.8,220.5], type:'sine', v:.075, lp:700, lfo:[.08,.3] },
+                 ev:[[ 'glitch', 1.6, 5.0, .16 ], [ 'bell', 5.0, 12, .08 ]] },
+    A13: { g: .55, bed: { n:'pink',  t:'bandpass', f:2200, q:.6,  v:.40, lfo:[.11,.4] },
+                 drone:{ f:[58,87], type:'sine', v:.07, lp:260, lfo:[.05,.3] },
+                 ev:[[ 'drip', 1.2, 4.0, .16 ], [ 'chime', 6.0, 14, .10 ], [ 'frog', 2.0, 6.0, .10 ]] },
+    A14: { g: .55, bed: { n:'brown', t:'bandpass', f:520,  q:.5,  v:.50, lfo:[.05,.6] },
+                 drone:{ f:[34,51], type:'triangle', v:.11, lp:140, lfo:[.03,.35] },
+                 ev:[[ 'ice', 4.0, 11, .22 ], [ 'clank', 7.0, 16, .12 ]] },
+    A15: { g: .56, bed: { n:'pink',  t:'bandpass', f:1500, q:.55, v:.44, lfo:[.09,.4] },
+                 drone:{ f:[61,91.5], type:'sine', v:.09, lp:260, lfo:[.04,.3] },
+                 ev:[[ 'tram', 8.0, 18, .14 ], [ 'gramo', 9.0, 20, .13 ], [ 'drip', 2.0, 5.0, .10 ]] },
+    A16: { g: .52, bed: { n:'brown', t:'lowpass',  f:520,  q:.5,  v:.44, lfo:[.045,.6] },
+                 drone:{ f:[48,72], type:'sine', v:.07, lp:220, lfo:[.04,.3] },
+                 ev:[[ 'truck', 9, 22, .16 ], [ 'buzz', 3.0, 8.0, .06 ], [ 'chime', 7.0, 16, .07 ]] },
+    A17: { g: .56, bed: { n:'pink',  t:'bandpass', f:900,  q:.5,  v:.34, lfo:[.07,.4] },
+                 drone:{ f:[36.7,55,73.4,110], type:'sine', v:.16, lp:200, lfo:[.03,.5] },
+                 ev:[[ 'tick', 1.0, 1.0, .09 ], [ 'thunder', 14, 30, .14 ], [ 'drip', 2.5, 6.5, .14 ]] },
+    A18: { g: .48, bed: { n:'pink',  t:'highpass', f:600,  q:.5,  v:.22, lfo:[.07,.5] },
+                 drone:{ f:[82.5,123.5,165,247], type:'sine', v:.085, lp:1100, lfo:[.09,.35] },
+                 ev:[[ 'chime', 3.0, 8.0, .14 ], [ 'bubble', 1.6, 5.0, .10 ], [ 'bell', 8.0, 18, .10 ]] },
+    A19: { g: .55, bed: { n:'pink',  t:'bandpass', f:1400, q:.55, v:.40, lfo:[.08,.35] },
+                 drone:{ f:[41,55,82.4], type:'sawtooth', v:.065, lp:200, lfo:[.04,.45] },
+                 ev:[[ 'arcade', 2.2, 6.0, .13 ], [ 'thunder', 15, 30, .12 ], [ 'drip', 2.0, 6.0, .12 ]] },
+    /* 白天：琉璃水池 + 水晶莲花 + 花园。空气感为主，玻璃泛音，水声当点缀。 */
+    A20: { g: .46, bed: { n:'pink',  t:'bandpass', f:2600, q:.50, v:.22, lfo:[.10,.45] },
+                 drone:{ f:[330,495,660], type:'sine', v:.050, lp:1500, lfo:[.07,.55] },
+                 ev:[[ 'chime', 2.2, 6.5, .12 ], [ 'bubble', 1.6, 4.5, .09 ],
+                      [ 'drip', 3.0, 8.0, .09 ], [ 'chirp', 3.5, 10, .07 ],
+                      [ 'splash', 7, 16, .09 ]] },
+    /* 冰火对立：熔岩在脚下、冰川贴着脸，中间是矿山机械。低频同时承担"地热"和"坑道"。 */
+    A21: { g: .55, bed: { n:'brown', t:'lowpass',  f:360,  q:.65, v:.46, lfo:[.04,.32] },
+                 drone:{ f:[36.7,55,73.4], type:'sawtooth', v:.075, lp:158, lfo:[.03,.35] },
+                 ev:[[ 'lava', 1.6, 4.5, .17 ], [ 'ice', 5.0, 12, .14 ],
+                      [ 'steam', 4.0, 10, .10 ], [ 'clank', 3.5, 9.0, .10 ]] }
+  };
+
+  /* ---------- 噪声缓冲 ---------- */
+  function noiseBuf(ctx, kind, secs) {
+    var n = Math.floor(ctx.sampleRate * secs), buf = ctx.createBuffer(1, n, ctx.sampleRate), d = buf.getChannelData(0);
+    var b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0, last = 0;
+    for (var i = 0; i < n; i++) {
+      var w = Math.random() * 2 - 1;
+      if (kind === 'white') d[i] = w * 0.5;
+      else if (kind === 'pink') {
+        b0 = 0.99886 * b0 + w * 0.0555179; b1 = 0.99332 * b1 + w * 0.0750759;
+        b2 = 0.96900 * b2 + w * 0.1538520; b3 = 0.86650 * b3 + w * 0.3104856;
+        b4 = 0.55000 * b4 + w * 0.5329522; b5 = -0.7616 * b5 - w * 0.0168980;
+        d[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11; b6 = w * 0.115926;
+      } else { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+    }
+    /* 首尾交叉淡化，循环时不爆音 */
+    var fade = Math.floor(ctx.sampleRate * 0.05);
+    for (var k = 0; k < fade; k++) { var a = k / fade; d[k] *= a; d[n - 1 - k] *= a; }
+    return buf;
+  }
+
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
+  /* ---------- 单次事件合成 ---------- */
+  function fire(ctx, dest, kind, t, gain) {
+    function env(node, peak, atk, dec, dur) {
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t + atk);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      node.connect(g); g.connect(dest); return g;
+    }
+    var o, f;
+    switch (kind) {
+      case 'bell': case 'chime':
+        f = kind === 'bell' ? rnd(520, 880) : rnd(1200, 2200);
+        o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f;
+        env(o, gain, 0.006, 0, kind === 'bell' ? 2.4 : 1.4);
+        o.start(t); o.stop(t + 2.6);
+        var o2 = ctx.createOscillator(); o2.type = 'sine'; o2.frequency.value = f * 2.01;
+        env(o2, gain * 0.35, 0.006, 0, 1.2); o2.start(t); o2.stop(t + 1.4);
+        break;
+      case 'drip':
+        o = ctx.createOscillator(); o.type = 'sine';
+        o.frequency.setValueAtTime(rnd(900, 1500), t);
+        o.frequency.exponentialRampToValueAtTime(rnd(380, 620), t + 0.09);
+        env(o, gain, 0.004, 0, 0.16); o.start(t); o.stop(t + 0.2);
+        break;
+      case 'bubble':
+        o = ctx.createOscillator(); o.type = 'sine';
+        o.frequency.setValueAtTime(rnd(300, 520), t);
+        o.frequency.exponentialRampToValueAtTime(rnd(700, 1100), t + 0.07);
+        env(o, gain * 0.8, 0.005, 0, 0.12); o.start(t); o.stop(t + 0.16);
+        break;
+      case 'thunder':
+        var s1 = ctx.createBufferSource(); s1.buffer = noiseBuf(ctx, 'brown', 0.5); s1.loop = true;
+        var lp1 = ctx.createBiquadFilter(); lp1.type = 'lowpass'; lp1.frequency.value = 220;
+        s1.connect(lp1); env(lp1, gain * 2.2, 0.25, 0, 3.2); s1.start(t); s1.stop(t + 3.4);
+        break;
+      case 'splash':
+        var s2 = ctx.createBufferSource(); s2.buffer = noiseBuf(ctx, 'pink', 0.4); s2.loop = true;
+        var bp2 = ctx.createBiquadFilter(); bp2.type = 'bandpass'; bp2.frequency.value = rnd(900, 2400); bp2.Q.value = 1.1;
+        s2.connect(bp2); env(bp2, gain * 1.6, 0.06, 0, 0.7); s2.start(t); s2.stop(t + 0.8);
+        break;
+      case 'clank':
+        var s3 = ctx.createBufferSource(); s3.buffer = noiseBuf(ctx, 'white', 0.2); s3.loop = true;
+        var bp3 = ctx.createBiquadFilter(); bp3.type = 'bandpass'; bp3.frequency.value = rnd(600, 1600); bp3.Q.value = 9;
+        s3.connect(bp3); env(bp3, gain * 2.4, 0.003, 0, 0.32); s3.start(t); s3.stop(t + 0.36);
+        var o3 = ctx.createOscillator(); o3.type = 'triangle'; o3.frequency.value = rnd(180, 420);
+        env(o3, gain * 0.5, 0.004, 0, 0.5); o3.start(t); o3.stop(t + 0.55);
+        break;
+      case 'chirp':
+        for (var c = 0; c < 2; c++) {
+          var tt = t + c * 0.13;
+          var oc = ctx.createOscillator(); oc.type = 'sine';
+          oc.frequency.setValueAtTime(rnd(1800, 2600), tt);
+          oc.frequency.exponentialRampToValueAtTime(rnd(2600, 3600), tt + 0.05);
+          oc.frequency.exponentialRampToValueAtTime(rnd(1500, 2000), tt + 0.11);
+          var gc = ctx.createGain();
+          gc.gain.setValueAtTime(0.0001, tt);
+          gc.gain.exponentialRampToValueAtTime(Math.max(gain, 0.0002), tt + 0.012);
+          gc.gain.exponentialRampToValueAtTime(0.0001, tt + 0.12);
+          oc.connect(gc); gc.connect(dest); oc.start(tt); oc.stop(tt + 0.14);
+        }
+        break;
+      case 'gull':
+        o = ctx.createOscillator(); o.type = 'sawtooth';
+        o.frequency.setValueAtTime(rnd(700, 900), t);
+        o.frequency.exponentialRampToValueAtTime(rnd(380, 520), t + 0.42);
+        var gbp = ctx.createBiquadFilter(); gbp.type = 'bandpass'; gbp.frequency.value = 1200; gbp.Q.value = 2.2;
+        o.connect(gbp); env(gbp, gain, 0.05, 0, 0.5); o.start(t); o.stop(t + 0.55);
+        break;
+      case 'steam':
+        var s4 = ctx.createBufferSource(); s4.buffer = noiseBuf(ctx, 'white', 0.6); s4.loop = true;
+        var hp4 = ctx.createBiquadFilter(); hp4.type = 'highpass'; hp4.frequency.value = 2600;
+        s4.connect(hp4); env(hp4, gain * 0.9, 0.12, 0, 0.9); s4.start(t); s4.stop(t + 1.0);
+        break;
+      case 'buzz':
+        o = ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = 120;
+        var lpz = ctx.createBiquadFilter(); lpz.type = 'lowpass'; lpz.frequency.value = 900;
+        o.connect(lpz); env(lpz, gain * 0.8, 0.02, 0, 0.28); o.start(t); o.stop(t + 0.32);
+        break;
+      case 'tick':
+        o = ctx.createOscillator(); o.type = 'square'; o.frequency.value = rnd(1400, 2000);
+        env(o, gain, 0.002, 0, 0.035); o.start(t); o.stop(t + 0.05);
+        break;
+      case 'paper':
+        var s5 = ctx.createBufferSource(); s5.buffer = noiseBuf(ctx, 'white', 0.3); s5.loop = true;
+        var bp5 = ctx.createBiquadFilter(); bp5.type = 'bandpass'; bp5.frequency.value = rnd(3000, 6000); bp5.Q.value = 1.6;
+        s5.connect(bp5); env(bp5, gain * 1.1, 0.05, 0, 0.38); s5.start(t); s5.stop(t + 0.42);
+        break;
+      case 'radio':
+        o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = rnd(400, 1200);
+        var trem = ctx.createGain(); trem.gain.value = 0.5;
+        var lfo = ctx.createOscillator(); lfo.type = 'square'; lfo.frequency.value = rnd(3, 9);
+        lfo.connect(trem.gain); o.connect(trem); env(trem, gain, 0.03, 0, 0.6);
+        o.start(t); lfo.start(t); o.stop(t + 0.65); lfo.stop(t + 0.65);
+        break;
+      case 'glitch':
+        o = ctx.createOscillator(); o.type = 'square'; o.frequency.value = rnd(200, 900);
+        env(o, gain, 0.001, 0, 0.06); o.start(t); o.stop(t + 0.08);
+        var o4 = ctx.createOscillator(); o4.type = 'square'; o4.frequency.value = rnd(200, 900);
+        env(o4, gain * 0.7, 0.001, 0, 0.05); o4.start(t + 0.09); o4.stop(t + 0.16);
+        break;
+      case 'alarm':
+        o = ctx.createOscillator(); o.type = 'sine';
+        o.frequency.setValueAtTime(440, t); o.frequency.linearRampToValueAtTime(330, t + 0.9);
+        env(o, gain * 0.8, 0.2, 0, 1.0); o.start(t); o.stop(t + 1.05);
+        break;
+      case 'ice':
+        var s6 = ctx.createBufferSource(); s6.buffer = noiseBuf(ctx, 'white', 0.5); s6.loop = true;
+        var bp6 = ctx.createBiquadFilter(); bp6.type = 'bandpass'; bp6.frequency.value = rnd(1800, 4200); bp6.Q.value = 3;
+        s6.connect(bp6); env(bp6, gain * 1.8, 0.01, 0, 0.45); s6.start(t); s6.stop(t + 0.5);
+        break;
+      case 'tram':
+        o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = rnd(660, 760);
+        env(o, gain * 0.9, 0.01, 0, 0.7); o.start(t); o.stop(t + 0.75);
+        var o5 = ctx.createOscillator(); o5.type = 'sine'; o5.frequency.value = 520;
+        env(o5, gain * 0.5, 0.01, 0, 0.5); o5.start(t + 0.12); o5.stop(t + 0.65);
+        break;
+      case 'gramo':
+        var s7 = ctx.createBufferSource(); s7.buffer = noiseBuf(ctx, 'white', 1.2); s7.loop = true;
+        var bp7 = ctx.createBiquadFilter(); bp7.type = 'bandpass'; bp7.frequency.value = 1400; bp7.Q.value = 0.9;
+        s7.connect(bp7); env(bp7, gain * 0.5, 0.4, 0, 1.6); s7.start(t); s7.stop(t + 1.7);
+        var om = ctx.createOscillator(); om.type = 'triangle'; om.frequency.value = rnd(220, 330);
+        var fm = ctx.createBiquadFilter(); fm.type = 'lowpass'; fm.frequency.value = 1400;
+        om.connect(fm); env(fm, gain * 0.55, 0.15, 0, 1.4); om.start(t); om.stop(t + 1.5);
+        break;
+      case 'lava':
+        var s9 = ctx.createBufferSource(); s9.buffer = noiseBuf(ctx, 'brown', 0.35); s9.loop = true;
+        var lp9 = ctx.createBiquadFilter(); lp9.type = 'lowpass'; lp9.frequency.value = rnd(180, 430);
+        s9.connect(lp9); env(lp9, gain * 1.8, 0.025, 0, 0.5); s9.start(t); s9.stop(t + 0.55);
+        var o9 = ctx.createOscillator(); o9.type = 'sine';
+        o9.frequency.setValueAtTime(rnd(80, 150), t);
+        o9.frequency.exponentialRampToValueAtTime(rnd(38, 62), t + 0.24);
+        env(o9, gain * 0.7, 0.006, 0, 0.3); o9.start(t); o9.stop(t + 0.35);
+        break;
+      case 'truck':
+        var s8 = ctx.createBufferSource(); s8.buffer = noiseBuf(ctx, 'brown', 1.5); s8.loop = true;
+        var lp8 = ctx.createBiquadFilter(); lp8.type = 'lowpass'; lp8.frequency.value = 340;
+        s8.connect(lp8); env(lp8, gain * 1.4, 1.2, 0, 3.4); s8.start(t); s8.stop(t + 3.6);
+        break;
+      case 'frog':
+        for (var q = 0; q < 2; q++) {
+          var of = ctx.createOscillator(); of.type = 'square'; of.frequency.value = rnd(160, 260);
+          var gf = ctx.createGain();
+          var tq = t + q * 0.16;
+          gf.gain.setValueAtTime(0.0001, tq);
+          gf.gain.exponentialRampToValueAtTime(Math.max(gain * 0.5, 0.0002), tq + 0.01);
+          gf.gain.exponentialRampToValueAtTime(0.0001, tq + 0.09);
+          of.connect(gf); gf.connect(dest); of.start(tq); of.stop(tq + 0.11);
+        }
+        break;
+    }
+  }
+
+  /* ---------- 构建整条链路 ---------- */
+  function build(ctx, dest, p, offline) {
+    var master = ctx.createGain(); master.gain.value = p.g;
+    var comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -18; comp.ratio.value = 3.5; comp.attack.value = 0.01; comp.release.value = 0.3;
+    master.connect(comp); comp.connect(dest);
+
+    /* 噪声床 */
+    if (p.bed) {
+      var b = p.bed;
+      var src = ctx.createBufferSource();
+      src.buffer = noiseBuf(ctx, b.n, 4); src.loop = true;
+      var flt = ctx.createBiquadFilter(); flt.type = b.t; flt.frequency.value = b.f; flt.Q.value = b.q || 0.7;
+      var bg = ctx.createGain(); bg.gain.value = b.v;
+      src.connect(flt); flt.connect(bg); bg.connect(master);
+      if (b.lfo) {
+        var l = ctx.createOscillator(); l.type = 'sine'; l.frequency.value = b.lfo[0];
+        var lg = ctx.createGain(); lg.gain.value = b.lfo[1] * b.v;
+        l.connect(lg); lg.connect(bg.gain); l.start();
+      }
+      src.start();
+    }
+
+    /* 低频 drone */
+    if (p.drone) {
+      var d = p.drone;
+      var dlp = ctx.createBiquadFilter(); dlp.type = 'lowpass'; dlp.frequency.value = d.lp || 300;
+      var dg = ctx.createGain(); dg.gain.value = d.v;
+      dlp.connect(dg); dg.connect(master);
+      for (var i = 0; i < d.f.length; i++) {
+        var o = ctx.createOscillator();
+        o.type = d.type; o.frequency.value = d.f[i];
+        o.detune.value = (i - 1) * 7;
+        o.connect(dlp); o.start();
+      }
+      if (d.lfo) {
+        var l2 = ctx.createOscillator(); l2.type = 'sine'; l2.frequency.value = d.lfo[0];
+        var lg2 = ctx.createGain(); lg2.gain.value = d.lfo[1] * d.v * 0.8;
+        l2.connect(lg2); lg2.connect(dg.gain); l2.start();
+      }
+    }
+
+    /* 事件调度 */
+    var timers = [];
+    (p.ev || []).forEach(function (e) {
+      var kind = e[0], lo = e[1], hi = e[2], g = e[3];
+      if (offline) {
+        var t = 0;
+        while (t < offline.duration) { t += rnd(lo, hi); if (t < offline.duration) fire(ctx, master, kind, t, g); }
+      } else {
+        (function loop() {
+          var wait = rnd(lo, hi) * 1000;
+          timers.push(setTimeout(function () {
+            try { fire(ctx, master, kind, ctx.currentTime + 0.02, g); } catch (err) {}
+            loop();
+          }, wait));
+        })();
+      }
+    });
+
+    return { master: master, stop: function () {
+      timers.forEach(clearTimeout);
+      try { master.disconnect(); } catch (e) {}
+    } };
+  }
+
+  /* ---------- 离线渲染（自检用） ---------- */
+  function renderOffline(id, secs) {
+    var p = PRESETS[id]; if (!p) return Promise.resolve(null);
+    var SR = 44100;
+    var ctx = new OfflineAudioContext(2, Math.floor(SR * secs), SR);
+    build(ctx, ctx.destination, p, { duration: secs - 0.2 });
+    return ctx.startRendering().then(function (buf) {
+      var d = buf.getChannelData(0), sum = 0, peak = 0;
+      for (var i = 0; i < d.length; i++) { sum += d[i] * d[i]; var a = Math.abs(d[i]); if (a > peak) peak = a; }
+      return { rms: Math.sqrt(sum / d.length), peak: peak };
+    });
+  }
+
+  /* ---------- 运行时挂载 ---------- */
+  var ctx = null, graph = null, muted = false, btn = null;
+
+  function ui() {
+    var css = 'position:fixed;z-index:2147483000;font:12px/1.4 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;'
+      + 'right:14px;bottom:14px;padding:7px 12px;border-radius:999px;cursor:pointer;user-select:none;'
+      + 'background:rgba(10,12,17,.72);color:#e9ecf3;border:1px solid rgba(255,255,255,.16);'
+      + 'backdrop-filter:blur(8px);opacity:.55;transition:opacity .2s';
+    btn = document.createElement('div');
+    btn.title = '程序化环境声（?nosound=1 可关闭）';
+    btn.style.cssText = css;
+    btn.textContent = '🔈 点击开启环境声';
+    btn.onmouseenter = function () { btn.style.opacity = 1; };
+    btn.onmouseleave = function () { if (ctx) btn.style.opacity = .55; };
+    btn.onclick = start;
+    document.body.appendChild(btn);
+  }
+
+  function start() {
+    if (ctx) { muted = !muted; if (graph) graph.master.gain.value = muted ? 0 : PRESETS[presetId].g; btn.textContent = muted ? '🔇 环境声已静音' : '🔊 环境声'; return; }
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) { btn.textContent = '浏览器不支持 Web Audio'; return; }
+    ctx = new AC();
+    var p = PRESETS[presetId];
+    if (!p) { btn.textContent = '（此场景暂无环境声）'; return; }
+    graph = build(ctx, ctx.destination, p, false);
+    btn.textContent = '🔊 环境声';
+    btn.style.opacity = .55;
+    if (ctx.state === 'suspended') ctx.resume();
+  }
+
+  var presetId = window.__AMB_PRESET__ || null;
+
+  /* ---------- 试听用：多实例 ---------- */
+  var sharedCtx = null, instances = [];
+
+  function auditionCtx() {
+    if (!sharedCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      sharedCtx = new AC();
+    }
+    if (sharedCtx.state === 'suspended') sharedCtx.resume();
+    return sharedCtx;
+  }
+
+  var A = {
+    presets: PRESETS,
+    play: function (id) {
+      var p = PRESETS[id];
+      if (!p) return null;
+      var c = auditionCtx();
+      var g = c.createGain(); g.gain.value = 0.9;
+      var comp = c.createDynamicsCompressor();
+      comp.threshold.value = -14; comp.ratio.value = 3; comp.attack.value = 0.01; comp.release.value = 0.25;
+      g.connect(comp); comp.connect(c.destination);
+      var h = build(c, g, p, false);
+      var inst = {
+        id: id,
+        volume: function (v) { g.gain.value = v; },
+        stop: function () {
+          h.stop();
+          try { g.disconnect(); comp.disconnect(); } catch (e) {}
+          instances = instances.filter(function (x) { return x !== inst; });
+        }
+      };
+      instances.push(inst);
+      return inst;
+    },
+    stopAll: function () { instances.slice().forEach(function (i) { i.stop(); }); },
+    active: function () { return instances.map(function (i) { return i.id; }); },
+    renderOffline: renderOffline,
+    mount: function (id) { presetId = id; },
+    start: start,
+    state: function () {
+      return { preset: presetId, started: !!ctx, ctxState: ctx ? ctx.state : null,
+               muted: muted, presetCount: Object.keys(PRESETS).length };
+    }
+  };
+  window.Ambience = A;
+
+  if (!presetId) return;
+  if (/(?:^|[?&])nosound=1/.test(location.search)) return;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ui);
+  else ui();
+})();
+</script>
+<!-- AMB:end -->
 </body>
 </html>
