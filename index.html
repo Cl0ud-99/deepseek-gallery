@@ -315,6 +315,16 @@
   }
   .cclose:hover{color:#fff; border-color:rgba(255,255,255,.4)}
 
+  /* 点开作品时卡片撑满全屏的过渡层 */
+  .zoom{
+    position:fixed; z-index:70; pointer-events:none;
+    background:#05060a center/cover no-repeat;
+    border-radius:var(--r-lg);
+    transition:left .44s cubic-bezier(.32,.72,.24,1), top .44s cubic-bezier(.32,.72,.24,1),
+               width .44s cubic-bezier(.32,.72,.24,1), height .44s cubic-bezier(.32,.72,.24,1),
+               border-radius .44s cubic-bezier(.32,.72,.24,1);
+  }
+
   /* ---------- 分享面板（类 iOS 底部弹层） ---------- */
   .sheet{
     position:fixed; inset:0; z-index:80; display:none;
@@ -1149,6 +1159,27 @@ var veil = document.getElementById('veil');
 var vIndex = 0;
 var openedFromGrid = false;   // 是从总览点开的吗
 
+/* 像 iOS 点开 App 那样：卡片位置先撑满全屏，再露出场景 */
+function zoomFromCard(i) {
+  var c = cards[i] && cards[i].el;
+  if (!c) return;
+  var r = c.getBoundingClientRect();
+  var z = document.createElement('div');
+  z.className = 'zoom';
+  z.style.cssText = 'left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px;' +
+    'background-image:url(previews/wall/' + cards[i].w.id + '.jpg)';
+  document.body.appendChild(z);
+  void z.offsetWidth;
+  requestAnimationFrame(function () {
+    z.style.left = '0px';
+    z.style.top = '0px';
+    z.style.width = window.innerWidth + 'px';
+    z.style.height = window.innerHeight + 'px';
+    z.style.borderRadius = '0px';
+  });
+  setTimeout(function () { z.remove(); }, 520);
+}
+
 function open(id) {
   var i = WORKS.findIndex(function (x) { return x.id === id; });
   if (i < 0) return;
@@ -1159,6 +1190,7 @@ function open(id) {
   vIndex = i;
   openedFromGrid = overview;
   paintViewer();
+  zoomFromCard(i);
   veil.classList.remove('off');
   viewer.classList.add('on');
   requestAnimationFrame(function () { viewer.classList.add('shown'); });
