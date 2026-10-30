@@ -153,7 +153,7 @@
   .title .en{font-size:clamp(13px,1.35vw,19px); font-weight:400; letter-spacing:.32em;
     text-transform:uppercase; line-height:1.5;
     margin-right:-.32em;            /* 抵消最后一个字符右侧的字距，保持视觉居中 */
-    transition:opacity .22s}
+    transition:opacity .3s ease}
   .title .cn{display:none}
   .title.swap .en,.title.swap .cn{opacity:0}
 
@@ -767,15 +767,17 @@ function layout() {
   barPos = best;
 }
 
+var titleTimer = 0;
 function setCurrent(i) {
   current = i;
   var t = document.getElementById('title');
-  t.classList.add('swap');
-  setTimeout(function () {
+  t.classList.add('swap');            // 先淡出
+  clearTimeout(titleTimer);           // 连续快速滑动时不要叠一堆定时器
+  titleTimer = setTimeout(function () {
     document.getElementById('tEn').textContent = cards[i].w.en;
     document.getElementById('tCn').textContent = cards[i].w.cn;
-    t.classList.remove('swap');
-  }, 140);
+    t.classList.remove('swap');       // 停稳后再淡入
+  }, 170);
 }
 
 function nearestIndex() {
