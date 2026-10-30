@@ -254,6 +254,11 @@
   }
   /* 鲸鱼原生朝左，向右游时要镜像 */
   .bar.fwd i::after{transform:scaleX(-1)}
+  /* 竖屏时小鲸竖着放（头朝上） */
+  @media (max-width:720px){
+    body.portrait .bar i::after{ transform:rotate(90deg) }
+    body.portrait .bar.fwd i::after{ transform:rotate(90deg) scaleX(-1) }
+  }
 
   /* ---------- 总览按钮 ---------- */
   /* 作者标识：左上角，小云 + 名字 + 邮箱 */
@@ -471,18 +476,18 @@
   }
 
   /* 竖屏翻页时，上下分界用毛玻璃虚化（只在移动端出现） */
-  .edge{ position:fixed; inset:0; pointer-events:none; z-index:4; display:none }
+  .edge{ position:absolute; inset:0; pointer-events:none; z-index:3; display:none }
   @media (max-width:720px){
     body.portrait:not(.mode-grid) .edge{ display:block }
     .edge i{
-      position:absolute; left:0; right:0; height:clamp(56px, 9vh, 96px);
+      position:absolute; left:0; right:0; height:clamp(140px, 22vh, 240px);
       -webkit-backdrop-filter:blur(10px) saturate(88%) brightness(.96);
               backdrop-filter:blur(10px) saturate(88%) brightness(.96);
     }
-    .edge .top{ top:calc(env(safe-area-inset-top) + 74px);    /* 让开顶部按钮 */
+    .edge .top{ top:0;
       -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
               mask-image:linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%) }
-    .edge .bot{ bottom:calc(env(safe-area-inset-bottom) + 46px);  /* 让开底部进度条 */
+    .edge .bot{ bottom:0;
       -webkit-mask-image:linear-gradient(to top, #000 0%, #000 30%, transparent 100%);
               mask-image:linear-gradient(to top, #000 0%, #000 30%, transparent 100%) }
   }
@@ -617,6 +622,8 @@
     <button class="nav next" id="navNext" aria-label="下一件">›</button>
   </div>
 
+  <div class="edge" aria-hidden="true"><i class="top"></i><i class="bot"></i></div>
+
   <div class="bar"><i id="bar"></i></div>
 
   <div class="caption">
@@ -647,8 +654,6 @@
     <button class="cclose" id="cclose">Close</button>
   </div>
 </div>
-
-<div class="edge" aria-hidden="true"><i class="top"></i><i class="bot"></i></div>
 
 <div class="viewer" id="viewer">
   <div class="veil" id="veil"><div class="vname" id="vname"></div><div class="dot"></div></div>
