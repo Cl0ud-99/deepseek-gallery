@@ -5336,6 +5336,7 @@ console.warn( 'Scripts "build/three.js" and "build/three.min.js" are deprecated 
 
 
 
+
 <!-- AMB:start -->
 <script>window.__AMB_PRESET__="A07";</script>
 <script>
@@ -5757,7 +5758,22 @@ console.warn( 'Scripts "build/three.js" and "build/three.min.js" are deprecated 
       instances.push(inst);
       return inst;
     },
-    stopAll: function () { instances.slice().forEach(function (i) { i.stop(); }); },
+    stopAll: function () {
+      instances.slice().forEach(function (i) { i.stop(); });
+      /* 单场景模式下 instances 是空的，必须同时把本实例静音，
+         否则外层开关只能开、关不掉 */
+      if (ctx) { muted = true; if (graph) graph.master.gain.value = 0; }
+    },
+    on: function () {
+      if (!ctx) { start(); return; }
+      muted = false;
+      if (graph) graph.master.gain.value = PRESETS[presetId].g;
+    },
+    off: function () {
+      if (!ctx) return;
+      muted = true;
+      if (graph) graph.master.gain.value = 0;
+    },
     active: function () { return instances.map(function (i) { return i.id; }); },
     renderOffline: renderOffline,
     mount: function (id) { presetId = id; },

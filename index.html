@@ -1000,11 +1000,9 @@ function applySoundToScene() {
   var w = frame && frame.contentWindow;
   if (!w || !w.Ambience) return false;
   try {
-    if (soundOn) {
-      if (!(w.Ambience.active && w.Ambience.active().length)) w.Ambience.start();
-    } else {
-      w.Ambience.stopAll();
-    }
+    var A = w.Ambience;
+    if (soundOn) { if (A.on) A.on(); else A.start(); }
+    else { if (A.off) A.off(); else A.stopAll(); }
     return true;
   } catch (e) { return false; }
 }
