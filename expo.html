@@ -496,6 +496,8 @@ function setMode(toGrid, focusIndex) {
   });
   var t0 = els.map(function (el) { return el.style.transform || 'none'; });
   var op0 = els.map(function (el) { return parseFloat(getComputedStyle(el).opacity) || 0; });
+  var scroll0 = track.scrollLeft;   // offsetLeft 是相对内容原点，必须扣掉滚动量
+  var box0 = track.getBoundingClientRect();   // 切换前后 track 自身也会移动（头部高度变了）
 
   document.body.classList.add('is-moving');
   els.forEach(function (el) { el.style.willChange = 'transform, opacity'; });
@@ -525,6 +527,8 @@ function setMode(toGrid, focusIndex) {
   var g1 = els.map(function (el) {
     return { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight };
   });
+  var scroll1 = track.scrollLeft;
+  var box1 = track.getBoundingClientRect();
   var t1 = els.map(function (el) { return el.style.transform || 'none'; });
   var op1 = els.map(function (el) { return el.style.opacity ? parseFloat(el.style.opacity) : 1; });
 
@@ -552,9 +556,11 @@ function setMode(toGrid, focusIndex) {
       op = 0;
       delay = Math.random() * 120;      // 轻微错峰，保留"一镜"的连贯感
     } else {
-      /* 选中的那张：直接归位 */
-      dx = g0[i].x - g1[i].x;
-      dy = g0[i].y - g1[i].y;
+      /* 选中的那张：直接归位。
+         用"中心点"算位移（宽度变了，左右边缘差和中心差不是一回事），
+         并扣掉两端的滚动量（offsetLeft 含滚动偏移，纵向没有滚动）。 */
+      dx = (g0[i].x + g0[i].w / 2 - scroll0 + box0.left) - (g1[i].x + g1[i].w / 2 - scroll1 + box1.left);
+      dy = (g0[i].y + g0[i].h / 2 + box0.top) - (g1[i].y + g1[i].h / 2 + box1.top);
       sx = g0[i].w / Math.max(g1[i].w, 1);
       sy = g0[i].h / Math.max(g1[i].h, 1);
     }
