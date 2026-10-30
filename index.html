@@ -597,11 +597,12 @@
     .title .en{ font-size:13px; letter-spacing:.26em; margin-right:-.26em }
     /* 作品名叠在卡片正中央 */
     /* 卡片被顶部留白推下去了一点，标题要跟着偏同样的量才真正对中 */
+    /* 纵向位置由 JS 按卡片真实中心写进来，彻底避免错位 */
     .caption{
-      position:absolute; left:0; right:0; top:0; bottom:0;
-      z-index:7; pointer-events:none; padding:0 22px 30px;   /* 卡片因 wrap 下边距略偏上，这里补回来 */
+      position:absolute; left:0; right:0; top:50%;
+      transform:translateY(-50%);
+      z-index:7; pointer-events:none; padding:0 22px;
       background:none;
-      display:flex; align-items:center; justify-content:center;
     }
     .caption .title{ width:100%; text-align:center }
     .caption .title{ min-height:0; margin:0 }
@@ -629,7 +630,7 @@
       padding-inline:calc(50% - var(--cw)/2);
     }
     /* 上下相邻的卡片不能越过轨道盖住标题 */
-    body.portrait:not(.mode-grid) .wrap{ overflow:hidden }
+    body.portrait:not(.mode-grid) .wrap{ overflow:hidden; padding-bottom:0 }   /* 否则轨道比视口矮，卡片会偏上 */
 
     /* 竖向轨道里 flex-basis 作用于高度，宽度会撑满：
        必须显式给宽高，否则卡片会横跨整个屏宽 */
@@ -908,6 +909,17 @@ function layout() {
   document.body.classList.add('scrolling');
   clearTimeout(scrollIdle);
   scrollIdle = setTimeout(function () { document.body.classList.remove('scrolling'); }, 160);
+
+  /* 标题跟着卡片的屏幕中心，不再依赖容器高度 */
+  var capEl = document.querySelector('.caption');
+  if (capEl) {
+    if (vertical) {
+      var cb = cards[best].el.getBoundingClientRect();
+      capEl.style.top = Math.round(cb.top + cb.height / 2) + 'px';
+    } else {
+      capEl.style.top = '';
+    }
+  }
 
   /* 小鲸朝向跟着「前进 / 后退」翻转 */
   if (barPos >= 0 && best !== barPos) {
