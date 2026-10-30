@@ -279,7 +279,8 @@
   .themebtn{
     width:clamp(38px,3.4vw,46px); height:clamp(38px,3.4vw,46px); border-radius:50%; padding:0;
     display:flex; align-items:center; justify-content:center;
-    font-size:clamp(14px,1.4vw,17px); line-height:1; color:var(--ink); cursor:pointer;
+    line-height:1; color:var(--ink); cursor:pointer;
+    border:1px solid var(--glass-line);
     border:1px solid var(--glass-line);
     background:var(--glass);
     -webkit-backdrop-filter:blur(26px) saturate(180%); backdrop-filter:blur(26px) saturate(180%);
@@ -287,6 +288,7 @@
     transition:transform .2s, border-color .2s, color .2s;
   }
   .themebtn:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(1.06)}
+  .themebtn svg{display:block; opacity:.9}
 
   .ovbtn{
     display:inline-flex; align-items:center; gap:8px;
@@ -446,7 +448,9 @@
   </button>
 
   <div class="topbar">
-  <button class="themebtn" id="themeBtn" aria-label="Toggle theme" title="Dark mode">🌙</button>
+  <button class="themebtn" id="themeBtn" aria-label="Toggle theme" title="Dark mode">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.6A8.6 8.6 0 1 1 9.4 3.8a7 7 0 0 0 10.8 10.8z"/></svg>
+  </button>
   <button class="ovbtn" id="ovBtn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
     <span id="ovLabel">All Works</span>
@@ -1191,9 +1195,12 @@ document.addEventListener('keydown', function (e) {
 /* ---------- 主题 ---------- */
 var themeBtn = document.getElementById('themeBtn');
 var darkOn = localStorage.getItem('gallery-theme') === 'dark';
+var ICON_MOON = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.6A8.6 8.6 0 1 1 9.4 3.8a7 7 0 0 0 10.8 10.8z"/></svg>';
+var ICON_SUN  = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.3M12 18.9v2.3M2.8 12h2.3M18.9 12h2.3M5.5 5.5l1.6 1.6M16.9 16.9l1.6 1.6M18.5 5.5l-1.6 1.6M7.1 16.9l-1.6 1.6"/></svg>';
+
 function paintTheme() {
   document.body.classList.toggle('dark', darkOn);
-  themeBtn.textContent = darkOn ? '☀️' : '🌙';
+  themeBtn.innerHTML = darkOn ? ICON_SUN : ICON_MOON;   /* 暗色时显示太阳（可切回） */
   themeBtn.title = darkOn ? 'Switch to light' : 'Switch to dark';
 }
 themeBtn.addEventListener('click', function () {
