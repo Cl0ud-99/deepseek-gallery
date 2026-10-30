@@ -548,7 +548,7 @@ function setMode(toGrid, focusIndex) {
   var sel = toGrid ? lastFocus : focusIndex;      // 当前选中的那一张
 
   els.forEach(function (el, i) {
-    var dx, dy, sx, sy, base = t0[i], op = op0[i], delay = 0;
+    var dx, dy, sx, sy, base = t0[i], op = op0[i], delay = 0, culled = false;
 
     if (toGrid && i !== sel) {
       /* 其余卡片：从画面左/右随机一侧飞入 */
@@ -564,11 +564,7 @@ function setMode(toGrid, focusIndex) {
          否则十几张同时掠过，选中那张的"一镜"就被淹没了 */
       dx = 0; dy = 0; sx = 1; sy = 1;
       base = 'none';
-      el.animate([
-        { opacity: op, transform: 'scale(1)', borderRadius: rv1 + 'px' },
-        { opacity: 0, transform: 'scale(0.88)', borderRadius: rv1 + 'px' }
-      ], { duration: 300, easing: 'ease-out', fill: 'both' });
-      return;
+      culled = true;
     } else {
       /* 选中的那张：直接归位。
          用"中心点"算位移（宽度变了，左右边缘差和中心差不是一回事），
@@ -588,16 +584,18 @@ function setMode(toGrid, focusIndex) {
     if (!moving && !turn && !faded) return;
 
     var isSel = (i === sel);
+    var endOp = culled ? 0 : op1[i];
+    var dur = culled ? 320 : (isSel ? 820 : 560);
+    var ease = culled ? 'ease-out' : (isSel ? 'cubic-bezier(.32,.02,.18,1)' : 'cubic-bezier(.22,.8,.24,1)');
     /* 圆角会随 scale 一起缩放：元素放大 3.36 倍时，46px 在屏幕上是 154px。
        起始帧按缩放倍数反向补偿，视觉圆角才稳定。 */
     var sc0 = Math.max(Math.abs(sx), Math.abs(sy), 0.02);
     var cssR0 = Math.max(2, rv0 / sc0);
     anims.push(el.animate([
       { transform: compose(dx, dy, sx, sy, base), opacity: op, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
-      { transform: t1[i] === 'none' ? 'none' : t1[i], opacity: op1[i], borderRadius: rv1 + 'px', offset: 1 }
-    ], isSel
-      ? { duration: 820, delay: 0, easing: 'cubic-bezier(.32,.02,.18,1)', fill: 'both' }
-      : { duration: 560, delay: delay, easing: 'cubic-bezier(.22,.8,.24,1)', fill: 'both' }));
+      { transform: culled ? 'scale(0.88)' : (t1[i] === 'none' ? 'none' : t1[i]),
+        opacity: endOp, borderRadius: rv1 + 'px', offset: 1 }
+    ], { duration: dur, delay: delay, easing: ease, fill: 'both' }));
   });
 
   Promise.all(anims.map(function (a) { return a.finished.catch(function () {}); })).then(function () {
