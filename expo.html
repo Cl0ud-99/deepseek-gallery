@@ -674,6 +674,36 @@ document.addEventListener('selectstart', function (e) {
 }, true);
 
 /* ---------- 启动 ---------- */
+/* 进场：整个展廊淡入放大，卡片按离中心的距离依次浮现 */
+function playIntro() {
+  var sel = nearestIndex();
+  try {
+    track.animate([
+      { opacity: 0, transform: 'scale(.975)' },
+      { opacity: 1, transform: 'scale(1)' }
+    ], { duration: 640, easing: 'cubic-bezier(.22,.8,.24,1)', fill: 'backwards' });
+
+    cards.forEach(function (c, i) {
+      var d = Math.abs(i - sel);
+      var delay = 90 + Math.min(d * 42, 420);
+      var a = c.el.animate(
+        [{ opacity: 0 }, { opacity: 1 }],
+        { duration: 520, delay: delay, easing: 'ease-out', fill: 'backwards' }
+      );
+    });
+
+    document.querySelector('.head').animate([
+      { opacity: 0, transform: 'translateY(12px)' },
+      { opacity: 1, transform: 'translateY(0)' }
+    ], { duration: 720, delay: 120, easing: 'cubic-bezier(.22,.8,.24,1)', fill: 'backwards' });
+
+    document.querySelector('.bar').animate(
+      [{ opacity: 0 }, { opacity: 1 }],
+      { duration: 600, delay: 620, easing: 'ease-out', fill: 'backwards' }
+    );
+  } catch (e) {}
+}
+
 window.addEventListener('load', function () {
   var id = location.hash.replace('#', '');
   if (id && SRC[id]) { layout(); open(id); return; }
@@ -684,6 +714,7 @@ window.addEventListener('load', function () {
   track.style.scrollSnapType = '';
   current = -1;
   layout();
+  playIntro();
 });
 requestAnimationFrame(function () { layout(); });
 setTimeout(layout, 240);
