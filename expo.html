@@ -55,7 +55,7 @@
   /* 底部毛玻璃渐变：把画面下缘可能露出的硬边柔化掉 */
   .stage::after{
     content:""; position:fixed; left:0; right:0; bottom:0; height:clamp(110px,16vh,180px);
-    pointer-events:none; z-index:3;
+    pointer-events:none; z-index:-1;   /* 必须低于卡片，否则会把最后一行洗白 */
     background:linear-gradient(to top,
       rgba(232,234,240,.92) 0%,
       rgba(228,230,238,.72) 28%,
