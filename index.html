@@ -850,7 +850,7 @@ function axisPos(el)    { return vertical ? el.offsetTop  + el.offsetHeight / 2
                                           : el.offsetLeft + el.offsetWidth  / 2; }
 function axisScroll()   { return vertical ? track.scrollTop  : track.scrollLeft; }
 function axisView()     { return vertical ? track.clientHeight : track.clientWidth; }
-function axisSnap()     { return vertical ? 'y mandatory' : 'x mandatory'; }
+function axisSnap()     { return vertical ? 'none' : 'x mandatory'; }   /* 竖屏自己算位置，别让原生吸附抢位置 */
 
 function applyOrientation() {
   var p = isPortrait();
@@ -1879,11 +1879,18 @@ function boot() {
   }
 
   /* 每次打开随机落在某一件上，而不是永远从第一张开始 */
-  jumpTo(Math.floor(Math.random() * cards.length));
-  void track.offsetWidth;
-  track.style.scrollSnapType = '';
+  var pick = Math.floor(Math.random() * cards.length);
   current = -1;
   layout();
+  /* 先让布局稳定，再按索引精确居中（竖屏直接用 top，不做平滑） */
+  if (vertical) {
+    jumpTo(pick);
+    layout();
+  } else {
+    jumpTo(pick);
+    track.style.scrollSnapType = '';
+    layout();
+  }
 
   /* 弱网时图片可能还没到。等当前这张和左右邻居就位（最多 1.6s）再放出， */
   /* 否则用户看到的是几张空框加上一段没有内容的进场动画。 */
