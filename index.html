@@ -470,6 +470,23 @@
     :root{ --cw: clamp(760px, 44vw, 1080px); --gap: clamp(56px, 3vw, 96px); }
   }
 
+  /* 竖屏翻页时，上下分界用毛玻璃虚化（只在移动端出现） */
+  .edge{ position:fixed; inset:0; pointer-events:none; z-index:4; display:none }
+  @media (max-width:720px){
+    body.portrait:not(.mode-grid) .edge{ display:block }
+    .edge i{
+      position:absolute; left:0; right:0; height:clamp(64px, 11vh, 120px);
+      -webkit-backdrop-filter:blur(10px) saturate(88%) brightness(.96);
+              backdrop-filter:blur(10px) saturate(88%) brightness(.96);
+    }
+    .edge .top{ top:0;
+      -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+              mask-image:linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%) }
+    .edge .bot{ bottom:0;
+      -webkit-mask-image:linear-gradient(to top, #000 0%, #000 30%, transparent 100%);
+              mask-image:linear-gradient(to top, #000 0%, #000 30%, transparent 100%) }
+  }
+
   /* ---------- 移动端 ---------- */
   @media (max-width:720px){
     :root{
@@ -627,6 +644,8 @@
     <button class="cclose" id="cclose">Close</button>
   </div>
 </div>
+
+<div class="edge" aria-hidden="true"><i class="top"></i><i class="bot"></i></div>
 
 <div class="viewer" id="viewer">
   <div class="veil" id="veil"><div class="vname" id="vname"></div><div class="dot"></div></div>
