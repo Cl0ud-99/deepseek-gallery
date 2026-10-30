@@ -68,6 +68,11 @@ ${TARGETS.map(([id, rel]) => `<a class="card" href="/s/${id}">
 
 const server = http.createServer((req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
+  if (url === '/audition' || url === '/audition.html') {
+    const fp = path.join(__dirname, 'audition.html');
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+    return fs.createReadStream(fp).pipe(res);
+  }
   if (url === '/' || url === '/index.html') {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     return res.end(idx);
