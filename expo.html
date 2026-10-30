@@ -309,7 +309,9 @@ function layout() {
     if (Math.abs(d) < bestD) { bestD = Math.abs(d); best = k; }
     var ad = Math.min(1, Math.abs(d));
     if (!reduce) {
-      var rot = -d * 20;
+      // d 可以到 ±10（列表总宽 19000px），必须钳制：
+      // 之前没钳制会算出 rotateY(±200°)，到 90° 时卡片被压成一条线
+      var rot = -Math.max(-1, Math.min(1, d)) * 20;
       var sc = 1 - ad * 0.13;
       var ty = ad * 10;
       box.style.transform = 'rotateY(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + ty.toFixed(1) + 'px)';
@@ -545,7 +547,7 @@ function setMode(toGrid, focusIndex) {
        否则一次转场有十几张卡同时掠过，观感很乱 */
     if (toGrid) {
       var vx0 = g0[i].x - scrolled, vx1 = vx0 + g0[i].w;
-      if (vx1 < -40 || vx0 > vw + 40) { dx = 0; dy = 0; sx = 1; sy = 1; }
+      if (vx1 < -40 || vx0 > vw + 40) { dx = 0; dy = 0; sx = 1; sy = 1; t0[i] = 'none'; }
     }
     var moving = Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5 || Math.abs(sx - 1) > 0.004 || Math.abs(sy - 1) > 0.004;
     var turn = t0[i] !== t1[i];
