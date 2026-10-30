@@ -307,11 +307,13 @@
     display:inline-flex; align-items:center; gap:8px; height:var(--btn-h); box-sizing:border-box;
     font:inherit; font-size:12px; letter-spacing:.06em; color:var(--ink); cursor:pointer;
     padding:0 16px 0 13px; border-radius:var(--r-pill);
+    overflow:hidden; white-space:nowrap;
     background:var(--glass); border:1px solid var(--glass-line);
     -webkit-backdrop-filter:blur(26px) saturate(180%); backdrop-filter:blur(26px) saturate(180%);
     box-shadow:0 10px 26px -14px rgba(50,48,42,.5), var(--glass-hi);
-    transition:transform .2s, color .2s, border-color .2s;
+    transition:transform var(--hover-t), color .2s, border-color .2s, width .3s cubic-bezier(.2,.7,.3,1);
   }
+  #ovLabel{display:inline-block; transition:opacity .16s ease}
   .ovbtn:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(var(--hover))}
   .ovbtn{position:relative; top:auto; right:auto}
   .ovbtn svg{width:13px; height:13px; opacity:.8}
@@ -963,7 +965,7 @@ function setMode(toGrid, focusIndex) {
   /* 2. 切布局 */
   overview = toGrid;
   document.body.classList.toggle('mode-grid', toGrid);
-  document.getElementById('ovLabel').textContent = toGrid ? 'Back' : 'All Works';
+  morphOvBtn(toGrid);
   els.forEach(function (el) { el.style.transform = ''; el.style.opacity = ''; });
 
 
@@ -1152,6 +1154,29 @@ function setMode(toGrid, focusIndex) {
 }
 
 document.getElementById('ovBtn').addEventListener('click', function () { setMode(!overview); });
+
+/* ---------- 总览按钮：宽高随文案平滑变形 ---------- */
+var ovBtnEl = document.getElementById('ovBtn');
+var ovLabelEl = document.getElementById('ovLabel');
+
+function morphOvBtn(toGrid) {
+  var start = ovBtnEl.offsetWidth;              // offsetWidth 不含 transform 缩放
+  ovBtnEl.style.width = start + 'px';
+
+  ovLabelEl.style.opacity = '0';                 // 先淡出，避免文字跳变
+  setTimeout(function () {
+    ovLabelEl.textContent = toGrid ? 'Back' : 'All Works';
+    /* 量一下新文案需要的宽度，再从当前宽度过渡过去 */
+    ovBtnEl.style.width = 'auto';
+    var end = ovBtnEl.offsetWidth;
+    ovBtnEl.style.width = start + 'px';
+    void ovBtnEl.offsetWidth;
+    ovBtnEl.style.width = end + 'px';
+    ovLabelEl.style.opacity = '1';
+    /* 过渡结束后交还给内容自适应，避免字体变化时被写死的宽度裁掉 */
+    setTimeout(function () { ovBtnEl.style.width = ''; }, 340);
+  }, 130);
+}
 
 /* ---------- 音效总开关（横向页面底部正中） ---------- */
 var sndBtn = document.getElementById('sndBtn');
