@@ -920,9 +920,20 @@ function layout() {
     if (vertical && !overview && !transitioning) {
       var near = nearestIndex();
       var off = axisPos(cards[near].el) - (axisScroll() + axisView() / 2);
-      if (Math.abs(off) > 8) center(near);
+      if (Math.abs(off) > 8) {
+        /* 自己跑一段 160ms 的缓动，比浏览器 smooth 快很多 */
+        var from = track.scrollTop;
+        var to = axisPos(cards[near].el) - axisView() / 2;
+        var t0 = performance.now();
+        (function step() {
+          var k = Math.min(1, (performance.now() - t0) / 160);
+          var e = 1 - Math.pow(1 - k, 3);
+          track.scrollTop = from + (to - from) * e;
+          if (k < 1) requestAnimationFrame(step);
+        })();
+      }
     }
-  }, 140);
+  }, 80);
 
   /* 标题跟着卡片的屏幕中心，不再依赖容器高度 */
   var capEl = document.querySelector('.caption');
