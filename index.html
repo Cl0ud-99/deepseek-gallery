@@ -638,7 +638,7 @@
       width:var(--cw);
       height:calc(var(--cw) * .75);
       aspect-ratio:auto;
-      margin-block:-32px;                     /* 负边距：相邻卡片各让 32px，视觉上叠在主卡后面 */
+      margin-block:-16px;                     /* 统一间距：每张各让 16px */
     }
     /* 标题区加一层柔和底，避免下面那张卡片透出来 */
     /* 竖屏时标题叠在卡片中央，不再需要底部垫底 */
@@ -883,7 +883,14 @@ function layout() {
         ? Math.max(0.22, 1 - Math.abs(j - best) * 0.20)   /* 越远越小：0.80 / 0.60 / 0.40 … */
         : 1 - ad * 0.13;
       if (vertical) {
-        box.style.transform = 'rotateX(' + (-rot).toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + (ad * 6).toFixed(1) + 'px)';
+        /* 缩小后视觉间隙会变大：按缩放差把远处的往中间收，
+           让近处与远处的间隙看起来一致 */
+        /* 位移写在 scale 之前：这样它是"未缩放"的位移，
+           正好抵消卡片缩小后多出来的视觉间隙 —— 近处远处看起来一样宽 */
+        var pull = (1 - sc) * (box.offsetHeight / 2);
+        var pdir = j > best ? -1 : 1;
+        box.style.transform = 'rotateX(' + (-rot).toFixed(2) + 'deg) translateY(' + (pdir * pull).toFixed(1) +
+          'px) scale(' + sc.toFixed(3) + ')';
       } else {
         box.style.transform = 'rotateY(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + (ad * 10).toFixed(1) + 'px)';
       }
@@ -1795,8 +1802,8 @@ function playIntro() {
         { transform: start, opacity: 0 },
         { transform: base, opacity: endOp }
       ], {
-        duration: vertical ? 520 : 760,
-        delay: Math.min(Math.abs(d) * (vertical ? 26 : 45), vertical ? 190 : 380),
+        duration: vertical ? 760 : 760,
+        delay: Math.min(Math.abs(d) * (vertical ? 34 : 45), vertical ? 240 : 380),
         easing: 'cubic-bezier(.22,.8,.24,1)',
         fill: 'both'
       });
