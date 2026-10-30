@@ -502,7 +502,9 @@ function setMode(toGrid, focusIndex) {
   document.body.classList.add('is-moving');
   els.forEach(function (el) { el.style.willChange = 'transform, opacity'; });
 
-  if (toGrid) lastFocus = current >= 0 ? current : 0;
+  /* 预选择优先：进入总览时直接取此刻真正居中的那张，
+     不依赖 current（它在转场期间可能被置为 -1） */
+  if (toGrid) lastFocus = nearestIndex();
   else if (typeof focusIndex !== 'number') focusIndex = lastFocus;
 
   /* 2. 切布局 */
@@ -591,8 +593,8 @@ function setMode(toGrid, focusIndex) {
     anims = [];
     els.forEach(function (el) { el.style.willChange = ''; el.style.zIndex = ''; });
     document.body.classList.remove('is-moving');
+    transitioning = false;                       // 必须先解锁，否则下面的 layout() 会被拦掉
     if (!toGrid) { track.style.scrollSnapType = ''; current = -1; layout(); }
-    transitioning = false;
   });
 }
 
