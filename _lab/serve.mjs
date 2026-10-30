@@ -77,12 +77,17 @@ const server = http.createServer((req, res) => {
     return fs.createReadStream(fp).pipe(res);
   }
   if (url === '/expo' || url === '/expo.html') {
-    const fp = path.join(EX, '..', 'expo.html');
+    const fp = path.join(EX, '..', 'index.html');
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
     return fs.createReadStream(fp).pipe(res);
   }
   if (url === '/audition' || url === '/audition.html') {
     const fp = path.join(__dirname, 'audition.html');
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+    return fs.createReadStream(fp).pipe(res);
+  }
+  if (url === '/archive' || url === '/archive.html') {
+    const fp = path.join(EX, '..', 'archive.html');
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
     return fs.createReadStream(fp).pipe(res);
   }

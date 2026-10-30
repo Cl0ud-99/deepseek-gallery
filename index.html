@@ -364,6 +364,7 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var current = -1;   // -1 让首次 layout() 必定刷新标题（否则首屏显示 HTML 占位文字）
 var overview = false;
 var anims = [];
+var introAnims = [];   // 进场动画；转场开始前必须取消，否则会和 FLIP 抢同一张卡片
 var lastFocus = 0;   // 进入总览前聚焦的那一张，返回时用
 
 function layout() {
@@ -554,6 +555,14 @@ function jumpTo(i) {
 function setMode(toGrid, focusIndex) {
   if (transitioning) return;
   transitioning = true;
+
+  /* 若进场动画还在跑（刚打开页面就点总览），先取消——
+     它带着 fill:'both' 会一直覆盖卡片的 transform，和 FLIP 打架，
+     表现出来就是卡片被拽着走。 */
+  if (introAnims.length) {
+    introAnims.forEach(function (a) { try { a.cancel(); } catch (e) {} });
+    introAnims = [];
+  }
 
   var els = cards.map(function (c) { return c.el; });
 
@@ -801,18 +810,19 @@ function playIntro() {
         easing: 'cubic-bezier(.22,.8,.24,1)',
         fill: 'both'
       });
+      introAnims.push(a);
       a.onfinish = function () { a.cancel(); };
     });
 
     var head = document.querySelector('.head');
     var h = head.animate([{ opacity: 0 }, { opacity: 1 }],
       { duration: 720, delay: 260, easing: 'ease-out', fill: 'both' });
-    h.onfinish = function () { h.cancel(); };
+    introAnims.push(h); h.onfinish = function () { h.cancel(); };
 
     var bar = document.querySelector('.bar');
     var b2 = bar.animate([{ opacity: 0 }, { opacity: 1 }],
       { duration: 620, delay: 640, easing: 'ease-out', fill: 'both' });
-    b2.onfinish = function () { b2.cancel(); };
+    introAnims.push(b2); b2.onfinish = function () { b2.cancel(); };
   } catch (e) {}
 }
 
