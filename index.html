@@ -142,7 +142,7 @@
     overflow-x:auto; overflow-y:hidden; width:100%;
     padding-inline:calc(50% - var(--cw)/2);
     scroll-snap-type:x mandatory; perspective:1800px; perspective-origin:50% 50%;
-    scrollbar-width:none; -ms-overflow-style:none; cursor:grab; position:relative;
+    scrollbar-width:none; -ms-overflow-style:none; cursor:default; position:relative;
     padding-block:clamp(18px,4vh,52px);
   }
   .track::-webkit-scrollbar{display:none}
@@ -166,7 +166,9 @@
     box-shadow:var(--glass-hi);
     opacity:0; transition:opacity .3s, transform .3s}
   .card.on:hover .hint{opacity:1; transform:translateX(-50%) translateY(-2px)}
-  .card:not(.on){cursor:pointer}
+  .card{cursor:default}
+  .track{cursor:default}
+  .track.dragging{cursor:grabbing; scroll-snap-type:none}
 
   /* 左右切换按钮 */
   .nav{
