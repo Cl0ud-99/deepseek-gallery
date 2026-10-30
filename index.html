@@ -483,7 +483,7 @@
     .edge .top{ top:0;
       -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
               mask-image:linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%) }
-    .edge .bot{ bottom:0;
+    .edge .bot{ bottom:0; height:clamp(161px, 25.3vh, 276px);   /* 比上带大 15% */
       -webkit-mask-image:linear-gradient(to top, #000 0%, #000 30%, transparent 100%);
               mask-image:linear-gradient(to top, #000 0%, #000 30%, transparent 100%) }
   }
