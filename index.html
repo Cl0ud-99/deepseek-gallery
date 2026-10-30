@@ -90,7 +90,12 @@
   .lead .cta{color:var(--accent); border-bottom:1px solid rgba(77,107,254,.35); padding-bottom:1px;
     transition:border-color .2s}
   .lead .cta:hover{border-color:var(--accent)}
-  .title{margin-top:clamp(10px,1.6vh,18px); min-height:2.2em; margin-bottom:clamp(6px,1.2vh,14px)}
+  /* 作品名：居中、在图片下方 */
+  .caption{flex:none; text-align:center; padding:clamp(10px,2vh,22px) 24px clamp(26px,4.4vh,48px);
+    transition:opacity .34s ease}
+  body.is-moving .caption{opacity:0}
+  body.mode-grid .caption{display:none}
+  .title{margin:0; min-height:2.2em; margin-bottom:clamp(6px,1.2vh,14px)}
   .title .en{font-size:clamp(21px,3.1vw,38px); font-weight:500; letter-spacing:-.02em; line-height:1.18;
     transition:opacity .22s}
   .title .cn{display:none}
@@ -324,10 +329,6 @@
     <div class="lead">A community gallery of dioramas built entirely in code.
       <a class="cta" href="https://github.com/Cl0ud-99/deepseek-gallery/issues/new" target="_blank" rel="noopener">Submit yours →</a>
     </div>
-    <div class="title" id="title">
-      <div class="en" id="tEn">Qipao Diorama</div>
-      <div class="cn" id="tCn">1936 上海 · 旗袍与留声</div>
-    </div>
   </header>
 
   <button class="ovbtn" id="ovBtn">
@@ -342,6 +343,13 @@
     <button class="nav prev" id="navPrev" aria-label="上一件">‹</button>
     <button class="nav next" id="navNext" aria-label="下一件">›</button>
     <div class="bar"><i id="bar"></i></div>
+  </div>
+
+  <div class="caption">
+    <div class="title" id="title">
+      <div class="en" id="tEn">Qipao Diorama</div>
+      <div class="cn" id="tCn">1936 上海 · 旗袍与留声</div>
+    </div>
   </div>
 
 </div>
