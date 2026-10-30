@@ -546,18 +546,37 @@ function setMode(toGrid, focusIndex) {
   var vw = window.innerWidth, vh = window.innerHeight;
   var sel = toGrid ? lastFocus : focusIndex;      // 当前选中的那一张
 
+  /* 四套飞入策略，每次进入总览随机选一套。
+     用同一套能让整场转场保持统一的'镜头语言'，换套则每次开箱不一样。 */
+  var ENTRIES = ['side', 'vertical', 'diagonal', 'bloom'];
+  var entry = ENTRIES[Math.floor(Math.random() * ENTRIES.length)];
+
   els.forEach(function (el, i) {
     var dx, dy, sx, sy, base = t0[i], op = op0[i], delay = 0, culled = false;
 
     if (toGrid && i !== sel) {
-      /* 其余卡片：从画面左/右随机一侧飞入 */
-      var side = Math.random() < 0.5 ? -1 : 1;
-      dx = side * (vw * 0.42 + Math.random() * vw * 0.38);
-      dy = (Math.random() - 0.5) * 150;
-      sx = 0.9; sy = 0.9;
+      /* 其余卡片：按本次抽到的策略从画外飞入 */
+      var sgn = Math.random() < 0.5 ? -1 : 1;
+      if (entry === 'vertical') {                 // 上下
+        dy = sgn * (vh * 0.5 + Math.random() * vh * 0.4);
+        dx = (Math.random() - 0.5) * 160;
+        sx = 0.9;
+      } else if (entry === 'diagonal') {          // 斜角
+        dx = sgn * (vw * 0.4 + Math.random() * vw * 0.3);
+        dy = (Math.random() < 0.5 ? -1 : 1) * (vh * 0.34 + Math.random() * vh * 0.28);
+        sx = 0.86;
+      } else if (entry === 'bloom') {             // 原地放大淡入
+        dx = 0; dy = 0;
+        sx = 0.55 + Math.random() * 0.12;
+      } else {                                    // 左右（默认）
+        dx = sgn * (vw * 0.42 + Math.random() * vw * 0.38);
+        dy = (Math.random() - 0.5) * 150;
+        sx = 0.9;
+      }
+      sy = sx;
       base = 'none';
       op = 0;
-      delay = Math.random() * 120;      // 轻微错峰，保留"一镜"的连贯感
+      delay = Math.random() * (entry === 'bloom' ? 220 : 120);
     } else if (!toGrid && i !== sel && Math.abs(g1[i].x + g1[i].w / 2 - scroll1 + box1.left - vw / 2) > vw * 0.7) {
       /* 返回时，终点在画面外的卡片不横穿屏幕——原地缩小淡出即可，
          否则十几张同时掠过，选中那张的"一镜"就被淹没了 */
