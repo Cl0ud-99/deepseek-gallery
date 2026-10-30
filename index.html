@@ -488,11 +488,20 @@ scr.addEventListener('pointerdown', function (e) {
     var max = track.scrollHeight - track.clientHeight;
     var span = scr.clientHeight - scrThumb.offsetHeight;
     if (span <= 0) return;
-    track.scrollTop = Math.max(0, Math.min(max, startTop + (ev.clientY - startY) / span * max));
+    var raw = startTop + (ev.clientY - startY) / span * max;
+
+    /* 拉过界：scrollTop 夹在两端，超出量转成回弹位移 —— 这样能拉到回弹区的极限 */
+    var over = raw < 0 ? raw : (raw > max ? raw - max : 0);
+    track.scrollTop = Math.max(0, Math.min(max, raw));
+    bounceY = Math.max(-bouncMax, Math.min(bouncMax, -over * 0.9));
+
+    if (bounceY !== 0) { beginBounce(); } 
+    if (!bounceRaf) bounceRaf = requestAnimationFrame(paintBounce);
   }
   function onUp() {
     scrDragging = false;
     scrThumb.classList.remove('drag');
+    if (bounceY !== 0) { clearTimeout(bounceTimer); endBounce(); }
     document.removeEventListener('pointermove', onMove);
     document.removeEventListener('pointerup', onUp);
     scrIdle = setTimeout(function () { scr.classList.remove('on'); }, 1000);
