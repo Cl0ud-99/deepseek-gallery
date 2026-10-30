@@ -111,7 +111,7 @@
     transform-style:preserve-3d; will-change:transform,opacity;
     box-shadow:0 34px 70px -30px rgba(28,32,44,.55), 0 2px 10px rgba(28,32,44,.12);
   }
-  .card img{width:100%; height:100%; object-fit:cover; border-radius:var(--r-lg)}
+  .card img{width:100%; height:100%; object-fit:cover}
   .card .hint{position:absolute; left:50%; bottom:clamp(14px,2vw,24px); transform:translateX(-50%);
     font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent);
     padding:8px 16px; border-radius:var(--r-pill); white-space:nowrap; z-index:2;
@@ -179,7 +179,7 @@
     max-height:100%; overflow-y:auto; overflow-x:hidden;
     /* 上下留出与移轴带等高的缓冲区：滚到顶/底时，
        首行与末行不会被毛玻璃整片盖住 */
-    padding:var(--tilt-pad) clamp(16px,3vw,46px);
+    padding:clamp(12px,2vh,22px) clamp(16px,3vw,46px);
     perspective:none; cursor:default;
     overflow-anchor:none;   /* 关掉滚动锚定：贴底时浏览器会为保持锚点偷偷改 scrollTop */
     scrollbar-width:none; -ms-overflow-style:none;
@@ -414,6 +414,34 @@ function center(i) {
   track.scrollTo({ left: target, behavior: reduce ? 'auto' : 'smooth' });
   snapTimer = setTimeout(function () { track.style.scrollSnapType = 'x mandatory'; }, reduce ? 40 : 640);
 }
+
+/* ---------- 总览的弹性过冲（模拟 iOS 橡皮筋）---------- */
+var bounceY = 0, bounceTimer = 0, bounceMax = 200;
+
+track.addEventListener('wheel', function (e) {
+  if (!overview) return;
+  var atTop = track.scrollTop <= 0;
+  var atBottom = track.scrollTop >= track.scrollHeight - track.clientHeight - 1;
+  var pushingUp = e.deltaY < 0, pushingDown = e.deltaY > 0;
+  if (!((atTop && pushingUp) || (atBottom && pushingDown))) return;
+
+  e.preventDefault();
+  /* 越拉越沉：位移按当前量衰减 */
+  var damp = 1 - Math.min(Math.abs(bounceY) / bounceMax, 1) * 0.72;
+  bounceY += e.deltaY * 0.42 * damp;
+  bounceY = Math.max(-bounceMax, Math.min(bounceMax, bounceY));
+
+  track.style.transition = 'none';
+  track.style.transform = 'translateY(' + bounceY.toFixed(1) + 'px)';
+
+  clearTimeout(bounceTimer);
+  bounceTimer = setTimeout(function () {
+    track.style.transition = 'transform .5s cubic-bezier(.16,.84,.32,1)';
+    track.style.transform = 'translateY(0px)';
+    bounceY = 0;
+    setTimeout(function () { track.style.transition = ''; track.style.transform = ''; }, 520);
+  }, 90);
+}, { passive: false });
 
 /* ---------- 滚轮 → 横向 ---------- */
 track.addEventListener('wheel', function (e) {
