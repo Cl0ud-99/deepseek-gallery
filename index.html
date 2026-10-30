@@ -472,6 +472,32 @@
     .title .en{ font-size:13px; letter-spacing:.26em; margin-right:-.26em }
     .caption{ padding-top:10px }
 
+    /* 竖屏：轨道改为纵向，一屏一张 */
+    body.portrait .track{
+      flex-direction:column;
+      height:100%; min-height:0;            /* 不固定高度的话它会撑到内容高度，就没有滚动 */
+      overflow-x:hidden; overflow-y:auto;   /* 基础样式只开了横向滚动 */
+      scroll-snap-type:y mandatory;
+      padding-block:calc(50vh - (var(--cw) * .75 / 2));
+      padding-inline:calc(50% - var(--cw)/2);
+    }
+    /* 上下相邻的卡片不能越过轨道盖住标题 */
+    body.portrait .wrap{ overflow:hidden }
+
+    /* 竖向轨道里 flex-basis 作用于高度，宽度会撑满：
+       必须显式给宽高，否则卡片会横跨整个屏宽 */
+    body.portrait .card{
+      flex:0 0 auto;
+      width:var(--cw);
+      height:calc(var(--cw) * .75);
+      aspect-ratio:auto;
+    }
+    /* 标题区加一层柔和底，避免下面那张卡片透出来 */
+    body.portrait .caption{
+      position:relative; z-index:6;
+      background:linear-gradient(to top, var(--floor-1) 40%, transparent);
+    }
+
     /* 总览：2 列，格子更大更好点 */
     body.mode-grid .track{
       grid-template-columns:repeat(2, 1fr);
@@ -634,15 +660,41 @@ var settleAt = 0;      // 转场结束后再屏蔽一段时间，手快时不会
 var barPos = -1;      // 上一次停在的索引，用来定小鲸的朝向
 var lastFocus = 0;   // 进入总览前聚焦的那一张，返回时用
 
+/* ---------- 轴向：竖屏纵向翻，横屏横向翻 ---------- */
+var vertical = false;          // 当前是否是纵向
+
+function isPortrait() {
+  return window.innerHeight > window.innerWidth * 1.05;
+}
+function axisPos(el)    { return vertical ? el.offsetTop  + el.offsetHeight / 2
+                                          : el.offsetLeft + el.offsetWidth  / 2; }
+function axisScroll()   { return vertical ? track.scrollTop  : track.scrollLeft; }
+function axisView()     { return vertical ? track.clientHeight : track.clientWidth; }
+function axisSnap()     { return vertical ? 'y mandatory' : 'x mandatory'; }
+
+function applyOrientation() {
+  var p = isPortrait();
+  if (p === vertical) { keepIndex = -1; return; }
+  /* 位置在 reflow 那一刻就被重置了（scrollLeft/scrollTop 归零并触发 layout），
+     所以用 resize 瞬间快照下来的索引，而不是现在再量。 */
+  var keep = keepIndex >= 0 ? keepIndex : (current >= 0 ? current : 0);
+  keepIndex = -1;
+  vertical = p;
+  document.body.classList.toggle('portrait', vertical);
+  track.style.scrollSnapType = axisSnap();
+  /* 换轴后旧的滚动像素值没有意义，按索引重新定位 */
+  requestAnimationFrame(function () { jumpTo(keep); layout(); });
+}
+
 function layout() {
   if (overview || transitioning) return;
-  var mid = track.scrollLeft + track.clientWidth / 2;
-  var half = Math.max(track.clientWidth * 0.5, 1);
+  var mid = axisScroll() + axisView() / 2;
+  var half = Math.max(axisView() * 0.5, 1);
   var best = 0, bestD = 1e9;
   for (var k = 0; k < cards.length; k++) {
     var c = cards[k];
     var box = c.el;
-    var d = (box.offsetLeft + box.offsetWidth / 2 - mid) / half;
+    var d = (axisPos(box) - mid) / half;
     if (Math.abs(d) < bestD) { bestD = Math.abs(d); best = k; }
     var ad = Math.min(1, Math.abs(d));
     if (!reduce) {
@@ -650,8 +702,12 @@ function layout() {
       // 之前没钳制会算出 rotateY(±200°)，到 90° 时卡片被压成一条线
       var rot = -Math.max(-1, Math.min(1, d)) * 20;
       var sc = 1 - ad * 0.13;
-      var ty = ad * 10;
-      box.style.transform = 'rotateY(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + ty.toFixed(1) + 'px)';
+      if (vertical) {
+        /* 竖排：上下俯仰，而不是左右转身 */
+        box.style.transform = 'rotateX(' + (-rot).toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + (ad * 6).toFixed(1) + 'px)';
+      } else {
+        box.style.transform = 'rotateY(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ') translateY(' + (ad * 10).toFixed(1) + 'px)';
+      }
     }
     box.style.opacity = String(Math.max(0.34, 1 - ad * 0.58));
   }
@@ -681,9 +737,9 @@ function setCurrent(i) {
 }
 
 function nearestIndex() {
-  var mid = track.scrollLeft + track.clientWidth / 2, best = 0, bd = 1e9;
+  var mid = axisScroll() + axisView() / 2, best = 0, bd = 1e9;
   for (var k = 0; k < cards.length; k++) {
-    var d = Math.abs(cards[k].el.offsetLeft + cards[k].el.offsetWidth / 2 - mid);
+    var d = Math.abs(axisPos(cards[k].el) - mid);
     if (d < bd) { bd = d; best = k; }
   }
   return best;
@@ -694,12 +750,28 @@ function nearestIndex() {
 var snapTimer = 0;
 function center(i) {
   var c = cards[i];
-  var target = c.el.offsetLeft + c.el.offsetWidth / 2 - track.clientWidth / 2;
+  var target = axisPos(c.el) - axisView() / 2;
   track.style.scrollSnapType = 'none';
   clearTimeout(snapTimer);
-  track.scrollTo({ left: target, behavior: reduce ? 'auto' : 'smooth' });
-  snapTimer = setTimeout(function () { track.style.scrollSnapType = 'x mandatory'; }, reduce ? 40 : 640);
+  var opts = { behavior: reduce ? 'auto' : 'smooth' };
+  if (vertical) opts.top = target; else opts.left = target;
+  track.scrollTo(opts);
+  snapTimer = setTimeout(function () { track.style.scrollSnapType = axisSnap(); }, reduce ? 40 : 640);
 }
+
+/* 屏幕旋转：竖屏纵向 / 横屏横向 */
+vertical = isPortrait();
+document.body.classList.toggle('portrait', vertical);
+track.style.scrollSnapType = axisSnap();
+var orientTimer = 0;
+var keepIndex = -1;                    // resize 那一刻的索引快照
+function onResize() {
+  if (keepIndex < 0) keepIndex = current;   // 先记下来，晚点再重排
+  clearTimeout(orientTimer);
+  orientTimer = setTimeout(applyOrientation, 140);   // iOS 旋转后尺寸会晚到
+}
+window.addEventListener('resize', onResize);
+window.addEventListener('orientationchange', onResize);
 
 /* ---------- 总览的自定义滚动条 ---------- */
 var scr = document.getElementById('scr');
@@ -968,8 +1040,9 @@ var transitioning = false;
 
 function jumpTo(i) {
   track.style.scrollSnapType = 'none';
-  track.scrollTop = 0;
-  track.scrollLeft = cards[i].el.offsetLeft + cards[i].el.offsetWidth / 2 - track.clientWidth / 2;
+  var t = axisPos(cards[i].el) - axisView() / 2;
+  if (vertical) { track.scrollTop = t; track.scrollLeft = 0; }
+  else { track.scrollLeft = t; track.scrollTop = 0; }
 }
 
 function setMode(toGrid, focusIndex) {
