@@ -556,6 +556,11 @@ function setMode(toGrid, focusIndex) {
 
   var els = cards.map(function (c) { return c.el; });
 
+  /* 0. 先停住滚动。若上一次翻页的平滑滚动还没走完就点了总览，
+        起点会量在半路上，动画就会先走错方向再被拽回来。 */
+  track.scrollTo({ left: track.scrollLeft, top: track.scrollTop, behavior: 'instant' });
+  void track.offsetWidth;
+
   /* 1. 记录起点：用 offsetLeft/Width —— 布局坐标，不含 3D 变换。
       getBoundingClientRect() 拿到的是旋转+缩放后的外接矩形，宽高比已经变形，
       sx≠sy 会把卡片压扁并飞到错误位置。 */
