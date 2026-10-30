@@ -1778,6 +1778,10 @@ function playIntro() {
 
       if (d === 0) {
         dy = Math.min(window.innerHeight * 0.22, 200);        // 从下往上
+      } else if (vertical) {
+        /* 竖屏是上下排的，左右分侧会横着飘出去，改成上下推开 */
+        dy = (d < 0 ? -1 : 1) * (110 + Math.min(Math.abs(d), 7) * 78);
+        dx = 0;
       } else {
         dx = (d < 0 ? -1 : 1) * (130 + Math.min(Math.abs(d), 7) * 92);   // 左右分侧
         dy = 46;
