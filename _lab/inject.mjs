@@ -36,7 +36,9 @@ export const TARGETS = [
   ['A18', 'a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html'],
   ['A19', 'a19-stranger-things/hawkins-mirror/hawkins-mirror.html'],
   ['A20', 'a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html'],
-  ['A21', 'a21-ice-fire-mine-station/ice-fire-mine-station/index.html']
+  ['A21', 'a21-ice-fire-mine-station/ice-fire-mine-station/index.html'],
+  ['A22', 'a22-floating-lava-glacier/index.html'],
+  ['A23', 'a23-carnival/carnival-miniature/carnival.html']
 ];
 
 const START = '<!-- AMB:start -->';
