@@ -1766,6 +1766,8 @@ document.addEventListener('selectstart', function (e) {
 /* ---------- 启动 ---------- */
 /* 进场：整个展廊淡入放大，卡片按离中心的距离依次浮现 */
 function playIntro() {
+  /* 兜底：进场结束后再跑一次 layout，保证没有卡片停在动画残留的位置 */
+  setTimeout(function () { if (!overview) layout(); }, vertical ? 900 : 1200);
   var sel = nearestIndex();
   try {
     /* 选中那张从下方升起；它左边的从左侧飞入、右边的从右侧飞入；
@@ -1776,24 +1778,25 @@ function playIntro() {
       var endOp = c.el.style.opacity ? parseFloat(c.el.style.opacity) : 1;
       var dx = 0, dy = 0;
 
-      if (d === 0) {
-        dy = Math.min(window.innerHeight * 0.22, 200);        // 从下往上
-      } else if (vertical) {
-        /* 竖屏是上下排的，左右分侧会横着飘出去，改成上下推开 */
-        dy = (d < 0 ? -1 : 1) * (110 + Math.min(Math.abs(d), 7) * 78);
+      if (vertical) {
+        /* 竖屏：不要飞来飞去，卡片就近"往中间挤"一下就好 */
+        dy = d === 0 ? 26 : (d < 0 ? -34 : 34);
         dx = 0;
+      } else if (d === 0) {
+        dy = Math.min(window.innerHeight * 0.22, 200);        // 从下往上
       } else {
         dx = (d < 0 ? -1 : 1) * (130 + Math.min(Math.abs(d), 7) * 92);   // 左右分侧
         dy = 46;
       }
 
-      var start = 'translate(' + dx + 'px,' + dy + 'px)' + (base !== 'none' ? ' ' + base : '');
+      var start = (vertical ? 'translateY(' + dy + 'px) scale(.94)' : 'translate(' + dx + 'px,' + dy + 'px)') +
+                  (base !== 'none' ? ' ' + base : '');
       var a = c.el.animate([
         { transform: start, opacity: 0 },
         { transform: base, opacity: endOp }
       ], {
-        duration: 760,
-        delay: Math.min(Math.abs(d) * 45, 380),
+        duration: vertical ? 520 : 760,
+        delay: Math.min(Math.abs(d) * (vertical ? 26 : 45), vertical ? 190 : 380),
         easing: 'cubic-bezier(.22,.8,.24,1)',
         fill: 'both'
       });
