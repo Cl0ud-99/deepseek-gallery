@@ -211,12 +211,21 @@
   /* 进度条：贴在页面最下沿，左右通栏 */
   .bar{position:fixed; left:0; right:0; bottom:0; z-index:8;
     width:100%; height:3px; border-radius:0;
-    background:rgba(28,28,26,.13); overflow:hidden;
+    background:rgba(28,28,26,.13);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
-  .bar i{display:block; height:100%; width:0; border-radius:0;
+  .bar i{display:block; position:relative; height:100%; width:0; border-radius:0;
     background:var(--accent);
     box-shadow:none;
     transition:width .22s ease}
+  /* 进度头部的小倒三角，跟着走 */
+  .bar i::after{
+    content:""; position:absolute; left:100%; top:-6px;
+    width:0; height:0; margin-left:-5px;
+    border-left:5px solid transparent;
+    border-right:5px solid transparent;
+    border-top:6px solid var(--accent);
+    pointer-events:none;
+  }
 
   /* ---------- 总览按钮 ---------- */
   /* 作者标识：左上角，小云 + 名字 + 邮箱 */
