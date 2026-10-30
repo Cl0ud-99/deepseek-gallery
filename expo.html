@@ -617,10 +617,15 @@ function setMode(toGrid, focusIndex) {
       /* 飞入的卡片：前半程保持全透明，接近落位才显现。
          否则 20 张半透明的卡同时在浅色背景上滑过，
          会形成一片片"把画面割开"的淡色矩形。 */
-      var midTf = compose(dx * 0.3, dy * 0.3, sx + (1 - sx) * 0.7, sy + (1 - sy) * 0.7, base);
+      var midS = sx + (1 - sx) * 0.7;
+      var midTf = compose(dx * 0.3, dy * 0.3, midS, midS, base);
+      /* 中段圆角必须跟着当时的缩放一起补偿。此前沿用起始帧的值，
+         bloom（0.55 倍起）现身时缩放已到 0.93，视觉圆角会先大一圈再突然收小。 */
+      var midRv = rv0 + (rv1 - rv0) * 0.7;
+      var midR = Math.max(2, midRv / Math.max(midS, 0.02));
       frames = [
         { transform: compose(dx, dy, sx, sy, base), opacity: 0, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
-        { transform: midTf, opacity: 0, borderRadius: cssR0.toFixed(2) + 'px', offset: 0.68 },
+        { transform: midTf, opacity: 0, borderRadius: midR.toFixed(2) + 'px', offset: 0.68 },
         { transform: 'none', opacity: 1, borderRadius: rv1 + 'px', offset: 1 }
       ];
     } else {
