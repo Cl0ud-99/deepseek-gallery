@@ -707,12 +707,17 @@ function setMode(toGrid, focusIndex) {
       frames = [
         { transform: compose(dx, dy, sx, sy, base), opacity: 0, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
         { transform: midTf, opacity: 0, borderRadius: midR.toFixed(2) + 'px', offset: 0.68 },
-        { transform: 'none', opacity: 1, borderRadius: rv1 + 'px', offset: 1 }
+        /* 终点写成与起点同构的 translate+scale（不是 none），
+           保证逐函数插值——否则浏览器会退回矩阵插值，路径会拐弯 */
+        { transform: 'translate(0px,0px) scale(1,1)', opacity: 1, borderRadius: rv1 + 'px', offset: 1 }
       ];
     } else {
       frames = [
         { transform: compose(dx, dy, sx, sy, base), opacity: op, borderRadius: cssR0.toFixed(2) + 'px', offset: 0 },
-        { transform: culled ? 'scale(0.88)' : (t1[i] === 'none' ? 'none' : t1[i]),
+        { transform: culled ? 'scale(0.88)'
+                           : (t1[i] === 'none'
+                                ? (toGrid ? 'translate(0px,0px) scale(1,1)' : 'none')
+                                : t1[i]),
           opacity: endOp, borderRadius: rv1 + 'px', offset: 1 }
       ];
     }
