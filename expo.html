@@ -191,8 +191,10 @@
     background:transparent;
     box-shadow:0 6px 16px -12px rgba(28,32,44,.22), inset 0 0 0 1px rgba(255,255,255,.45);
   }
-  body.mode-grid .card img{border-radius:inherit}
-  body.mode-grid .card:hover img{transform:scale(1.05)}
+  body.mode-grid .card img{border-radius:inherit;
+    transition:transform .5s cubic-bezier(.22,.8,.24,1); transform-origin:50% 50%}
+  /* 悬停只放大画面内容，卡片框体尺寸不变（overflow 裁切） */
+  body.mode-grid .card:hover img{transform:scale(1.07)}
   body.mode-grid .card .hint{display:none}
   body.mode-grid .nav,
   body.mode-grid .bar{display:none}
