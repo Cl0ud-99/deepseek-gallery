@@ -254,11 +254,7 @@
   }
   /* 鲸鱼原生朝左，向右游时要镜像 */
   .bar.fwd i::after{transform:scaleX(-1)}
-  /* 竖屏时小鲸竖着放（头朝上） */
-  @media (max-width:720px){
-    body.portrait .bar i::after{ transform:rotate(90deg) }
-    body.portrait .bar.fwd i::after{ transform:rotate(90deg) scaleX(-1) }
-  }
+
 
   /* ---------- 总览按钮 ---------- */
   /* 作者标识：左上角，小云 + 名字 + 邮箱 */
@@ -518,7 +514,7 @@
     /* 卡片被顶部留白推下去了一点，标题要跟着偏同样的量才真正对中 */
     .caption{
       position:absolute; left:0; right:0; top:0; bottom:0;
-      z-index:7; pointer-events:none; padding:52px 22px 0;
+      z-index:7; pointer-events:none; padding:0 22px 30px;   /* 卡片因 wrap 下边距略偏上，这里补回来 */
       background:none;
       display:flex; align-items:center; justify-content:center;
     }
