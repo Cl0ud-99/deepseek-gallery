@@ -585,8 +585,10 @@ function setMode(toGrid, focusIndex) {
 
     var isSel = (i === sel);
     var endOp = culled ? 0 : op1[i];
-    var dur = culled ? 320 : (isSel ? 820 : 560);
-    var ease = culled ? 'ease-out' : (isSel ? 'cubic-bezier(.32,.02,.18,1)' : 'cubic-bezier(.22,.8,.24,1)');
+    var dur = culled ? 320 : (isSel ? 640 : 560);
+    /* 选中的那张起手就快速收缩：它被放大到 3.4 倍时是一块深色大矩形，
+       若慢起手会在第一行上方停留很久，把那排全遮住 */
+    var ease = culled ? 'ease-out' : (isSel ? 'cubic-bezier(.14,.92,.22,1)' : 'cubic-bezier(.22,.8,.24,1)');
     /* 圆角会随 scale 一起缩放：元素放大 3.36 倍时，46px 在屏幕上是 154px。
        起始帧按缩放倍数反向补偿，视觉圆角才稳定。 */
     var sc0 = Math.max(Math.abs(sx), Math.abs(sy), 0.02);
