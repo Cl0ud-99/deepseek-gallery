@@ -150,7 +150,10 @@
     perspective:none; cursor:default;
   }
   body.mode-grid .card{
-    width:100%; height:100%; aspect-ratio:auto; border-radius:18px; cursor:pointer;
+    /* 必须和横向模式同为 16:9：格子是 257x151(1.70)，若拉伸填满格子，
+       转场时 sx≠sy 会把卡片压扁一下（'抽'的感觉） */
+    width:100%; height:auto; aspect-ratio:16/9; align-self:center;
+    border-radius:18px; cursor:pointer;
     background:transparent;
     box-shadow:0 6px 16px -12px rgba(28,32,44,.22), inset 0 0 0 1px rgba(255,255,255,.45);
   }
@@ -566,7 +569,8 @@ function setMode(toGrid, focusIndex) {
       dx = (g0[i].x + g0[i].w / 2 - scroll0 + box0.left) - (g1[i].x + g1[i].w / 2 - scroll1 + box1.left);
       dy = (g0[i].y + g0[i].h / 2 + box0.top) - (g1[i].y + g1[i].h / 2 + box1.top);
       sx = g0[i].w / Math.max(g1[i].w, 1);
-      sy = g0[i].h / Math.max(g1[i].h, 1);
+      sy = sx;      // 统一缩放比 —— 横向 16:9 与网格 16:9 仍会有零点几个百分点误差,
+                    // 分别取 sx/sy 会让卡片在动画中轻微变形（"抽一下"）
     }
 
     el.style.zIndex = (i === sel) ? 6 : 2;
