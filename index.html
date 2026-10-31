@@ -169,8 +169,12 @@
     transition:transform .16s cubic-bezier(.2,.8,.2,1);
     transform:translateZ(0);
   }
-  .card:active .card-inner{transform:scale(.975)}
+  .card{transition:scale .16s cubic-bezier(.2,.8,.2,1)}
+  .card:active{scale:.975}
   .card img{width:100%; height:100%; object-fit:cover; border-radius:var(--r-lg)}
+  body.mode-vertical:not(.mode-grid) .card{
+    background-size:cover; background-position:center; background-repeat:no-repeat;
+  }
   .card.noimg::before{content:attr(data-id); position:absolute; inset:0; display:flex;
     align-items:center; justify-content:center; font-size:12px; letter-spacing:.2em;
     color:var(--dim2); background:rgba(255,255,255,.5)}
@@ -971,6 +975,7 @@ WORKS.forEach(function (w, i) {
   el.className = 'card';
   el.dataset.id = w.id;
   el.setAttribute('data-id', w.id);
+  el.style.backgroundImage = 'url("' + previewSrc(w.id) + '")';
   el.innerHTML = '<div class="card-inner">' +
                  '<img src="' + previewSrc(w.id) + '" alt="' + w.en + '" draggable="false" decoding="async" ' +
                  'onerror="this.style.display=\'none\';var c=this.closest(\'.card\');if(c)c.classList.add(\'noimg\')">' +
@@ -1084,12 +1089,24 @@ function nearestIndex() {
 /* 程序化滚动必须临时关掉 snap：mandatory 吸附会打断 scrollTo，每步少走约 40px。
    滚到位后立刻恢复，此时位置本身就是吸附点，不会跳动。 */
 var snapTimer = 0;
+var autoCenteringUntil = 0;
+/* A/B 两档点击保护参数。URL 加 ?tap=a 可随时回 A 档，默认 B 档。 */
+var TAP_LEVELS = {
+  A: { auto: 1800, autoReduce: 400, last: 40, block: 120 },
+  B: { auto: 2600, autoReduce: 600, last: 10, block: 50 }
+};
+var TAP_LEVEL = (function () {
+  var m = /[?&]tap=([ab])/i.exec(location.search);
+  return m ? m[1].toUpperCase() : 'A';
+})();
+function tapCfg() { return TAP_LEVELS[TAP_LEVEL] || TAP_LEVELS.B; }
 function center(i) {
   var c = cards[i];
   var target = VERT
     ? c.el.offsetTop + c.el.offsetHeight / 2 - track.clientHeight / 2
     : c.el.offsetLeft + c.el.offsetWidth / 2 - track.clientWidth / 2;
   track.style.scrollSnapType = 'none';
+  autoCenteringUntil = performance.now() + (reduce ? tapCfg().autoReduce : tapCfg().auto);
   clearTimeout(snapTimer);
   track.scrollTo(VERT
     ? { top: target, behavior: reduce ? 'auto' : 'smooth' }
@@ -1300,7 +1317,22 @@ document.addEventListener('pointerdown', function (e) {
   if (!isTouch) return;
   if (e.pointerType && e.pointerType !== 'touch') return;
   var now = performance.now();
-  if (now - lastScrollAt > 220) return;
+  /* 自动归中过程中点击应该直接生效，不能当成滑动惯性拦掉 */
+  if (now < autoCenteringUntil) {
+    autoCenteringUntil = 0;
+    settleUntil = now + 300;
+    lastScrollAt = 0;
+    var cy = track.scrollTop, cx = track.scrollLeft;
+    track.style.scrollBehavior = 'auto';
+    try { track.scrollTo({ top: cy, left: cx, behavior: 'auto' }); }
+    catch (err) { track.scrollTop = cy; track.scrollLeft = cx; }
+    stopTapUntil = 0;
+    /* 归中动画本身会吃掉浏览器的 click，这里显式补一次卡片点击 */
+    var hit = e.target && e.target.closest && e.target.closest('.card');
+    if (hit) setTimeout(function () { hit.click(); }, 0);
+    return;
+  }
+  if (now - lastScrollAt > tapCfg().last) return;
   settleUntil = now + 300;
   lastScrollAt = 0;
   var y = track.scrollTop, x = track.scrollLeft;
@@ -1312,7 +1344,7 @@ document.addEventListener('pointerdown', function (e) {
   var ui = e.target && e.target.closest &&
            e.target.closest('button,a,.credit,.ovbtn,.themebtn,.snd,.varrow,.vclose,.vctl,.dock,.head,.bar,.cardbox,.crow,.cclose,.ghost,.upload,.nav');
   if (ui) { stopTapUntil = 0; return; }
-  stopTapUntil = now + 420;
+  stopTapUntil = now + tapCfg().block;
 }, true);
 
 document.addEventListener('click', function (e) {
