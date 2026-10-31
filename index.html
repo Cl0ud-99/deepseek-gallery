@@ -622,7 +622,7 @@
   .launch{position:fixed; z-index:120; overflow:hidden; background:#05060a; pointer-events:none;
     will-change:transform,opacity; box-shadow:0 30px 90px -18px rgba(0,0,0,.65)}
   .launch img{width:100%; height:100%; object-fit:cover; display:block}
-  .launch-title{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  .launch-title{position:fixed; z-index:121; left:50%; top:50%; transform:translate(-50%,-50%);
     font-size:clamp(12px,3vw,20px); font-weight:500; letter-spacing:.18em;
     line-height:1.5; text-transform:uppercase; white-space:normal;
     max-width:calc(100vw - 48px); text-align:center;
@@ -1468,7 +1468,10 @@ function launchFromCard(cardEl) {
   var launchTitle = document.createElement('div');
   launchTitle.className = 'launch-title';
   launchTitle.textContent = titleText;
-  clone.appendChild(launchTitle);
+  if (light) launchTitle.classList.add('light');
+  document.body.appendChild(launchTitle);
+  launchTitle.style.opacity = '0';
+  launchTitle.style.transform = 'translate(-50%,-50%) scale(.97)';
 
   var dim = document.createElement('div');
   dim.className = 'launch-dim';
@@ -1480,8 +1483,11 @@ function launchFromCard(cardEl) {
   var scale = Math.max(vw0 / r.width, vh0 / r.height);
   var dx = vl0 + vw0 / 2 - (r.left + r.width / 2);
   var dy = vt0 + vh0 / 2 - (r.top + r.height / 2);
-  /* 克隆层整体会被放大到全屏，标题必须反向缩放，否则气泡会跟着放大好几倍 */
-  launchTitle.style.transform = 'translate(-50%,-50%) scale(' + (1 / scale) + ')';
+  requestAnimationFrame(function () {
+    launchTitle.style.transition = 'opacity .3s ease, transform .42s cubic-bezier(.2,.8,.2,1)';
+    launchTitle.style.opacity = '1';
+    launchTitle.style.transform = 'translate(-50%,-50%) scale(1)';
+  });
   var anim = null;
   try {
     anim = clone.animate([
@@ -1501,7 +1507,8 @@ function launchFromCard(cardEl) {
     clone.style.opacity = '0';
     dim.style.opacity = '0';
     document.body.classList.remove('launching');
-    setTimeout(function () { clone.remove(); dim.remove(); }, 300);
+    launchTitle.style.opacity = '0';
+    setTimeout(function () { clone.remove(); dim.remove(); launchTitle.remove(); }, 300);
   }
   function maybe() { if (asked && animDone) fadeNow(); }
   if (anim) anim.onfinish = function () { animDone = true; maybe(); };
@@ -1541,7 +1548,7 @@ function stepViewer(d) {
 
 function closeViewer() {
   /* 进场动画还没跑完就返回时，先把克隆层清掉 */
-  document.querySelectorAll('.launch,.launch-dim').forEach(function (el) { el.remove(); });
+  document.querySelectorAll('.launch,.launch-dim,.launch-title').forEach(function (el) { el.remove(); });
   document.body.classList.remove('launching');
   /* 场景里翻过页的话，回到展厅要停在最后看的那一件上 */
   var backTo = vIndex;
