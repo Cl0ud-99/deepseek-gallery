@@ -1109,7 +1109,7 @@ var snapTimer = 0;
 var autoCenteringUntil = 0;
 /* A/B 两档点击保护参数。URL 加 ?tap=a 可随时回 A 档，默认 B 档。 */
 var TAP_LEVELS = {
-  A: { auto: 1800, autoReduce: 400, last: 40, block: 120 },
+  A: { auto: 800, autoReduce: 200, last: 200, block: 400 },
   B: { auto: 2600, autoReduce: 600, last: 10, block: 50 }
 };
 var TAP_LEVEL = (function () {
@@ -1344,9 +1344,6 @@ document.addEventListener('pointerdown', function (e) {
     try { track.scrollTo({ top: cy, left: cx, behavior: 'auto' }); }
     catch (err) { track.scrollTop = cy; track.scrollLeft = cx; }
     stopTapUntil = 0;
-    /* 归中动画本身会吃掉浏览器的 click，这里显式补一次卡片点击 */
-    var hit = e.target && e.target.closest && e.target.closest('.card');
-    if (hit) setTimeout(function () { hit.click(); }, 0);
     return;
   }
   if (now - lastScrollAt > tapCfg().last) return;
