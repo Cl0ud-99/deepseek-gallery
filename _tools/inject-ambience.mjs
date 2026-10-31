@@ -1,11 +1,12 @@
 /**
- * inject.mjs — 把 _lab/ambience.js 内联进 19 个场景入口
+ * inject-ambience.mjs — 把根目录的 ambience.js 内联进每个场景的成品入口
  *
- *   node _lab/inject.mjs           # 全部注入
- *   node _lab/inject.mjs --strip   # 全部移除
+ *   node _tools/inject-ambience.mjs           # 全部注入
+ *   node _tools/inject-ambience.mjs --strip   # 全部移除
  *
  * 幂等：每次先删掉旧的 <!-- AMB:start --> … <!-- AMB:end --> 再重新插入。
  * 只改 _extracted/ 下的成品入口，不改任何 src/。
+ * （原 _lab/inject.mjs，2026-10-31 收进 _tools，路径改为读根目录的 ambience.js。）
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -13,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..', '_extracted');
-const ENGINE = fs.readFileSync(path.join(__dirname, 'ambience.js'), 'utf8');
+const ENGINE = fs.readFileSync(path.join(__dirname, '..', 'ambience.js'), 'utf8');
 
 export const TARGETS = [
   ['A01', 'a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html'],

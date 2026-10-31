@@ -12,7 +12,7 @@ Anyone can contribute a scene. What we look for: it runs in a browser from a sin
 and it is built with code rather than imported assets.
 
 1. Put the scene under `_extracted/aXX-<slug>/` — a self-contained `index.html` is ideal.
-2. Render a 1440×900 preview with `node _tools/framed-shot.mjs AXX` (details in `_lab/ADDING.md`).
+2. Render a 1440×900 preview with `node _tools/framed-shot.mjs AXX` (details in `docs/ADDING.md`).
 3. Add one entry to `WORKS` and one to `SRC` in `index.html`.
 4. Open a PR, or [start an issue](https://github.com/Cl0ud-99/deepseek-gallery/issues/new) and
    attach a zip — we will wire it in.
@@ -67,24 +67,20 @@ All twenty-three now ship readable source. A05 and A16 were originally minified-
 ## Repository layout
 
 ```
-archive/
-├─ index.html        visual index — thumbnails, filters, in-page live preview
-├─ catalog.md        flat table + four filtered views                        (Chinese)
-├─ profiles.md       per-project dossier: what / how / pitfalls / where to optimise   (Chinese)
-├─ README.md         this file
-├─ AUDIT.md          scene-graph audit: structure, batching headroom, overlapping faces   (Chinese)
-├─ CHANGELOG.md      what changed in each version
-├─ VERSION           current version
-├─ _packages/        19 original zip archives, named aNN-slug.zip
-├─ _extracted/       unpacked working copies, same names
-├─ previews/         19 screenshots, 1440×900, rendered from the running scenes
-│  └─ thumbs/        720×450 JPEGs used by the gallery above
-└─ _tools/
-   ├─ shot.mjs       renders previews/Axx.png from the live scenes
-   ├─ probe.mjs      measures draw calls / triangles / fps for every entry
-   ├─ audit.mjs      scene-graph audit: meshes, materials, batching headroom, duplicate faces
-   └─ overlap.mjs    traces every duplicate triangle back to the two objects that own it
+├─ index.html          gallery — card carousel, filters, in-page viewer
+├─ archive.html        filterable archive table, 23 entries + live iframe previews
+├─ ambience.js         procedural Web Audio ambience, one preset per scene
+├─ previews/           Axx.png 1200×750 renders, plus wall/ and thumbs/ JPEGs
+├─ _extracted/         the 23 scenes — entry HTML plus source
+├─ _tools/             framed-shot.mjs · probe.mjs · audit.mjs · overlap.mjs · inject-ambience.mjs
+├─ docs/               AUDIT.md · catalog.md · profiles.md   (Chinese)
+├─ README.md
+├─ CHANGELOG.md
+├─ VERSION
+└─ .nojekyll
 ```
+
+Original scene packages are not checked in; _extracted/ holds the unpacked working copies.
 
 ## Running locally
 
@@ -168,7 +164,7 @@ Three findings worth knowing before optimising anything:
 and it works on the minified builds too. `_tools/overlap.mjs` then hashes every triangle in world
 space to find surfaces sitting exactly on top of each other.
 
-Collection-wide (full report: [AUDIT.md](AUDIT.md), Chinese):
+Collection-wide (full report: [docs/AUDIT.md](docs/AUDIT.md), Chinese):
 
 - 26,251 meshes and 3.64M triangles in total, of which **4,639 meshes are outline shells** — 18% of
   everything, each one costing its own draw call.
@@ -190,7 +186,7 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## Notes
 
-- Roughly 92 MB of zip archives, 143 MB unpacked, 25 MB of full-size previews, 0.9 MB of thumbnails.
-- `catalog.md` and `profiles.md` are written in Chinese; everything else here is in English.
+- About 114 MB of unpacked scenes and 20 MB of previews; the original zip packages are not checked in.
+- `docs/catalog.md` and `docs/profiles.md` are written in Chinese; everything else here is in English.
 - Three filenames had to be repaired during archiving because their zips used a non-UTF-8 encoding
   (`a13-mori-mart`, `a19-stranger-things`, `a18-whale-dream-atelier`). File contents are untouched.

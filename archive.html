@@ -624,7 +624,7 @@ function openModal(code){
     <div class="msub">${d.cn} · ${d.theme} · three.js ${d.three}</div>
     <p class="mlede">${d.lede}</p>
     <dl class="kv">
-      <dt>归档包</dt><dd><code>_packages/${d.zip}</code> · ${d.size}</dd>
+      <dt>原始包</dt><dd><code>${d.zip}</code> · ${d.size}<span style="color:var(--dim2)">（未随仓库提供）</span></dd>
       <dt>源码</dt><dd><code>_extracted/${slugOf(d)}/</code></dd>
       <dt>入口</dt><dd><code>${d.entry}</code></dd>
       <dt>构建</dt><dd>${d.build==="—" ? "无构建链，直接改 HTML" : `<code>${d.build}</code>`}</dd>

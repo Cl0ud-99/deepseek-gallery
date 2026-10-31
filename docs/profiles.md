@@ -648,5 +648,5 @@ three 用的是 **r149 UMD**，并显式设了 `ColorManagement.legacyMode = fal
 
 - 走本地静态服务器（`127.0.0.1:8899`）而不是 `file://`，这样 ES Module 与 importmap 的项目（A03/A11/A12 等）也能正常加载。
 - A04 是唯一走 CDN 的作品，实拍时确认了外网可达；A11 用 `index-offline.html` 配合本地服务；A12 走 CDN 版。
-- A01/A02 包内原本有成品图（`previews/_pkg_originals/` 留了副本），但为了 19 张构图与尺寸统一，目录里统一用实拍版。
+- A01/A02 包内原本有成品图，但为了构图与尺寸统一，目录里统一用实拍版。
 - 脚本在 `_tools/shot.mjs`，改完作品想重新出图直接 `node _tools/shot.mjs A15`（可只跑指定编号，逗号分隔）。
