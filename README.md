@@ -99,4 +99,51 @@ python -m http.server 8080
 
 ---
 
-<sub>版本见 `VERSION`；发布打 `vX.Y.Z` 的 tag。全部代码、预览图和场景都在这个仓库里。</sub>
+## English
+
+**A gallery of code-built 3D dioramas by DeepSeek V4.1 Flash 1017.**
+Twenty-three small worlds, all generated as code — no model files, no textures.
+
+### What this is
+
+No Blender, no asset pack, no download. Every cube, brick, raindrop and light beam on screen is computed in the browser at runtime.
+
+- **Language**: JavaScript — ES Modules, Canvas 2D and WebGL, no build step
+- **Engine**: Three.js, r128 through r186
+- **Assets**: zero model files, zero image files — brickwork, signage, record sleeves and neon lettering are drawn on a canvas; water, aurora and glass are hand-written GLSL
+- **Output**: mostly a single `index.html`, from 296KB to 17MB, double-click to open
+- **Interaction**: drag to orbit, wheel or pinch to zoom, two-finger drag to pan on touch screens
+
+The 23 thumbnails above are live scenes — click one to run it. The `calls` figure on each card is the measured draw calls per frame (1280×800, software rendering, shadows and post-processing included), not an estimate.
+
+### Run it locally
+
+```bash
+python -m http.server 8080
+# then open http://localhost:8080/
+```
+
+All 23 scenes live in `_extracted/`, each with its own entry HTML. Two exceptions: A11 and A12 use ES modules and need a local server; A04 pulls Three.js from a CDN and needs network access.
+
+### Under the hood
+
+- [docs/AUDIT.md](docs/AUDIT.md) — scene-graph audit: meshes, triangles, outline shells, duplicate faces, batching headroom
+- [docs/catalog.md](docs/catalog.md) — flat table, filterable by theme / editability / cost
+- [docs/profiles.md](docs/profiles.md) — per-project dossier: what's inside, how it's built, what bit us
+- [docs/ADDING.md](docs/ADDING.md) — checklist for adding a piece
+- [CHANGELOG.md](CHANGELOG.md) — what changed in each version
+
+### Contribute
+
+Scenes from other people are welcome. Two rules: it must run in a browser from a single entry point, and it must be built with code (no imported models or textures).
+
+1. Put the scene under `_extracted/aXX-<slug>/`
+2. Render a 1440×900 preview with `node _tools/framed-shot.mjs AXX` (details in [docs/ADDING.md](docs/ADDING.md))
+3. Add one entry to `WORKS` and one to `SRC` in `index.html`
+4. Open a PR, or [open an issue](https://github.com/Cl0ud-99/deepseek-gallery/issues/new) and attach a zip
+
+The page self-checks on load: a missing source path, a duplicate id or a missing preview is reported in the console instead of failing silently.
+
+---
+
+<sub>Version in `VERSION`; releases are tagged `vX.Y.Z`. All code, previews and scenes live in this repository.</sub>
