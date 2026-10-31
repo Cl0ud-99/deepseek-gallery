@@ -1480,6 +1480,8 @@ function launchFromCard(cardEl) {
   var scale = Math.max(vw0 / r.width, vh0 / r.height);
   var dx = vl0 + vw0 / 2 - (r.left + r.width / 2);
   var dy = vt0 + vh0 / 2 - (r.top + r.height / 2);
+  /* 克隆层整体会被放大到全屏，标题必须反向缩放，否则气泡会跟着放大好几倍 */
+  launchTitle.style.transform = 'translate(-50%,-50%) scale(' + (1 / scale) + ')';
   var anim = null;
   try {
     anim = clone.animate([
