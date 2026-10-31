@@ -1,28 +1,29 @@
 # DeepSeek Gallery
 
-A community gallery of dioramas built entirely in code — no model files, no image assets.
-Every mesh, material, canvas texture, GLSL shader and animation is generated in the browser
-at runtime with Three.js.
+**DeepSeek V4.1 Flash 1017 的 3D 微缩场景作品集。**
+23 件小世界，全部由代码生成——没有模型文件，没有贴图。
 
-**[Open the gallery →](https://cl0ud-99.github.io/deepseek-gallery/)** · **[Filterable archive →](https://cl0ud-99.github.io/deepseek-gallery/archive.html)**
+*A gallery of code-built 3D dioramas by DeepSeek V4.1 Flash 1017.*
 
-## Submit a piece
+**[在线画廊 →](https://cl0ud-99.github.io/deepseek-gallery/)** · **[可筛选的归档页 →](https://cl0ud-99.github.io/deepseek-gallery/archive.html)**
 
-Anyone can contribute a scene. What we look for: it runs in a browser from a single entry file,
-and it is built with code rather than imported assets.
+---
 
-1. Put the scene under `_extracted/aXX-<slug>/` — a self-contained `index.html` is ideal.
-2. Render a 1440×900 preview with `node _tools/framed-shot.mjs AXX` (details in `docs/ADDING.md`).
-3. Add one entry to `WORKS` and one to `SRC` in `index.html`.
-4. Open a PR, or [start an issue](https://github.com/Cl0ud-99/deepseek-gallery/issues/new) and
-   attach a zip — we will wire it in.
+## 这是什么
 
-The page self-checks on load: a missing source path, a duplicate id or a missing preview is
-reported in the console instead of failing silently.
+没有 Blender，没有素材包，没有下载。屏幕上的每个立方体、每块砖、每片雨、每束光，都是浏览器当场算出来的。
 
-## Collection
+这些作品是在对话里长出来的：描述一个想要的小世界，代码就一行行地把几何、材质、灯光写出来。
 
-Every preview below is a live scene: click a thumbnail or a title to run it in the browser.
+- **语言**：JavaScript —— ES Modules + Canvas 2D + WebGL，不需要构建链
+- **引擎**：Three.js，r128 到 r186 都有，二十多件作品正好能看到引擎这几年的变化
+- **资源**：0 个模型文件，0 张外部贴图。砖墙、招牌、唱片封套、霓虹字都是 Canvas 现画的；水面、极光、玻璃的手感是手写 GLSL
+- **成品**：多是一个 `index.html`，最小 296KB、最大 17MB，双击就能看
+- **交互**：拖拽转视角，滚轮 / 双指缩放；手机上双指拖动可以平移
+
+## 作品
+
+下面每一张都是活的：点缩略图或标题，就在浏览器里跑起来。
 
 <table>
 <tr>
@@ -60,133 +61,42 @@ Every preview below is a live scene: click a thumbnail or a title to run it in t
 </tr>
 </table>
 
-Draw calls are measured, not estimated — see [Performance baseline](#performance-baseline).
-All twenty-three now ship readable source. A05 and A16 were originally minified-only exports; both gained
-`src/scene.js` plus a local `lib/` on 2026-10-30, with the built single file left byte-identical.
+卡片下面的 `calls` 是实测的每帧绘制调用数（1280×800、软件渲染、含阴影与后期），不是估算。最高的是 Black Lodge 的 3,523，最低的是 Aurora Hourglass 的 721——贵不代表好看，但确实值得知道。
 
-## Repository layout
+## 怎么跑
 
-```
-├─ index.html          gallery — card carousel, filters, in-page viewer
-├─ archive.html        filterable archive table, 23 entries + live iframe previews
-├─ ambience.js         procedural Web Audio ambience, one preset per scene
-├─ previews/           Axx.png 1200×750 renders, plus wall/ and thumbs/ JPEGs
-├─ _extracted/         the 23 scenes — entry HTML plus source
-├─ _tools/             framed-shot.mjs · probe.mjs · audit.mjs · overlap.mjs · inject-ambience.mjs
-├─ docs/               AUDIT.md · catalog.md · profiles.md   (Chinese)
-├─ README.md
-├─ CHANGELOG.md
-├─ VERSION
-└─ .nojekyll
-```
+只想看：直接开 **[在线画廊](https://cl0ud-99.github.io/deepseek-gallery/)**，或者按题材翻 **[归档页](https://cl0ud-99.github.io/deepseek-gallery/archive.html)**。
 
-Original scene packages are not checked in; _extracted/ holds the unpacked working copies.
-
-## Running locally
-
-Most entries open by double-clicking their built HTML file. Exceptions:
-
-- **A11, A12** need a local server — they use ES modules, which `file://` blocks.
-- **A04** imports three.js from a CDN, so it needs network access.
+想本地跑：
 
 ```bash
-# any static server works; the archive is plain files
 python -m http.server 8080
-# then open http://localhost:8080/index.html
+# 然后打开 http://localhost:8080/
 ```
 
-Entries with a build step rebuild like this:
+`_extracted/` 里是 23 件的完整源码和入口，每个场景的入口 HTML 也能单独打开。两个例外：A11、A12 用了 ES Module，需要本地服务；A04 从 CDN 取 Three.js，需要联网。
 
-```bash
-cd _extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge
-npm install && npm run build      # -> single inlined HTML
-```
+## 幕后
 
-`_extracted/` does not ship `node_modules/` — A18's offline bundle included them, so run
-`npm install` there before building.
+想深挖的话，这些都在仓库里：
 
-## Performance baseline
+- [docs/AUDIT.md](docs/AUDIT.md) —— 场景图审计：网格、三角面、描边壳、重复面，以及还能怎么合批
+- [docs/catalog.md](docs/catalog.md) —— 平铺总表，按题材 / 可改性 / 开销筛选
+- [docs/profiles.md](docs/profiles.md) —— 逐件档案：里面有什么、怎么实现、踩过哪些坑
+- [docs/ADDING.md](docs/ADDING.md) —— 想加一件自己的，照这个清单走
+- [CHANGELOG.md](CHANGELOG.md) —— 每个版本改了什么
 
-`_tools/probe.mjs` instruments the WebGL context and counts real `drawElements` / `drawArrays`
-calls per frame. It needs no debug handle from the project, so the same measurement applies to all
-nineteen:
+## 投稿
 
-```bash
-node _tools/probe.mjs            # all 19  (~8 min under software rendering)
-node _tools/probe.mjs A09,A01    # selected
-```
+也欢迎别人的场景。要求就两条：能从单个入口在浏览器里跑起来，而且是拿代码搭的（不导入模型、不导入贴图）。
 
-Measured at 1280×800 in headless Chrome on SwiftShader. Counts include the shadow pass and
-post-processing, which is why they run higher than the figures quoted inside individual projects.
-Frame rates under software rendering are only meaningful relative to each other.
+1. 场景放进 `_extracted/aXX-<slug>/`
+2. `node _tools/framed-shot.mjs AXX` 拍一张 1440×900 预览（细节见 [docs/ADDING.md](docs/ADDING.md)）
+3. 在 `index.html` 的 `WORKS` 和 `SRC` 里各加一条
+4. 开 PR，或者 [开 issue](https://github.com/Cl0ud-99/deepseek-gallery/issues/new) 附 zip
 
-| # | Diorama | Draw calls | three.js | Size |
-|---|---|---:|---|---:|
-| A01 | Black Lodge | 3,523 | r169 | 516K |
-| A21 | Ice-Fire Mine Station | 3,350 | r160 | 586K |
-| A02 | Ashtray Maze | 3,218 | r152 | 4.8M |
-| A07 | FBC Quarry 07 | 3,043 | r150 | 15M |
-| A19 | Hawkins / Upside Down | 2,739 | r149 | 3.4M |
-| A18 | Sunset Dream Loom | 2,606 | r186.1 | 15M |
-| A16 | Route 66 Diner | 2,355 | r160 | 459K |
-| A05 | Cliff Lighthouse Café | 2,154 | r160 | 450K |
-| A04 | Autumn Farm | 2,123 | r169 | 1.8M |
-| A13 | Mori Mart | 1,775 | r160 | 1.3M |
-| A17 | The Red Room | 1,754 | r150 | 15M |
-| A12 | Stutter Lab | 1,529 | r160 | 296K |
-| A08 | Redshift Archive | 1,502 | r186 | 12M |
-| A14 | Polar Icebreaker | 1,249 | r169 | 568K |
-| A06 | Cloud Post Office | 1,154 | inline UMD | 2.9M |
-| A20 | Moonlit Perfume Atelier | 1,027 | r160 | 1.3M |
-| A09 | Grand Hotel | 1,009 | r160 | 468K |
-| A15 | Qipao Diorama | 940 | r150 | 17M |
-| A11 | Lunar Outpost | 889 | r169 | 896K |
-| A10 | The Lighthouse | 864 | r160.1 | 1.6M |
-| A03 | Aurora Hourglass | 721 | r160 | 456K |
+页面加载时会自检：源码路径缺失、id 重复、预览图缺失，都会在 console 里点名，不会静默失败。
 
-Three findings worth knowing before optimising anything:
+---
 
-1. **Draw calls, not triangles, are the bottleneck.** Sunset Dream Loom renders 1.17M triangles and
-   holds up; before it was fixed, Grand Hotel rendered 345k and did not, because its frame issued
-   ~7,000 calls.
-2. **Grand Hotel was the outlier, and its cost was structural.** Its frame renders the scene three
-   times — a normal prepass for outline extraction, the shadow pass, then the colour pass — so every
-   static prop cost three calls. Its own documentation never mentioned it. `src/batch.js` now merges
-   static geometry: **7,047 → 1,009 calls (-86%)**, triangles unchanged, verified against the
-   original build by pixel diff. The batcher is reusable.
-3. **A11 Lunar Outpost measures 889 calls**, one of the cheapest entries, despite carrying by far the
-   most detailed optimisation notes. Documentation quality and runtime cost are unrelated here.
-
-## Scene audit
-
-`_tools/audit.mjs` opens every entry in a headless browser and reads its scene graph through the
-`__THREE_DEVTOOLS__` observer that three.js dispatches itself — no debug handle, no source changes,
-and it works on the minified builds too. `_tools/overlap.mjs` then hashes every triangle in world
-space to find surfaces sitting exactly on top of each other.
-
-Collection-wide (full report: [docs/AUDIT.md](docs/AUDIT.md), Chinese):
-
-- 26,251 meshes and 3.64M triangles in total, of which **4,639 meshes are outline shells** — 18% of
-  everything, each one costing its own draw call.
-- **No real z-fighting.** About 4,900 triangles (0.13%) sit exactly on top of another, and every case
-  is a prop that was placed twice rather than a modelling mistake. Both copies always share a
-  material, so the cost is triangles, not visible flicker. Half of them come from one duplicated
-  mesh in the refactored Hawkins scene.
-- **14,704 meshes could still be merged** by material — an upper bound that still counts animated
-  objects. A02, A07, A18 and A19 alone account for roughly 6,200 of them.
-- A07 owns the most outline shells (639), not A11 as its own notes assumed (105).
-- A13 uses 723 distinct materials for 1,095 meshes — the lowest material reuse in the archive.
-
-## Versioning
-
-Releases are tagged `vX.Y.Z`. The archive is kept byte-identical: `.gitattributes` sets `* -text`
-and `core.autocrlf` is off, so no file is newline-converted on checkout.
-
-See [CHANGELOG.md](CHANGELOG.md).
-
-## Notes
-
-- About 114 MB of unpacked scenes and 20 MB of previews; the original zip packages are not checked in.
-- `docs/catalog.md` and `docs/profiles.md` are written in Chinese; everything else here is in English.
-- Three filenames had to be repaired during archiving because their zips used a non-UTF-8 encoding
-  (`a13-mori-mart`, `a19-stranger-things`, `a18-whale-dream-atelier`). File contents are untouched.
+<sub>版本见 `VERSION`；发布打 `vX.Y.Z` 的 tag。全部代码、预览图和场景都在这个仓库里。</sub>
