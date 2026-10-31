@@ -622,9 +622,19 @@
   .launch{position:fixed; z-index:120; overflow:hidden; background:#05060a; pointer-events:none;
     will-change:transform,opacity; box-shadow:0 30px 90px -18px rgba(0,0,0,.65)}
   .launch img{width:100%; height:100%; object-fit:cover; display:block}
-  .launch-dim{position:fixed; inset:0; z-index:90; background:#05060a; opacity:0;
-    pointer-events:none; transition:opacity .28s ease}
-  .launch-dim.on{opacity:.52}
+  .launch-dim{position:fixed; inset:0; z-index:90; background:rgba(5,6,10,.38); opacity:0;
+    pointer-events:none; transition:opacity .28s ease;
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px)}
+  .launch-dim.on{opacity:1}
+  body.launching .stage{
+    transform:scale(.965);
+    filter:blur(6px);
+    transition:transform .5s cubic-bezier(.2,.8,.2,1), filter .5s cubic-bezier(.2,.8,.2,1);
+  }
+  body.launching .dock,
+  body.launching .head,
+  body.launching .bar,
+  body.launching .edge{opacity:0; transition:opacity .22s ease}
 
   @media (max-width:900px), (max-width:1000px) and (orientation:landscape) and (max-height:520px){
     .edge{display:block}
@@ -1451,6 +1461,11 @@ function launchFromCard(cardEl) {
   dim.className = 'launch-dim';
   document.body.appendChild(dim);
   document.body.appendChild(clone);
+  document.body.classList.add('launching');
+  cardCopy.querySelectorAll('.card-title').forEach(function (t) {
+    t.style.transition = 'opacity .16s ease';
+    t.style.opacity = '0';
+  });
   requestAnimationFrame(function () { dim.classList.add('on'); });
 
   var scale = Math.max(vw0 / r.width, vh0 / r.height);
@@ -1459,9 +1474,11 @@ function launchFromCard(cardEl) {
   var anim = null;
   try {
     anim = clone.animate([
-      { transform: 'translate(0px,0px) scale(1)', borderRadius: cs.borderRadius },
-      { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + scale + ')', borderRadius: '0px' }
-    ], { duration: 500, easing: 'cubic-bezier(.18,.9,.24,1.02)', fill: 'forwards' });
+      { transform: 'translate(0px,0px) scale(1)', borderRadius: cs.borderRadius, offset: 0 },
+      { transform: 'translate(' + (dx * 0.82) + 'px,' + (dy * 0.82) + 'px) scale(' + (scale * 1.012) + ')',
+        borderRadius: '14px', offset: 0.72 },
+      { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + scale + ')', borderRadius: '0px', offset: 1 }
+    ], { duration: 620, easing: 'cubic-bezier(.2,.88,.2,1)', fill: 'forwards' });
   } catch (e) {}
 
   var finished = false, animDone = !anim, asked = false;
@@ -1472,6 +1489,7 @@ function launchFromCard(cardEl) {
     dim.style.transition = 'opacity .26s ease';
     clone.style.opacity = '0';
     dim.style.opacity = '0';
+    document.body.classList.remove('launching');
     setTimeout(function () { clone.remove(); dim.remove(); }, 300);
   }
   function maybe() { if (asked && animDone) fadeNow(); }
@@ -1513,6 +1531,7 @@ function stepViewer(d) {
 function closeViewer() {
   /* 进场动画还没跑完就返回时，先把克隆层清掉 */
   document.querySelectorAll('.launch,.launch-dim').forEach(function (el) { el.remove(); });
+  document.body.classList.remove('launching');
   /* 场景里翻过页的话，回到展厅要停在最后看的那一件上 */
   var backTo = vIndex;
   viewer.classList.remove('shown');
