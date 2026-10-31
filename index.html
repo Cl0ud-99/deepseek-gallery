@@ -1465,6 +1465,7 @@ function launchFromCard(cardEl) {
   var launchTitle = document.createElement('div');
   launchTitle.className = 'launch-title';
   launchTitle.textContent = titleText;
+  launchTitle.style.color = light ? '#171a21' : '#ffffff';
   if (light) launchTitle.classList.add('light');
   document.body.appendChild(launchTitle);
 
