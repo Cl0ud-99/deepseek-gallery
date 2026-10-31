@@ -169,8 +169,12 @@
     transition:transform .16s cubic-bezier(.2,.8,.2,1);
     transform:translateZ(0);
   }
-  .card:active .card-inner{transform:scale(.975)}
+  .card{transition:scale .16s cubic-bezier(.2,.8,.2,1)}
+  .card:active{scale:.975}
   .card img{width:100%; height:100%; object-fit:cover; border-radius:var(--r-lg)}
+  body.mode-vertical:not(.mode-grid) .card{
+    background-size:cover; background-position:center; background-repeat:no-repeat;
+  }
   .card.noimg::before{content:attr(data-id); position:absolute; inset:0; display:flex;
     align-items:center; justify-content:center; font-size:12px; letter-spacing:.2em;
     color:var(--dim2); background:rgba(255,255,255,.5)}
@@ -971,6 +975,7 @@ WORKS.forEach(function (w, i) {
   el.className = 'card';
   el.dataset.id = w.id;
   el.setAttribute('data-id', w.id);
+  el.style.backgroundImage = 'url("' + previewSrc(w.id) + '")';
   el.innerHTML = '<div class="card-inner">' +
                  '<img src="' + previewSrc(w.id) + '" alt="' + w.en + '" draggable="false" decoding="async" ' +
                  'onerror="this.style.display=\'none\';var c=this.closest(\'.card\');if(c)c.classList.add(\'noimg\')">' +
