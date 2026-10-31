@@ -243,6 +243,8 @@
   .vclose:active,.varrow:active,.cclose:active,.vbtn:active,.nav:active,.crow:active{
     transform:scale(.94);
   }
+  /* 左右箭头本身有 translateY(-50%) 垂直居中，上面的通用 scale 会把它顶掉导致下移 */
+  .nav:active{transform:translateY(-50%) scale(.94)}
 
   /* 进度条：贴在页面最下沿，左右通栏 */
   .bar{position:fixed; left:0; right:0; bottom:0; z-index:8;
@@ -403,7 +405,12 @@
   /* 总览里左右箭头与进度条都没有意义（网格是滚动的，不是翻页） */
   body.mode-grid .nav,
   body.mode-grid .bar{display:none}
+  /* 桌面总览的品牌栏不再占据文档流，卡片从 80px 留白处开始 */
+  @media (min-width:901px){
+    body.mode-grid .head{position:fixed; top:0; left:0; right:0; z-index:3; pointer-events:none}
+  }
   body.mode-grid .wrap{padding-bottom:0}
+  body.mode-grid .head{opacity:1!important}
   body.mode-grid .track{
     display:grid; grid-template-columns:repeat(4,1fr);
     grid-auto-rows:auto; align-content:start;
@@ -413,7 +420,7 @@
     max-height:100%; overflow-y:auto; overflow-x:hidden;
     /* 上下留出与移轴带等高的缓冲区：滚到顶/底时，
        首行与末行不会被毛玻璃整片盖住 */
-    padding:clamp(16px,3vw,46px);   /* 上下与左右同宽 */
+    padding:calc(80px + env(safe-area-inset-top)) clamp(16px,3vw,46px) clamp(16px,3vw,46px);   /* 与三列布局一致，给顶栏留出空间 */
     perspective:none; cursor:default;
     overflow-anchor:none;   /* 关掉滚动锚定：贴底时浏览器会为保持锚点偷偷改 scrollTop */
     scrollbar-width:none; -ms-overflow-style:none;
@@ -603,6 +610,8 @@
 
   /* 展厅上下边缘的毛玻璃：z 7，低于进度条(8)与按钮(20) */
   .edge{position:fixed; left:0; right:0; z-index:2; pointer-events:none; display:none}
+
+
   .edge.top{top:0; height:calc(70px + env(safe-area-inset-top));
     background:linear-gradient(to bottom,rgba(233,235,242,.62) 0%,rgba(233,235,242,.26) 58%,rgba(233,235,242,0) 100%);
     -webkit-backdrop-filter:blur(18px) saturate(150%); backdrop-filter:blur(18px) saturate(150%);
@@ -1381,11 +1390,21 @@ if (window.visualViewport) {
 
 var navPrev = document.getElementById('navPrev');
 var navNext = document.getElementById('navNext');
-navPrev.addEventListener('click', function () { center(Math.max(nearestIndex() - 1, 0)); });
-navNext.addEventListener('click', function () { center(Math.min(nearestIndex() + 1, cards.length - 1)); });
+/* 连续点箭头时按“目标索引”累加，而不是按当前滚动位置重新取 nearest，
+   否则平滑滚动还没走完，第二次点击会仍然瞄向同一张卡，看起来像失效。 */
+var navIndex = -1, navAt = 0;
+function navStep(d) {
+  var now = performance.now();
+  if (navIndex < 0 || now - navAt > 1600) navIndex = nearestIndex();
+  navIndex = Math.max(0, Math.min(cards.length - 1, navIndex + d));
+  navAt = now;
+  center(navIndex);
+}
+navPrev.addEventListener('click', function () { navStep(-1); });
+navNext.addEventListener('click', function () { navStep(1); });
 
 function syncNav() {
-  var i = nearestIndex();
+  var i = navIndex >= 0 ? navIndex : nearestIndex();
   navPrev.disabled = i <= 0;
   navNext.disabled = i >= cards.length - 1;
 }
