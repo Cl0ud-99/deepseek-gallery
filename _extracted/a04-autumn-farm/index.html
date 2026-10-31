@@ -49,6 +49,27 @@ controls.minPolarAngle = 0.16;
 controls.maxPolarAngle = Math.PI * 0.474;
 controls.target.set(0, 2.0, 0);
 
+/* portrait camera fit: keep the desktop 16:9 horizontal coverage */
+(function () {
+  var BASE_FOV = 30;
+  function fit() {
+    var aspect = window.innerWidth / Math.max(window.innerHeight, 1);
+    if (window.innerWidth >= window.innerHeight) {
+      camera.fov = BASE_FOV;
+    } else {
+      var hf = 2 * Math.atan(Math.tan(BASE_FOV * Math.PI / 360) * (16 / 9));
+      var vf = 2 * Math.atan(Math.tan(hf / 2) / aspect) * 180 / Math.PI;
+      camera.fov = Math.min(112, vf);
+    }
+    camera.aspect = aspect;
+    camera.updateProjectionMatrix();
+    controls.maxDistance = Math.max(controls.maxDistance, 140);
+  }
+  window.addEventListener('resize', fit);
+  fit();
+})();
+
+
 /* 暖色棚拍背景 */
 const bgTex = (() => {
   const c = document.createElement('canvas');

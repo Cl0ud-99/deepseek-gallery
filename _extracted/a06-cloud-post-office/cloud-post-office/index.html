@@ -495,5 +495,42 @@
 })();
 </script>
 <!-- AMB:end -->
+<script>
+(function () {
+  var BASE_FOV = 37;
+  function fit() {
+    var app = window.APP;
+    if (!app || !app.camera) return;
+    var cam = app.camera;
+    var w = window.innerWidth, h = window.innerHeight;
+    var aspect = w / Math.max(h, 1);
+    if (w >= h) {
+      cam.fov = BASE_FOV;
+      cam.aspect = aspect;
+      cam.updateProjectionMatrix();
+      return;
+    }
+    var targetHFov = 2 * Math.atan(Math.tan(BASE_FOV * Math.PI / 360) * (16 / 9));
+    var vFov = 2 * Math.atan(Math.tan(targetHFov / 2) / aspect) * 180 / Math.PI;
+    cam.fov = Math.min(112, vFov);
+    cam.aspect = aspect;
+    cam.updateProjectionMatrix();
+  }
+  var tries = 0;
+  var timer = setInterval(function () {
+    tries++;
+    if (window.APP && window.APP.camera) {
+      fit();
+      clearInterval(timer);
+      var last = window.innerWidth + 'x' + window.innerHeight;
+      window.addEventListener('resize', function () {
+        var now = window.innerWidth + 'x' + window.innerHeight;
+        if (now !== last) { last = now; fit(); }
+      });
+    } else if (tries > 80) clearInterval(timer);
+  }, 100);
+  fit();
+})();
+</script>
 </body>
 </html>

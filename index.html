@@ -166,7 +166,7 @@
   .card-inner{
     display:flex; flex-direction:column; gap:8px;
     width:100%; height:100%;
-    transition:transform .22s cubic-bezier(.34,1.56,.64,1);
+    transition:transform .16s cubic-bezier(.2,.8,.2,1);
     transform:translateZ(0);
   }
   .card:active .card-inner{transform:scale(.975)}
@@ -377,6 +377,15 @@
     box-shadow:none;
   }
   body.mode-grid .card-inner{gap:5px}
+  /* 总览卡片：彻底去掉白色占位/阴影，只保留图片和标题 */
+  body.mode-grid .card,
+  body.mode-grid .card-inner,
+  body.mode-grid .card-title,
+  body.mode-grid .card img{
+    background:transparent!important;
+  }
+  body.mode-grid .card{box-shadow:none!important}
+  body.mode-grid .card img{box-shadow:none!important}
   body.mode-grid .card-title{
     display:block; position:static; transform:none; opacity:1;
     width:100%; max-width:100%; min-width:0; padding:0 2px; margin:0;
@@ -986,6 +995,11 @@ var settleAt = 0;      // 转场结束后再屏蔽一段时间，手快时不会
 var barPos = -1;      // 上一次停在的索引，用来定小鲸的朝向
 var lastFocus = 0;   // 进入总览前聚焦的那一张，返回时用
 
+function smoothstep(a, b, x) {
+  var t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
+
 function layout() {
   if (overview || transitioning) return;
   var pos = VERT ? track.scrollTop : track.scrollLeft;
@@ -1006,14 +1020,13 @@ function layout() {
         /* 竖屏：中间大、上下小；相邻卡片朝中心收，轻轻叠在主卡后面。
            非主卡加一点 rotateX + perspective，上宽下窄，做出立体层叠感。 */
         var pull = -Math.max(-1, Math.min(1, d)) * box.offsetHeight * 0.55;
-        var vsc = 1 - ad * 0.34;
-        /* 主卡不变；其余卡片面积增加 10%（线性尺寸 ×√1.10） */
-        if (k !== best) vsc *= Math.sqrt(1.10);
+        /* 面积 +10% 的加成按距离平滑过渡，避免卡片刚成为主卡时突然缩一下 */
+        var boost = 1 + (Math.sqrt(1.10) - 1) * smoothstep(0.03, 0.22, ad);
+        var vsc = (1 - ad * 0.34) * boost;
         /* 主卡上方：上宽下窄（负角）；主卡下方：上窄下宽（正角），形成环绕的立体层叠 */
-        var tilt = ad < 0.015 ? 0 : (10 + ad * 12) * (d < 0 ? -1 : 1);
-        box.style.transform = tilt
-          ? 'perspective(900px) translateY(' + pull.toFixed(1) + 'px) rotateX(' + tilt.toFixed(2) + 'deg) scale(' + vsc.toFixed(3) + ')'
-          : 'translateY(0px) scale(1)';
+        var tiltAmt = (10 + ad * 12) * smoothstep(0.03, 0.20, ad);
+        var tilt = d < 0 ? -tiltAmt : tiltAmt;
+        box.style.transform = 'perspective(900px) translateY(' + pull.toFixed(1) + 'px) rotateX(' + tilt.toFixed(2) + 'deg) scale(' + vsc.toFixed(3) + ')';
         box.style.zIndex = String(10 - Math.round(ad * 5));
       } else {
         // d 可以到 ±10（列表总宽 19000px），必须钳制：
@@ -1708,6 +1721,9 @@ function setMode(toGrid, focusIndex) {
   var ENTRIES = ['side', 'vertical', 'diagonal', 'bloom'];
   var entry = ENTRIES[Math.floor(Math.random() * ENTRIES.length)];
 
+  /* 返回预选有三套：0 原版 FLIP、1 中心放大泛光、2 上方落入。每次返回随机抽一套 */
+  var retVar = toGrid ? 0 : Math.floor(Math.random() * 3);
+
   els.forEach(function (el, i) {
     var dx, dy, sx, sy, base = t0[i], op = op0[i], delay = 0, culled = false;
 
@@ -1762,7 +1778,9 @@ function setMode(toGrid, focusIndex) {
 
     var isSel = (i === sel);
     var endOp = culled ? 0 : op1[i];
-    var dur = culled ? 320 : (isSel ? 640 : 560);
+    /* 返回时按离选中卡片的距离分组，选中的先走，其余分波次跟上 */
+    if (!toGrid) delay = isSel ? 0 : Math.min(260, 35 + Math.abs(i - sel) * 28);
+    var dur = culled ? 420 : (isSel ? 900 : 820);
     /* 选中的那张起手就快速收缩：它被放大到 3.4 倍时是一块深色大矩形，
        若慢起手会在第一行上方停留很久，把那排全遮住 */
     var ease = culled ? 'ease-out' : (isSel ? 'cubic-bezier(.14,.92,.22,1)' : 'cubic-bezier(.22,.8,.24,1)');
@@ -1797,6 +1815,47 @@ function setMode(toGrid, focusIndex) {
                                 : t1[i]),
           opacity: endOp, offset: 1 }
       ];
+
+      /* 返回时只让选中的那张完整落位；其余卡片原地快速淡出，
+         不再跟着做全尺寸 FLIP，减少合成层和卡顿 */
+      if (!toGrid && !isSel) {
+        /* 其余卡片从左右两侧飞入轮播位置：只做横向偏移+淡入，
+           不参与选中卡片的完整 FLIP，避免中途换位错乱 */
+        var otherEnd = t1[i] === 'none' ? 'translateX(0px)' : t1[i];
+        var dir = i < sel ? -1 : 1;
+        var otherStart = 'translateX(' + (dir * 260) + 'px) ' +
+                         (t1[i] === 'none' ? '' : t1[i]);
+        frames = [
+          { transform: otherStart, opacity: 0, offset: 0 },
+          { transform: otherEnd, opacity: op1[i], offset: 1 }
+        ];
+        dur = 650;
+        delay = Math.min(140, Math.abs(i - sel) * 16);
+        ease = 'cubic-bezier(.22,.8,.24,1)';
+        el.style.transform = otherStart;
+        el.style.opacity = '0';
+        el.style.zIndex = '';
+      }
+      /* 返回时只给选中的那一张换入场轨迹，其余卡片仍按原版归位 */
+      if (!toGrid && isSel && !culled) {
+        var endTf = frames[1].transform;
+        if (retVar === 1) {
+          /* 从网格中心先微微收一下，再放大泛光落位 */
+          frames = [
+            { transform: compose(dx, dy, sx * 0.55, sy * 0.55, base), opacity: 0.1, offset: 0 },
+            { transform: compose(dx * 0.45, dy * 0.45, sx * 1.16, sy * 1.16, base), opacity: 1, offset: 0.62 },
+            { transform: endTf, opacity: 1, offset: 1 }
+          ];
+          ease = 'cubic-bezier(.22,1,.3,1)';
+        } else if (retVar === 2) {
+          /* 从上方 120px 落入主卡位置 */
+          frames = [
+            { transform: compose(dx, dy - 220, sx * 0.8, sy * 0.8, base), opacity: 0.2, offset: 0 },
+            { transform: endTf, opacity: 1, offset: 1 }
+          ];
+          ease = 'cubic-bezier(.16,.84,.24,1)';
+        }
+      }
     }
     el.style.transform = frames[0].transform;          // 先把起点落到内联，避免中间帧闪一下
     if (frames[0].opacity !== undefined) el.style.opacity = String(frames[0].opacity);
