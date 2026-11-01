@@ -1,6 +1,6 @@
 # 微缩场景作品归档 · 清单
 
-> 19 件 Three.js 程序化微缩立体场景（diorama）。全部零外部美术资源：几何、材质、贴图、着色器、动效均由代码在浏览器里实时生成。
+> 32 件 Three.js 程序化微缩立体场景（diorama）。全部零外部美术资源：几何、材质、贴图、着色器、动效均由代码在浏览器里实时生成。
 > 归档时间：2026-10-30 ｜ 归档位置：`C:\Users\83871\WorkBuddy AI\2026-10-30-03-19-27\archive`
 
 ---
@@ -10,12 +10,12 @@
 ```
 repo/
 ├─ index.html       ← 画廊（卡片轮播 / 筛选 / 页内查看器）
-├─ archive.html     ← 可筛选归档表（23 件 + 页内预览）
+├─ archive.html     ← 可筛选归档表（32 件 + 页内预览）
 ├─ docs/
 │  ├─ catalog.md    ← 本文件：总表 + 筛选视图
 │  ├─ profiles.md   ← 逐件详档（场景内容 / 技术实现 / 已知坑 / 优化切入点）
 │  └─ AUDIT.md      ← 场景图审计
-├─ _extracted/      ← 23 件场景源码（工作副本）
+├─ _extracted/      ← 32 件场景源码（工作副本）
 ├─ previews/        ← 预览图（1200×750 实拍 + 墙面图 + 缩略图）
 └─ _tools/          ← 截图 / 探针 / 审计 / 环境声注入脚本
 ```
@@ -49,6 +49,17 @@ repo/
 | A19 | Hawkins / Upside Down（怪奇物语 · 双世界镜像） | 影视同人 | 3.4M | ✅ | 模块 src（5 文件 2883 行） | 已有 README；重构后 2739 calls |
 | A20 | Moonlit Perfume Atelier（月光琉璃花灵香水工坊 · 白天） | 原创奇幻 | 1.3M | ✅ | 5 个经典 js 模块 2951 行 | 白昼版；1027 calls，网格已分组 |
 | A21 | Ice-Fire Mine Station（冰火交融 · 矿山街角驿站） | 原创奇幻 | 586K | ❌ 需联网 | 模块 src（8 文件 3142 行）+ build.py | 3350 calls，典型 draw-call 瓶颈 |
+| A22 | Floating Lava Glacier（浮空熔岩 · 冰川断崖箱庭） | 原创奇幻 | 621K | ✅ | 单文件 | — |
+| A23 | Summer Night Carnival（夏夜游乐园 · 掌上八音盒） | 影视风格 | 788K | ✅ | 模块 src（6 文件） | — |
+| A24 | Jiangnan Garden（江南荷风 · 园林水榭） | 现实田园 | 614K | ✅ | 模块 src（5 文件 4200 行） | 已合批，~2000 calls |
+| A25 | Las Vegas — Sunset Boulevard（拉斯维加斯 · 日落大道） | 现实复古 | 811K | ✅ | 模块 src（9 文件 4800 行） | 1378 mesh / 9 万面 |
+| A26 | Tulou Reunion Night（客家土楼 · 团圆夜） | 现实田园 | 764K | ✅ | 模块 src（app1–8） | 40 calls / 25 万面 |
+| A27 | Corner Cat Café（晴日午后的街角猫咖） | 现实田园 | 758K | ✅ | 模块 src（5 文件） | 1585 calls |
+| A28 | Arrival（降临 · 山谷营地） | 影视同人 | 762K | ✅ | 模块 scene.js | — |
+| A29 | Orbital Station（深空轨道空间站） | 科幻 | 764K | ✅ | 模块 src（9 文件） | — |
+| A30 | Wandering Earth — Planetary Engine（流浪地球 · 行星发动机） | 影视同人 | 703K | ✅ | 模块 a–d | — |
+| A31 | Lakeside Shrine — Gaius（湖畔祭坛 · 盖乌斯） | 影视同人 | 753K | ✅ | 模块（5 文件） | 1400 calls |
+| A32 | Independence Day — Area 51（独立日 · 51 区） | 影视同人 | 777K | ✅ | 单 main.js 3900 行 | 2300 mesh |
 
 体积合计 ≈ 92MB（压缩包）/ 解压后 ≈ 143MB。
 
