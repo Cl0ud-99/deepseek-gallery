@@ -74,6 +74,18 @@ canvas#stage:active { cursor: grabbing; }
   canvas#stage { transition: opacity .4s ease; transform: none; }
 }
 </style>
+<!-- longpress:off -->
+<style>
+  html, body, canvas { -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+</style>
+<script>
+  (function () {
+    function stop(e) { e.preventDefault(); }
+    document.addEventListener('contextmenu', stop, { passive: false });
+    document.addEventListener('selectstart', stop, true);
+    document.addEventListener('dragstart', stop, true);
+  })();
+</script>
 </head>
 <body>
   <main class="stage-wrap" aria-label="可旋转观赏的晚霞织梦染坊立体微缩场景">

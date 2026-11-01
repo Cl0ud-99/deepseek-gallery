@@ -19,6 +19,18 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.55'/></svg>");
   }
 </style>
+<!-- longpress:off -->
+<style>
+  html, body, canvas { -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+</style>
+<script>
+  (function () {
+    function stop(e) { e.preventDefault(); }
+    document.addEventListener('contextmenu', stop, { passive: false });
+    document.addEventListener('selectstart', stop, true);
+    document.addEventListener('dragstart', stop, true);
+  })();
+</script>
 </head>
 <body>
   <div id="app"></div>

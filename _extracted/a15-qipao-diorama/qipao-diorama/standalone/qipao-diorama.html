@@ -19,6 +19,18 @@
   #scene:active { cursor: grabbing; }
   ::selection { background: transparent; }
 </style>
+<!-- longpress:off -->
+<style>
+  html, body, canvas { -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+</style>
+<script>
+  (function () {
+    function stop(e) { e.preventDefault(); }
+    document.addEventListener('contextmenu', stop, { passive: false });
+    document.addEventListener('selectstart', stop, true);
+    document.addEventListener('dragstart', stop, true);
+  })();
+</script>
 </head>
 <body>
 <canvas id="scene"></canvas>

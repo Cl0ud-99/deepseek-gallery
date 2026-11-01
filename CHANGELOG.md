@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.2.0 — 2026-11-02
+
+Nine new dioramas, and the gallery grows from 23 to 32 works.
+
+**New works** — Jiangnan Garden, Las Vegas — Sunset Boulevard, Tulou Reunion Night,
+Corner Cat Café, Arrival, Orbital Station, Wandering Earth — Planetary Engine,
+Lakeside Shrine — Gaius, Independence Day — Area 51. They are inserted between the
+existing entries rather than appended.
+
+**Gallery**
+
+- Portrait framing for all nine new scenes (camera fit per aspect ratio).
+- Outline thickness normalised: screen-space cap of ~1.2 px on mobile; the heavier
+  scenes (tulou, orbital, wandering, colossus, area 51) were reduced, lighter ones untouched.
+- New loading states: flat Apple-style ring spinner on the boot screen, the card-to-scene
+  transition and the scene loader.
+- Prewarm: the current card's scene is built in a hidden viewer after 1.1 s idle, so opening
+  it hands over instantly.
+- Buttons now scale up slightly on press (1.15 on hover devices, 1.06 on touch).
+- Every scene page title is now English.
+
+**Builds**
+
+- Single-file sizes normalised to 629–831 KB; the tulou build now uses the minified
+  three.js runtime (fixed the export-map rewrite in build.sh min).
+
 ## test 0.1.7 — 2026-10-31
 
 Mobile gallery pass: vertical card spacing and snap timing, full-screen viewer,

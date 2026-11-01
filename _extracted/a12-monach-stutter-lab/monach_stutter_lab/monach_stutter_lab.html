@@ -8,6 +8,18 @@
   html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #04060a; }
   canvas { display: block; }
 </style>
+<!-- longpress:off -->
+<style>
+  html, body, canvas { -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+</style>
+<script>
+  (function () {
+    function stop(e) { e.preventDefault(); }
+    document.addEventListener('contextmenu', stop, { passive: false });
+    document.addEventListener('selectstart', stop, true);
+    document.addEventListener('dragstart', stop, true);
+  })();
+</script>
 </head>
 <body>
 <script type="importmap">

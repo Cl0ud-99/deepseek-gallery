@@ -1,7 +1,7 @@
 # DeepSeek Gallery
 
 **DeepSeek V4.1 Flash 1017 的 3D 微缩场景作品集。**
-23 件小世界，全部由代码生成——没有模型文件，没有贴图。
+32 件小世界，全部由代码生成——没有模型文件，没有贴图。
 
 *A gallery of code-built 3D dioramas by DeepSeek V4.1 Flash 1017.*
 
@@ -58,6 +58,19 @@
 <td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html"><img src="previews/thumbs/A21.jpg" width="160" alt="Ice-Fire Mine Station"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html"><b>A21 · Ice-Fire Mine Station</b></a><br><sub>3,350 calls · r160 · 586K</sub></td>
 <td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a22-floating-lava-glacier/index.html"><img src="previews/thumbs/A22.jpg" width="160" alt="Floating Lava Glacier"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a22-floating-lava-glacier/index.html"><b>A22 · Floating Lava Glacier</b></a><br><sub>lava · ice · underwater</sub></td>
 <td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a23-carnival/carnival-miniature/carnival.html"><img src="previews/thumbs/A23.jpg" width="160" alt="Summer Night Carnival"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a23-carnival/carnival-miniature/carnival.html"><b>A23 · Summer Night Carnival</b></a><br><sub>carousel · fireworks · r128</sub></td>
+<td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a24-jiangnan-garden/jiangnan-garden/index.html"><img src="previews/thumbs/A24.jpg" width="160" alt="Jiangnan Garden"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a24-jiangnan-garden/jiangnan-garden/index.html"><b>A24 · Jiangnan Garden</b></a><br><sub>≈2,000 calls · r160 · 614K</sub></td>
+<td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a25-las-vegas/las-vegas-diorama/index.html"><img src="previews/thumbs/A25.jpg" width="160" alt="Las Vegas — Sunset Boulevard"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a25-las-vegas/las-vegas-diorama/index.html"><b>A25 · Las Vegas — Sunset Boulevard</b></a><br><sub>1,378 mesh · r180 · 811K</sub></td>
+</tr>
+<tr>
+<td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a26-tulou/tulou/index.html"><img src="previews/thumbs/A26.jpg" width="160" alt="Tulou Reunion Night"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a26-tulou/tulou/index.html"><b>A26 · Tulou Reunion Night</b></a><br><sub>≈40 calls · r160 · 764K</sub></td>
+<td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a27-cat-cafe/cat-cafe/index.html"><img src="previews/thumbs/A27.jpg" width="160" alt="Corner Cat Café"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a27-cat-cafe/cat-cafe/index.html"><b>A27 · Corner Cat Café</b></a><br><sub>1,585 calls · r158 · 758K</sub></td>
+<td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a28-arrival/arrival/index.html"><img src="previews/thumbs/A28.jpg" width="160" alt="Arrival"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a28-arrival/arrival/index.html"><b>A28 · Arrival</b></a><br><sub>monolith · valley · 762K</sub></td>
+<td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a29-orbital-station/orbital-station/index.html"><img src="previews/thumbs/A29.jpg" width="160" alt="Orbital Station"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a29-orbital-station/orbital-station/index.html"><b>A29 · Orbital Station</b></a><br><sub>station · solar wings · 764K</sub></td>
+<td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a30-wandering-earth/wandering-earth/index.html"><img src="previews/thumbs/A30.jpg" width="160" alt="Wandering Earth — Planetary Engine"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a30-wandering-earth/wandering-earth/index.html"><b>A30 · Wandering Earth — Planetary Engine</b></a><br><sub>engine · snow · 703K</sub></td>
+</tr>
+<tr>
+<td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a31-shadow-colossus/shadow-colossus/index.html"><img src="previews/thumbs/A31.jpg" width="160" alt="Lakeside Shrine — Gaius"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a31-shadow-colossus/shadow-colossus/index.html"><b>A31 · Lakeside Shrine — Gaius</b></a><br><sub>1,400 calls · r157 · 753K</sub></td>
+<td align="center" width="160"><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a32-area51/area51/index.html"><img src="previews/thumbs/A32.jpg" width="160" alt="Independence Day — Area 51"></a><br><a href="https://cl0ud-99.github.io/deepseek-gallery/_extracted/a32-area51/area51/index.html"><b>A32 · Independence Day — Area 51</b></a><br><sub>2,300 mesh · r128 · 777K</sub></td>
 </tr>
 </table>
 
@@ -74,7 +87,7 @@ python -m http.server 8080
 # 然后打开 http://localhost:8080/
 ```
 
-`_extracted/` 里是 23 件的完整源码和入口，每个场景的入口 HTML 也能单独打开。两个例外：A11、A12 用了 ES Module，需要本地服务；A04 从 CDN 取 Three.js，需要联网。
+`_extracted/` 里是 32 件的完整源码和入口，每个场景的入口 HTML 也能单独打开。两个例外：A11、A12 用了 ES Module，需要本地服务；A04 从 CDN 取 Three.js，需要联网。
 
 ## 幕后
 
@@ -102,7 +115,7 @@ python -m http.server 8080
 ## English
 
 **A gallery of code-built 3D dioramas by DeepSeek V4.1 Flash 1017.**
-Twenty-three small worlds, all generated as code — no model files, no textures.
+Thirty-two small worlds, all generated as code — no model files, no textures.
 
 ### What this is
 
@@ -114,7 +127,7 @@ No Blender, no asset pack, no download. Every cube, brick, raindrop and light be
 - **Output**: mostly a single `index.html`, from 296KB to 17MB, double-click to open
 - **Interaction**: drag to orbit, wheel or pinch to zoom, two-finger drag to pan on touch screens
 
-The 23 thumbnails above are live scenes — click one to run it. The `calls` figure on each card is the measured draw calls per frame (1280×800, software rendering, shadows and post-processing included), not an estimate.
+The 32 thumbnails above are live scenes — click one to run it. The `calls` figure on each card is the measured draw calls per frame (1280×800, software rendering, shadows and post-processing included), not an estimate.
 
 ### Run it locally
 

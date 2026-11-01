@@ -775,8 +775,19 @@
       maxRadius: 58,
       baseFit: fit
     };
-    var drag = 0, lx = 0, ly = 0, pointers = new Map(), pinch = 0, pinchCenter = null;
+    var drag = 0, lx = 0, ly = 0, pointers = new Map(), pinch = 0, pinchX = null, pinchY = null;
 
+    /* shift/right-drag and two-finger drag share the same pan: push `target`
+       along the camera's right/up axes, so the model follows the fingers. */
+    function panBy(dx, dy) {
+      var k = st.radius * .00135;
+      var right = new T.Vector3().setFromMatrixColumn(camera.matrix, 0);
+      var up = new T.Vector3().setFromMatrixColumn(camera.matrix, 1);
+      st.tTarget.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+      st.tTarget.x = AM.clamp(st.tTarget.x, -6.5, 6.5);
+      st.tTarget.z = AM.clamp(st.tTarget.z, -6.5, 6.5);
+      st.tTarget.y = AM.clamp(st.tTarget.y, -0.3, 8.5);
+    }
     function down(e) {
       if (dom.setPointerCapture) { try { dom.setPointerCapture(e.pointerId); } catch (x) {} }
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -786,30 +797,28 @@
       if (pointers.size === 2) {
         var p = Array.from(pointers.values());
         pinch = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
-        pinchCenter = { x: (p[0].x + p[1].x) * .5, y: (p[0].y + p[1].y) * .5 };
+        pinchX = (p[0].x + p[1].x) * .5; pinchY = (p[0].y + p[1].y) * .5;
       }
     }
     function move(e) {
       if (!pointers.has(e.pointerId)) return;
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       st.lastInput = performance.now();
-      if (pointers.size === 2) {
+      if (pointers.size > 1) {
         var p = Array.from(pointers.values());
         var d = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
-        if (pinch > 0) st.tRadius = AM.clamp(st.tRadius * (pinch / d), st.minRadius, st.maxRadius);
-        pinch = d;
+        var cx = (p[0].x + p[1].x) * .5, cy = (p[0].y + p[1].y) * .5;
+        if (pinch > 0 && d > 0) st.tRadius = AM.clamp(st.tRadius * (pinch / d), st.minRadius, st.maxRadius);
+        /* two fingers moving together pan; the midpoint drifts during a pinch too,
+           which keeps dollies and pans usable in the same gesture */
+        if (pinchX !== null) panBy(cx - pinchX, cy - pinchY);
+        pinch = d; pinchX = cx; pinchY = cy;
         return;
       }
       var dx = e.clientX - lx, dy = e.clientY - ly;
       lx = e.clientX; ly = e.clientY;
       if (drag === 2) {
-        var k = st.radius * .00135;
-        var right = new T.Vector3().setFromMatrixColumn(camera.matrix, 0);
-        var up = new T.Vector3().setFromMatrixColumn(camera.matrix, 1);
-        st.tTarget.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
-        st.tTarget.x = AM.clamp(st.tTarget.x, -6.5, 6.5);
-        st.tTarget.z = AM.clamp(st.tTarget.z, -6.5, 6.5);
-        st.tTarget.y = AM.clamp(st.tTarget.y, -0.3, 8.5);
+        panBy(dx, dy);
       } else {
         st.tTheta -= dx * .0046;
         st.tPhi = AM.clamp(st.tPhi - dy * .0036, .22, 1.47);
@@ -817,8 +826,14 @@
     }
     function up(e) {
       pointers.delete(e.pointerId);
+      pinch = 0; pinchX = pinchY = null;
       if (pointers.size === 0) drag = 0;
-      pinch = 0;
+      else if (pointers.size === 1) {
+        /* Re-anchor on the finger that is still down. Without this the next move
+           measures from the other finger's old position and throws the camera. */
+        var rest = pointers.values().next().value;
+        lx = rest.x; ly = rest.y;
+      }
     }
     dom.addEventListener('pointerdown', down);
     dom.addEventListener('pointermove', move);

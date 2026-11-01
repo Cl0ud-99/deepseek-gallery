@@ -48,6 +48,18 @@ body.ready canvas#stage { opacity: 1; transform: scale(1); }
 }
 
   </style>
+<!-- longpress:off -->
+<style>
+  html, body, canvas { -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+</style>
+<script>
+  (function () {
+    function stop(e) { e.preventDefault(); }
+    document.addEventListener('contextmenu', stop, { passive: false });
+    document.addEventListener('selectstart', stop, true);
+    document.addEventListener('dragstart', stop, true);
+  })();
+</script>
 </head>
 <body>
   <main class="stage-wrap" aria-label="可自由旋转、缩放观看的联邦控制局粗野主义微缩景观">

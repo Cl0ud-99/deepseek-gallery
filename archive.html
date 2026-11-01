@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Diorama Archive — 23 Works</title>
+<title>Diorama Archive — 32 Works</title>
 <style>
   :root{
     --bg:#0a0c11;
@@ -163,7 +163,7 @@
 <header>
   <div class="hwrap">
     <div class="eyebrow">Archive · Three.js Diorama</div>
-    <h1>微缩场景作品归档 <span>/ 23 件</span></h1>
+    <h1>微缩场景作品归档 <span>/ 32 件</span></h1>
     <p class="lede">全部为纯代码程序化生成的 Three.js 微缩立体场景——没有 Blender、没有外部模型、没有贴图文件。几何、材质、Canvas 贴图、GLSL 着色器与动效都在浏览器里实时构建。按「能不能改」和「怎么打开」筛选，挑下一件要继续优化的。</p>
     <div class="stats">
       <div class="stat"><b>21</b><span>作品</span></div>
@@ -473,7 +473,116 @@ const DATA = [
   tech:"src/ 六个模块（core / world / carousel / booths / props / anim）+ lib/ 本地化的 Three.js 与后期，build.sh 拼成单文件。",
   points:"本次新增，尚未做 draw-call 基准测试。",
   note:"闲置 7 秒镜头自转，一碰即停。"
-}
+},
+{
+  code:"A24", name:"Jiangnan Garden", cn:"江南荷风 · 园林水榭",
+  theme:"现实田园", tags:["江南","园林","荷塘","正交相机"],
+  size:"614K", zip:"a24-jiangnan-garden.zip", loc:4200, three:"r160", calls:2000, tris:550000,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A24.png", pal:["#8f9c72","#595546"],
+  lede:"31×31 青石台基上的江南水榭：粉墙黛瓦、九曲桥、太湖石、垂柳竹林，水面倒映整座园林，六尾锦鲤穿游带涟漪。",
+  entryNote:"单文件 614KB，双击即开；源码在 src/，改完 npm run build。",
+  tech:"正交相机 + MeshToon 五阶渐变 + 反向外壳描边；平面镜面反射分 layer 渲染；2000 draw call 靠 mergeGeometries 合并静态几何、反射每 3 帧更新、阴影每 4 帧更新维持。",
+  points:"已合批；反射 RT 与阴影是主要开销，低端机可把反射降到 512 或每 6 帧更新。",
+  note:"全部纹理由 Canvas 现画：瓦垄、木纹、凉席、苏绣、青花、宫灯。随机数固定种子，刷新不变样。"
+},
+{
+  code:"A25", name:"Las Vegas — Sunset Boulevard", cn:"拉斯维加斯 · 日落大道",
+  theme:"现实复古", tags:["拉斯维加斯","霓虹","日落","卡通渲染"],
+  size:"811K", zip:"a25-las-vegas.zip", loc:4800, three:"r180", calls:1378, tris:90000,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A25.png", pal:["#a34d46","#c17956"],
+  lede:"日落大道的复古霓虹街角：STARLITE 餐厅、THE GILDED FLAMINGO 赌场、粉色敞篷车、棕榈与跑马灯泡。",
+  entryNote:"单文件 811KB；源码按模块拆分，npm run build 打包。",
+  tech:"MeshToon 四阶 + 反向外壳描边 + onBeforeCompile rim light；EffectComposer：RenderPass → UnrealBloom → 自定义分级（曝光/饱和/对比/分离色调/暗角/颗粒/色散）。",
+  points:"1378 mesh / 9 万三角面；Bloom 与 4× MSAA 是主要开销，移动端可降 pixelRatio。",
+  note:"招牌贴图全部 Canvas 生成，signPlane() 内置 polygonOffset 防 z-fighting；路面标线用 MeshBasicMaterial，避免卡通材质在阴影区发黑。"
+},
+{
+  code:"A26", name:"Tulou Reunion Night", cn:"客家土楼 · 团圆夜",
+  theme:"现实田园", tags:["客家","土楼","团圆夜","几何批处理"],
+  size:"764K", zip:"a26-tulou.zip", loc:5000, three:"r160", calls:40, tris:250000,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A26.png", pal:["#0c1931","#392625"],
+  lede:"圆楼剖面里的团圆夜：夯土墙、黑瓦屋顶、三层廊道与房间、祖堂、天井，210 盏灯笼沿檐口排开。",
+  entryNote:"单文件 764KB；./build.sh 拼接构建，./build.sh min 用压缩版 three。",
+  tech:"几何批处理把静态物体合成 6 个合并 Mesh + 1 个描边 Mesh，25 万三角面只有 40 余 draw call；灯笼用 InstancedMesh 每帧写矩阵摆动；四分之一分辨率 Bloom。",
+  points:"已极省 draw call；阴影只开月光一盏，灯笼点光不投影。",
+  note:"坐标常量集中在 app1.js 顶部；?az=&pol=&d= 可直接调机位。"
+},
+{
+  code:"A27", name:"Corner Cat Café", cn:"晴日午后的街角猫咖",
+  theme:"现实田园", tags:["猫咖","街角","午后","卡通"],
+  size:"758K", zip:"a27-cat-cafe.zip", loc:4000, three:"r158", calls:1585, tris:116000,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A27.png", pal:["#bee2ea","#c5cba6"],
+  lede:"晴日午后的街角猫咖：木质店面、拱形橱窗、遮阳棚、店内卡座与猫爬架，四只猫在门口晒太阳。",
+  entryNote:"单文件 758KB；dev/ 下分 5 个模块，python build.py 打包。",
+  tech:"MeshToon 四阶 + 反向外壳描边；木纹、石板、瓦片、菜单、照片墙、猫皮全部 Canvas 现画；自写球面轨道相机。",
+  points:"1585 draw call / 11.6 万三角面；移动端可降 pixelRatio。",
+  note:"猫咪位置在 05-cats.js 的 cat1~cat4，pose 可取 sleep / sit。"
+},
+{
+  code:"A28", name:"Arrival", cn:"降临 · 山谷营地",
+  theme:"影视同人", tags:["降临","黑壳","山谷","雾"],
+  size:"762K", zip:"a28-arrival.zip", loc:3000, three:"r157", calls:900, tris:120000,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A28.png", pal:["#6a7e77","#42554f"],
+  lede:"雾中山谷营地与悬停的黑色巨壳：营地建筑、雷达、车辆、草地与低垂的云层。",
+  entryNote:"单文件 762KB，双击即开；work/scene.js 为源码，node build.mjs 打包。",
+  tech:"MeshToon 卡通材质 + 反向外壳描边；雾与光晕用粒子与贴片；相机轨道带阻尼。",
+  points:"面数不高，雾粒子与描边是主要开销。",
+  note:"竖屏取景按画面宽度自动拉远，手机上整座营地完整入画。"
+},
+{
+  code:"A29", name:"Orbital Station", cn:"深空轨道空间站",
+  theme:"科幻", tags:["空间站","轨道","太阳翼","机械臂"],
+  size:"764K", zip:"a29-orbital-station.zip", loc:3500, three:"r160", calls:1200, tris:150000,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A29.png", pal:["#090e1c","#040916"],
+  lede:"深空轨道上的空间站微缩景：核心舱、七窗穹顶、太阳能帆板、散热翼、对接货运飞船与机械臂，下方是地球弧线。",
+  entryNote:"单文件 764KB；src/ 按 00-core ~ 80-animate 编号拆分，node build.mjs 内联。",
+  tech:"MeshToon + 反向外壳描边；星空、星云、地球均为程序化生成；太阳翼与机械臂有时间轴动画。",
+  points:"中等开销；描边与星空粒子可调。",
+  note:"竖屏会把两侧太阳翼一起收进画面。"
+},
+{
+  code:"A30", name:"Wandering Earth — Planetary Engine", cn:"流浪地球 · 行星发动机",
+  theme:"影视同人", tags:["流浪地球","行星发动机","暴雪","地下城"],
+  size:"703K", zip:"a30-wandering-earth.zip", loc:3500, three:"r157", calls:1500, tris:200000,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A30.png", pal:["#22334a","#081322"],
+  lede:"暴雪中的行星发动机：塔架、喷口光柱、马赫环、地下城剖面与车队。",
+  entryNote:"单文件 703KB；js/a~d.js 分模块，python build.py 打包。",
+  tech:"MeshToon + 反向外壳描边；光柱用三层等离子 Shader；暴雪 4200 粒子；Bloom 后期。",
+  points:"粒子与光柱是主要开销；移动端可降粒子数。",
+  note:"默认机位刻意把塔顶截在画外，滚轮拉远可看全貌；竖屏会自动拉远。"
+},
+{
+  code:"A31", name:"Lakeside Shrine — Gaius", cn:"湖畔祭坛 · 盖乌斯",
+  theme:"影视同人", tags:["旺达与巨像","祭坛","巨像","水下神殿"],
+  size:"753K", zip:"a31-shadow-colossus.zip", loc:4000, three:"r157", calls:1400, tris:86000,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A31.png", pal:["#b4cbc3","#4f5b4b"],
+  lede:"湖心圆形石坛：完整圆柱岩基、正面弧形拱门、半苏醒的第三巨像，从拱门看进去是水下的圆形神殿。",
+  entryNote:"单文件 753KB；js/ 分 core/world/colossus/temple/fx，python build.py 打包。",
+  tech:"MeshToon + 屏幕空间等宽描边；水面 Shader、水下神殿环形壁画、瀑布与焦散都是程序化；相机按包围盒自动取景。",
+  points:"1400 draw call / 8.6 万三角面；水面反射与描边是主要开销。",
+  note:"竖屏会自动把取景填满度提高，圆柱底座完整入画。"
+},
+{
+  code:"A32", name:"Independence Day — Area 51", cn:"独立日 · 51 区",
+  theme:"影视同人", tags:["独立日","51区","母舰","探照灯"],
+  size:"777K", zip:"a32-area51.zip", loc:3900, three:"r128", calls:2300, tris:220000,
+  entry:"index.html", build:"—", open:"direct", edit:"module",
+  preview:"previews/A32.png", pal:["#0d0d1d","#1b1422"],
+  lede:"51 区基地：悬停的母舰、四座探照灯塔、实验室、星条旗与反重力碎石。",
+  entryNote:"单文件 777KB；js/main.js 单文件约 3900 行，python build.py 打包。",
+  tech:"MeshToon 四阶 + 恒定像素宽描边 + Fresnel 边缘光；EffectComposer → Bloom；母舰装甲与护盾波形为 Canvas 程序化贴图。",
+  points:"2300 mesh / 22 万三角面；小屏自动降级（关 AA、pixelRatio 1.3、阴影 1024）。",
+  note:"母舰顶面是 DoubleSide Lathe 壳，近距离会有轻微玻璃罩观感。"
+},
+
 ];
 
 const THEMES = ["全部","影视同人","影视风格","原创奇幻","科幻","现实复古","现实田园"];
@@ -514,6 +623,15 @@ const LIVE_PATH = {
   A21:"a21-ice-fire-mine-station/ice-fire-mine-station/index.html",
   A22:"a22-floating-lava-glacier/index.html",
   A23:"a23-carnival/carnival-miniature/carnival.html"
+  ,A24:"a24-jiangnan-garden/index.html"
+  ,A25:"a25-las-vegas/index.html"
+  ,A26:"a26-tulou/index.html"
+  ,A27:"a27-cat-cafe/index.html"
+  ,A28:"a28-arrival/index.html"
+  ,A29:"a29-orbital-station/index.html"
+  ,A30:"a30-wandering-earth/index.html"
+  ,A31:"a31-shadow-colossus/index.html"
+  ,A32:"a32-area51/index.html"
 };
 const liveUrl = d => LIVE_BASE + LIVE_PATH[d.code].split("/").map(encodeURIComponent).join("/");
 const EDIT_LABEL = {module:"模块化源码", readable:"单文件可读", locked:"已压缩·不可改"};

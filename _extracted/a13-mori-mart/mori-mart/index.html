@@ -14,6 +14,18 @@
     letter-spacing:.5em;transition:opacity 1.2s ease;}
   #loading.hide{opacity:0;pointer-events:none;}
 </style>
+<!-- longpress:off -->
+<style>
+  html, body, canvas { -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+</style>
+<script>
+  (function () {
+    function stop(e) { e.preventDefault(); }
+    document.addEventListener('contextmenu', stop, { passive: false });
+    document.addEventListener('selectstart', stop, true);
+    document.addEventListener('dragstart', stop, true);
+  })();
+</script>
 </head>
 <body>
 <div id="loading">森 の コ ン ビ ニ</div>

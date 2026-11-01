@@ -14,6 +14,18 @@
   #vig { position:fixed; inset:0; pointer-events:none;
          background: radial-gradient(ellipse 62% 62% at 50% 46%, rgba(0,0,0,0) 38%, rgba(2,4,10,0.55) 100%); }
 </style>
+<!-- longpress:off -->
+<style>
+  html, body, canvas { -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+</style>
+<script>
+  (function () {
+    function stop(e) { e.preventDefault(); }
+    document.addEventListener('contextmenu', stop, { passive: false });
+    document.addEventListener('selectstart', stop, true);
+    document.addEventListener('dragstart', stop, true);
+  })();
+</script>
 </head>
 <body>
 <canvas id="c"></canvas>

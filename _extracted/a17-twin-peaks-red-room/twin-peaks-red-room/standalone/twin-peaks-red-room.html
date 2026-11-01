@@ -21,6 +21,18 @@
   #scene:active { cursor: grabbing; }
   ::selection { background: transparent; }
 </style>
+<!-- longpress:off -->
+<style>
+  html, body, canvas { -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+</style>
+<script>
+  (function () {
+    function stop(e) { e.preventDefault(); }
+    document.addEventListener('contextmenu', stop, { passive: false });
+    document.addEventListener('selectstart', stop, true);
+    document.addEventListener('dragstart', stop, true);
+  })();
+</script>
 </head>
 <body>
 <canvas id="scene"></canvas>
@@ -724,8 +736,19 @@ console.warn( 'Scripts "build/three.js" and "build/three.min.js" are deprecated 
       lastInput: performance.now(), userZoomed: false, initialized: false,
       autoRotate: false
     };
-    var drag = 0, lastX = 0, lastY = 0, pointers = new Map(), pinch = 0, moved = 0;
+    var drag = 0, lastX = 0, lastY = 0, pointers = new Map(), pinch = 0, pinchX = null, pinchY = null, moved = 0;
     var dragging = false;
+    /* shift/right-drag and two-finger drag share the same pan: push `target`
+       along the camera's right/up axes, so the model follows the fingers. */
+    function panBy(dx, dy) {
+      var k = st.radius * .0014;
+      var right = new T.Vector3().setFromMatrixColumn(camera.matrix, 0);
+      var up = new T.Vector3().setFromMatrixColumn(camera.matrix, 1);
+      st.tTarget.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+      st.tTarget.x = TP.clamp(st.tTarget.x, -5, 5);
+      st.tTarget.z = TP.clamp(st.tTarget.z, -5, 5);
+      st.tTarget.y = TP.clamp(st.tTarget.y, .6, 7.0);
+    }
     function down(e) {
       if (dom.setPointerCapture) try { dom.setPointerCapture(e.pointerId); } catch (err) {}
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -738,32 +761,31 @@ console.warn( 'Scripts "build/three.js" and "build/three.min.js" are deprecated 
       if (pointers.size === 2) {
         var p = Array.from(pointers.values());
         pinch = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+        pinchX = (p[0].x + p[1].x) * .5; pinchY = (p[0].y + p[1].y) * .5;
       }
     }
     function move(e) {
       if (!pointers.has(e.pointerId)) return;
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       st.lastInput = performance.now();
-      if (pointers.size === 2) {
+      if (pointers.size > 1) {
         var p = Array.from(pointers.values());
         var d = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
-        if (pinch > 0) {
+        var cx = (p[0].x + p[1].x) * .5, cy = (p[0].y + p[1].y) * .5;
+        if (pinch > 0 && d > 0) {
           st.tRadius = TP.clamp(st.tRadius * (pinch / d), 12.5, 66);
           st.userZoomed = true;
         }
-        pinch = d;
+        /* two fingers moving together pan; the midpoint drifts during a pinch too,
+           which keeps dollies and pans usable in the same gesture */
+        if (pinchX !== null) panBy(cx - pinchX, cy - pinchY);
+        pinch = d; pinchX = cx; pinchY = cy;
         return;
       }
       var dx = e.clientX - lastX, dy = e.clientY - lastY;
       lastX = e.clientX; lastY = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
       if (drag === 2) {
-        var k = st.radius * .0014;
-        var right = new T.Vector3().setFromMatrixColumn(camera.matrix, 0);
-        var up = new T.Vector3().setFromMatrixColumn(camera.matrix, 1);
-        st.tTarget.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
-        st.tTarget.x = TP.clamp(st.tTarget.x, -5, 5);
-        st.tTarget.z = TP.clamp(st.tTarget.z, -5, 5);
-        st.tTarget.y = TP.clamp(st.tTarget.y, .6, 7.0);
+        panBy(dx, dy);
       } else {
         st.tTheta -= dx * .0048;
         st.tPhi = TP.clamp(st.tPhi - dy * .0038, .20, 1.43);
@@ -771,8 +793,14 @@ console.warn( 'Scripts "build/three.js" and "build/three.min.js" are deprecated 
     }
     function up(e) {
       pointers.delete(e.pointerId);
+      pinch = 0; pinchX = pinchY = null;
       if (pointers.size === 0) { drag = 0; dragging = false; dom.style.cursor = 'grab'; }
-      pinch = 0;
+      else if (pointers.size === 1) {
+        /* Re-anchor on the finger that is still down. Without this the next move
+           measures from the other finger's old position and throws the camera. */
+        var rest = pointers.values().next().value;
+        lastX = rest.x; lastY = rest.y;
+      }
     }
     function wheel(e) {
       e.preventDefault();

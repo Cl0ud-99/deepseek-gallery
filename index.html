@@ -65,7 +65,7 @@
     border: 1px solid var(--glass-line);
     box-shadow: 0 12px 30px -16px rgba(50,48,42,.38), var(--glass-hi);
   }
-  *{box-sizing:border-box;margin:0;padding:0}
+  *{box-sizing:border-box;margin:0;padding:0; -webkit-touch-callout:none}
   html{background:#ffffff}
   html,body{height:100%; overflow:hidden; color:var(--ink);
     background:
@@ -93,12 +93,14 @@
     opacity:0; transition:opacity .4s ease}
   body.booting .boot{opacity:1}
   .boot-txt{font-size:11px; letter-spacing:.44em; text-transform:uppercase; color:var(--accent); opacity:.85; padding-left:.44em}
-  .boot-bar{width:clamp(120px,13vw,170px); height:2px; border-radius:999px;
-    background:rgba(20,22,28,.12); overflow:hidden}
-  .boot-bar i{display:block; width:38%; height:100%; border-radius:999px;
-    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    animation:bootSlide 1.15s cubic-bezier(.45,0,.55,1) infinite}
-  @keyframes bootSlide{0%{transform:translateX(-105%)}100%{transform:translateX(365%)}}
+  /* 统一加载指示：扁平细圆环（Apple 风） */
+  .ring{width:20px; height:20px; border-radius:50%; flex:none;
+    border:2px solid rgba(20,22,28,.13);
+    border-top-color:rgba(20,22,28,.62);
+    animation:ringSpin .85s linear infinite}
+  body.dark .ring{border-color:rgba(255,255,255,.16); border-top-color:rgba(255,255,255,.82)}
+  .boot{gap:16px}
+  @keyframes ringSpin{to{transform:rotate(360deg)}}
 
   /* 首帧先藏起来，等进场动画接管——否则会先亮一下再消失 */
   body.booting .stage, body.booting .ovbtn{opacity:0}
@@ -125,6 +127,10 @@
     transition:opacity .34s ease}
   body.is-moving .head{opacity:0}      /* 转场时先让位，避免文字压在飞行的卡片上 */
   .eyebrow{font-size:10.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--accent); opacity:.85}
+  /* 品牌字可以点：回到第一件作品 / 总览第一行 */
+  #brandHome{cursor:pointer; pointer-events:auto; display:inline-block; transform-origin:50% 50%}
+  #brandHome:hover{opacity:1}
+  #brandHome:focus-visible{outline:1px solid var(--accent); outline-offset:4px; border-radius:3px}
   .lead{margin-top:12px; font-size:12.5px; color:var(--dim); letter-spacing:.01em; line-height:1.7}
   .lead .cta{color:var(--accent); border-bottom:1px solid rgba(77,107,254,.35); padding-bottom:1px;
     transition:border-color .2s}
@@ -139,9 +145,10 @@
   .title .en{font-size:clamp(13px,1.35vw,19px); font-weight:400; letter-spacing:.32em;
     text-transform:uppercase; line-height:1.5;
     margin-right:-.32em;            /* 抵消最后一个字符右侧的字距，保持视觉居中 */
-    transition:opacity .22s}
+    transition:opacity .6s cubic-bezier(.22,.8,.24,1)}
   .title .cn{display:none}
-  .title.swap .en,.title.swap .cn{opacity:0}
+  /* 换卡：先淡出，等完全看不见再换字，然后慢慢淡入——中间不留半透明的字 */
+  .title.swap .en,.title.swap .cn{opacity:0; transition-duration:.32s}
 
   /* ---------- 横向封面流 ---------- */
   .wrap{flex:1; min-height:0; display:flex; align-items:center; position:relative;
@@ -204,7 +211,7 @@
     user-select:none; -webkit-user-select:none;
   }
   .nav:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:translateY(-50%) scale(var(--hover))}
-  .nav:active{transform:translateY(-50%) scale(.96)}
+  .nav:active{transform:translateY(-50%) scale(1.06)}
   .nav.prev{left:clamp(10px,2.2vw,34px)}
   .nav.next{right:clamp(10px,2.2vw,34px)}
   .nav[disabled]{opacity:.28; pointer-events:none}
@@ -225,7 +232,7 @@
     -webkit-user-select:none; user-select:none;
   }
   .snd:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:scale(var(--hover))}
-  .snd:active{transform:scale(.96)}
+  .snd:active{transform:scale(1.06)}
   .snd .ico{display:block; width:17px; height:17px; opacity:.9}
   .snd .snd-waves, .snd .snd-mute{transition:opacity .16s ease}
   .snd .snd-waves{opacity:0}
@@ -234,17 +241,17 @@
   .snd.on .snd-mute{opacity:0}
   .snd.on{color:var(--accent); border-color:rgba(77,107,254,.55)}
   .snd.on .ico{opacity:1}
-  /* 按钮：按下缩小，松手用轻微过冲回弹 */
+  /* 按钮：按下轻微放大，松手用轻微过冲回弹 */
   .credit,.ghost,.themebtn,.ovbtn,.snd,.vclose,.varrow,.cclose,.vbtn,.nav,.crow{
     transition:transform .24s cubic-bezier(.34,1.56,.64,1),
       color .2s ease, border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
   }
   .credit:active,.ghost:active,.themebtn:active,.ovbtn:active,.snd:active,
   .vclose:active,.varrow:active,.cclose:active,.vbtn:active,.nav:active,.crow:active{
-    transform:scale(.94);
+    transform:scale(1.06);
   }
   /* 左右箭头本身有 translateY(-50%) 垂直居中，上面的通用 scale 会把它顶掉导致下移 */
-  .nav:active{transform:translateY(-50%) scale(.94)}
+  .nav:active{transform:translateY(-50%) scale(1.06)}
 
   /* 进度条：贴在页面最下沿，左右通栏 */
   .bar{position:fixed; left:0; right:0; bottom:0; z-index:8;
@@ -265,6 +272,12 @@
   }
   /* 鲸鱼原生朝左，向右游时要镜像 */
   .bar.fwd i::after{transform:scaleX(-1)}
+  /* 小鲸鱼的拖拽热区：透明、48×46，正好盖住鲸鱼；拖着它翻页 */
+  .bar .grab{position:absolute; left:100%; bottom:-4px; width:48px; height:46px; margin-left:-24px;
+    cursor:grab; touch-action:none; -webkit-tap-highlight-color:transparent}
+  .bar .grab:active{cursor:grabbing}
+  /* 拖动时进度条不要有 220ms 的宽度过渡，否则鲸鱼会追着跑 */
+  body.scrubbing .bar i{transition:none}
 
   /* ---------- 总览按钮 ---------- */
   /* 作者标识：左上角，小云 + 名字 + 邮箱 */
@@ -279,6 +292,11 @@
   }
   .credit:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(var(--hover))}
   .credit svg{display:block; opacity:.9}
+  /* 云朵待机时轻轻浮动；受击/起飞用 WAAPI 作用在按钮上，两者不抢同一个 transform */
+  @keyframes cloudFloat{
+    0%,100%{ transform:translateY(0) }
+    50%{ transform:translateY(-5px) }
+  }
 
   /* 名片：以云朵为圆心展开的半透明遮罩 */
   .cardveil{
@@ -307,6 +325,9 @@
   /* 关闭时文字立即撤掉，只保留圆形擦除动画，避免残留 */
   .cardveil.closing .cardbox{opacity:0!important; transition:none!important}
   .cardbox .bigcloud{opacity:.9}
+  /* 名片里的大云朵：待机浮动挂在外面这层，受击/起飞用 WAAPI 打在 SVG 上，互不抢 transform */
+  .bigcloud-wrap{display:flex; position:relative; top:6px; animation:cloudFloat 3.6s ease-in-out infinite}
+  .cardbox .bigcloud{cursor:pointer; pointer-events:all}   /* SVG 是描边路径，不加 all 只有线条能被点中 */
   .cname{font-size:clamp(24px,3vw,32px); font-weight:500; letter-spacing:-.01em}
   .crole{font-size:12.5px; letter-spacing:.06em; color:rgba(242,243,246,.55); margin-top:-6px}
   .crow{
@@ -375,12 +396,22 @@
     box-shadow:none;
     transition:transform .22s ease;
   }
+  /* 注意：这里不要写 transform:none!important。
+     总览卡片的 transform 在进出动画结束时会被清空，本来就不需要重置；
+     而 !important 会盖掉 WAAPI 的 transform——切换时卡片飞到鼠标下面就会
+     命中 :hover，那张卡会瞬间弹到终点，看起来就是"路径断了、抽一下"。 */
   body.mode-grid .card:hover{
-    transform:none!important; box-shadow:none; z-index:auto;
+    box-shadow:none; z-index:auto;
   }
   body.mode-grid .card:hover img{
     transform:translateY(-2px);
     box-shadow:none;
+  }
+  /* 桌面总览：鼠标移上去，整张卡（缩略图 + 标题）轻轻放大一点；
+     用 scale 而不是 transform，避免和进出总览的 FLIP 抢同一个属性 */
+  @media (hover: hover){
+    body.mode-grid .card:hover{ scale:1.035; z-index:3 }
+    body.mode-grid .card:hover:active{ scale:.995 }
   }
   body.mode-grid .card-inner{gap:5px}
   /* 总览卡片：彻底去掉白色占位/阴影，只保留图片和标题 */
@@ -480,6 +511,8 @@
   .viewer.on{visibility:visible}
   .viewer.on{display:block}
   .viewer.shown{opacity:1}
+  /* 预热态：占着全屏尺寸但不显示、不拦事件，场景可以先把 WebGL 跑起来 */
+  .viewer.warm{display:block; pointer-events:none}
   /* 场景本身是 16:9，用 cover 方式放大居中，横竖屏都不留大片黑边 */
   /* 多数场景是 1280×720 的 16:9 画布居中；iframe 用固定 1280×720，
      再按屏幕 cover 缩放，场景画布本身才会铺满，而不是画布外再套一层黑边 */
@@ -499,8 +532,7 @@
   .vname{font-size:10.5px; letter-spacing:.34em; text-transform:uppercase;
     color:currentColor; opacity:.62; text-align:center; padding:0 24px;
     max-width:min(92vw,560px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-  .dot{width:6px; height:6px; border-radius:50%; background:var(--accent); opacity:.35; animation:pulse 1.25s ease-in-out infinite}
-  @keyframes pulse{0%,100%{opacity:.18; transform:scale(.8)}50%{opacity:.85; transform:scale(1.15)}}
+
   /* 控件全部浮空，没有左右通栏的上下条；场景可以从 iframe 上沿到下沿 */
   .vtitle{
     position:absolute; z-index:5; pointer-events:none; min-width:0;
@@ -535,7 +567,6 @@
     transition:transform .2s, border-color .2s, color .2s;
   }
   .vclose:hover{border-color:rgba(77,107,254,.55); color:var(--accent); transform:scale(var(--hover))}
-  .vclose:active{transform:scale(.94)}
   .toast{
     position:fixed; left:50%; bottom:calc(96px + env(safe-area-inset-bottom));
     transform:translate(-50%,10px); z-index:130;
@@ -582,6 +613,13 @@
     transition:transform .25s, color .25s, border-color .25s;
   }
   .ghost:hover{color:var(--accent); border-color:rgba(77,107,254,.45); transform:scale(var(--hover))}
+  /* 主题按钮挪到左上第二格（原骰子的位置）；骰子挪到右上角、和总览排一起 */
+  .dock .themebtn{
+    position:fixed; top:clamp(14px,2.4vh,26px);
+    left:calc(clamp(14px,2.4vw,30px) + var(--btn-h) + 10px);
+    z-index:20;
+  }
+  .topbar .ghost{position:static; top:auto; left:auto; z-index:auto}
   .card-title{display:none}
   /* 顶栏和参考图一致：总览按钮只留网格图标，不显示文字 */
   #ovLabel{display:none}
@@ -595,9 +633,16 @@
      - 上下毛玻璃边缘只做背景，按钮、鲸鱼进度条永远在上层
      ============================================================ */
 
-  /* 查看器标题：场景底色深浅不一，标题必须自带对比度 */
-  .vtitle{color:#f2f4f8; text-shadow:0 1px 12px rgba(0,0,0,.65)}
+  /* 查看器标题：场景底色深浅不一，按场景自动翻转 —— 亮底黑字、暗底白字 */
+  .vtitle{color:#f2f4f8; text-shadow:0 1px 12px rgba(0,0,0,.65);
+    transition:color .28s ease, text-shadow .28s ease}
   .vtitle .cn{color:rgba(242,244,248,.62)}
+  /* 亮底就只要干净的黑字：之前这里给了一圈 12px 的白色 text-shadow 想"托底"，
+     在浅色背景上看起来就是黑字外面糊了一圈半透明白玻璃。 */
+  .viewer.tone-light .vtitle{color:#14161c; text-shadow:none}
+  .viewer.tone-light .vtitle .cn{color:rgba(20,22,28,.62)}
+  /* 加载页是随主题走的实色，标题先跟着主题，等场景真正露出来再切到场景色 */
+  .viewer.veil-on .vtitle{color:var(--ink); text-shadow:none}
 
   /* 查看器上下栏：iframe 是独立文档，backdrop-filter 取不到场景内容，
      直接用深色半透明渐变，保证在任何场景上都呈现暗玻璃，而不是灰白条 */
@@ -632,11 +677,14 @@
     will-change:transform,opacity; box-shadow:0 30px 90px -18px rgba(0,0,0,.65)}
   .launch img{width:100%; height:100%; object-fit:cover; display:block}
   .launch-title{position:fixed; z-index:121; left:50%; top:50%; transform:translate(-50%,-50%);
+    display:flex; flex-direction:column; align-items:center; gap:18px;
     font-size:clamp(12px,3vw,20px); font-weight:500; letter-spacing:.18em;
     line-height:1.5; text-transform:uppercase; white-space:normal;
     max-width:calc(100vw - 48px); text-align:center;
     padding:0; border:0; border-radius:0; background:none;
     -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:none;}
+  .launch-title .ring{border-color:rgba(255,255,255,.18); border-top-color:rgba(255,255,255,.88)}
+  .launch-title.light .ring{border-color:rgba(20,22,28,.14); border-top-color:rgba(20,22,28,.62)}
   .launch.light .launch-title{background:none; border:0; box-shadow:none;}
   .launch-dim{position:fixed; inset:0; z-index:90; background:rgba(5,6,10,.38); opacity:0;
     pointer-events:none; transition:opacity .28s ease;
@@ -682,7 +730,7 @@
       padding-left:calc(12px + env(safe-area-inset-left));
       padding-right:calc(12px + env(safe-area-inset-right))}
     .dock .credit{position:static; top:auto; left:auto; width:44px; height:44px}
-    .dock .ghost{position:static; top:auto; left:auto; width:44px; height:44px}
+    .dock .themebtn{position:static; top:auto; left:auto; width:44px; height:44px}
     .dock .topbar{position:static; top:auto; right:auto; margin-left:auto; gap:8px}
     .themebtn{width:44px; height:44px}
     .ovbtn{width:44px; height:44px; padding:0}
@@ -708,6 +756,7 @@
     .card.on .card-title{opacity:1}
     /* 手机上加载页用深色，避免 iOS 放大动画收尾时闪白 */
     .veil{background:#05060a; color:#eef0f4}
+    .veil .ring{border-color:rgba(255,255,255,.16); border-top-color:rgba(255,255,255,.84)}
     .vbar.top{padding-top:calc(clamp(13px,2vw,22px) + env(safe-area-inset-top));
       padding-left:calc(clamp(15px,2.4vw,30px) + env(safe-area-inset-left));
       padding-right:calc(clamp(15px,2.4vw,30px) + env(safe-area-inset-right))}
@@ -812,15 +861,23 @@
     .eyebrow{font-size:9px; letter-spacing:.22em; margin-right:-.22em}
   }
 
+  /* 按下：比 hover 再放大一点（必须放在所有 hover 规则之后，否则会被 hover 覆盖） */
+  @media (hover:hover){
+    .credit:active,.ghost:active,.themebtn:active,.ovbtn:active,.snd:active,
+    .vclose:active{transform:scale(1.15)}
+    .nav:active{transform:translateY(-50%) scale(1.15)}
+  }
   /* 触摸设备：:hover 会粘住，全部收掉；用 :active 给触感 */
   @media (hover:none){
     /* 横屏也用 JS 吸附：原生 x snap 会和入场对中/可视高度变化互相抢，导致卡片来回跳 */
     body:not(.mode-vertical):not(.mode-grid) .track{scroll-snap-type:none}
     .nav:hover,.snd:hover,.credit:hover,.themebtn:hover,.ovbtn:hover,.ghost:hover{transform:none}
-    body.mode-grid .card:hover{transform:none!important; box-shadow:none}
+    body.mode-grid .card:hover{box-shadow:none}
     body.mode-grid .card:hover img{transform:none}
     .card.on:hover .hint{opacity:0}
-    .snd:active,.credit:active,.themebtn:active,.ovbtn:active,.varrow:active,.ghost:active{transform:scale(.94)}
+    .snd:active,.credit:active,.themebtn:active,.ovbtn:active,.varrow:active,.ghost:active,
+    .vbtn:active,.vclose:active,.cclose:active,.crow:active{transform:scale(1.06)}
+    .nav:active{transform:translateY(-50%) scale(1.06)}
   }
 </style>
 </head>
@@ -830,26 +887,26 @@
 
 <div class="boot">
   <div class="boot-txt">Loading</div>
-  <div class="boot-bar"><i></i></div>
+  <div class="ring"></div>
 </div>
 
 <div class="stage">
   <div class="edge top" aria-hidden="true"></div>
   <div class="edge bottom" aria-hidden="true"></div>
   <header class="head">
-    <div class="eyebrow">DeepSeek Gallery</div>
+    <div class="eyebrow" id="brandHome" role="button" tabindex="0" title="Back to the first work">DeepSeek Gallery</div>
   </header>
 
   <div class="dock">
     <button class="credit" id="creditBtn" aria-label="About Cloud99" title="Cloud99">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 18.5h10.1a3.6 3.6 0 0 0 .3-7.2 5.1 5.1 0 0 0-9.8-1.2 3.9 3.9 0 0 0-.6 8.4z"/></svg>
     </button>
-    <button class="ghost" id="ghostBtn" type="button" aria-label="Upload" title="Upload">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg>
-    </button>
-    <div class="topbar">
     <button class="themebtn" id="themeBtn" aria-label="Toggle theme" title="Dark mode">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.6A8.6 8.6 0 1 1 9.4 3.8a7 7 0 0 0 10.8 10.8z"/></svg>
+    </button>
+    <div class="topbar">
+    <button class="ghost" id="ghostBtn" type="button" aria-label="Random work" title="Random work">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.6" y="3.6" width="16.8" height="16.8" rx="4.4"/><circle cx="8.4" cy="8.4" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.6" cy="15.6" r="1.15" fill="currentColor" stroke="none"/></svg>
     </button>
     <button class="ovbtn" id="ovBtn" aria-label="Show all works">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -866,7 +923,7 @@
     <button class="nav next" id="navNext" aria-label="下一件">›</button>
   </div>
 
-  <div class="bar"><i id="bar"></i></div>
+  <div class="bar"><i id="bar"><b class="grab" id="barGrab" aria-label="Drag to browse"></b></i></div>
 
   <div class="caption">
     <div class="title" id="title">
@@ -880,7 +937,7 @@
 <div class="cardveil" id="cardveil" aria-hidden="true">
   <div class="cardwipe" id="cardwipe"></div>
   <div class="cardbox" role="dialog" aria-label="Cloud99">
-    <svg class="bigcloud" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 18.5h10.1a3.6 3.6 0 0 0 .3-7.2 5.1 5.1 0 0 0-9.8-1.2 3.9 3.9 0 0 0-.6 8.4z"/></svg>
+    <span class="bigcloud-wrap"><svg class="bigcloud" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 18.5h10.1a3.6 3.6 0 0 0 .3-7.2 5.1 5.1 0 0 0-9.8-1.2 3.9 3.9 0 0 0-.6 8.4z"/></svg></span>
     <div class="cname">Cloud99</div>
     <div class="crole">WebGL · Three.js · procedural dioramas</div>
     <a class="crow" href="https://github.com/Cl0ud-99/deepseek-gallery" target="_blank" rel="noopener">
@@ -889,15 +946,15 @@
     <a class="crow" href="mailto:cloud990725@gmail.com">
       <span class="ck">Email</span><span class="cv">cloud990725@gmail.com</span>
     </a>
-    <a class="crow" href="https://github.com/Cl0ud-99/deepseek-gallery/issues/new" target="_blank" rel="noopener">
-      <span class="ck">Issue</span><span class="cv">Submit a scene</span>
+    <a class="crow" href="https://t.me/Cl0ud_99" target="_blank" rel="noopener">
+      <span class="ck">Telegram</span><span class="cv">@Cl0ud_99</span>
     </a>
     <button class="cclose" id="cclose">Close</button>
   </div>
 </div>
 
 <div class="viewer" id="viewer">
-  <div class="veil" id="veil"><div class="vname" id="vname"></div><div class="dot"></div></div>
+  <div class="veil" id="veil"><div class="vname" id="vname"></div><div class="ring"></div></div>
   <iframe id="frame" title="scene"></iframe>
   <div class="vtitle"><div class="en" id="vEn"></div><div class="cn" id="vCn"></div></div>
   <button class="vclose" id="vClose" aria-label="Back to gallery" title="Back to gallery">
@@ -942,31 +999,40 @@
 </script>
 <script>
 var WORKS = [
+  {id:"A30",en:"Wandering Earth — Planetary Engine",cn:"流浪地球 · 行星发动机"},
   {id:"A07",en:"FBC Quarry 07",cn:"倒悬巨构采石场"},
   {id:"A12",en:"Stutter Lab",cn:"时间断裂实验舱"},
+  {id:"A25",en:"Las Vegas — Sunset Boulevard",cn:"拉斯维加斯 · 日落大道"},
   {id:"A15",en:"Qipao Diorama",cn:"1936 上海 · 旗袍与留声"},
+  {id:"A28",en:"Arrival",cn:"降临 · 山谷营地"},
   {id:"A04",en:"Autumn Farm",cn:"秋日农场"},
   {id:"A11",en:"Lunar Outpost",cn:"月球前哨站"},
   {id:"A08",en:"Redshift Archive",cn:"悬浮档案大厅"},
   {id:"A03",en:"Aurora Hourglass",cn:"极光星海 · 倒置沙漏天文台"},
+  {id:"A27",en:"Corner Cat Café",cn:"晴日午后的街角猫咖"},
   {id:"A06",en:"Cloud Post Office",cn:"云端蒸汽飞艇邮政局"},
   {id:"A19",en:"Hawkins / Upside Down",cn:"怪奇物语 · 双世界镜像"},
+  {id:"A32",en:"Independence Day — Area 51",cn:"独立日 · 51 区"},
   {id:"A20",en:"Moonlit Perfume Atelier",cn:"月光琉璃花灵香水工坊 · 白天"},
   {id:"A10",en:"The Lighthouse",cn:"灯塔"},
+  {id:"A29",en:"Orbital Station",cn:"深空轨道空间站"},
   {id:"A13",en:"Mori Mart",cn:"萤火雨夜便利店"},
   {id:"A01",en:"Black Lodge",cn:"双峰 · 黑色旅舍"},
   {id:"A14",en:"Polar Icebreaker",cn:"极地科考破冰船"},
+  {id:"A26",en:"Tulou Reunion Night",cn:"客家土楼 · 团圆夜"},
   {id:"A21",en:"Ice-Fire Mine Station",cn:"冰火交融 · 矿山街角驿站"},
   {id:"A05",en:"Cliff Lighthouse Café",cn:"海崖灯塔咖啡馆"},
   {id:"A17",en:"The Red Room",cn:"双峰 · 红房间"},
   {id:"A02",en:"Ashtray Maze",cn:"烟灰缸迷宫"},
+  {id:"A24",en:"Jiangnan Garden",cn:"江南荷风 · 园林水榭"},
   {id:"A09",en:"Grand Hotel",cn:"阿尔卑斯缆车站酒店"},
   {id:"A16",en:"Route 66 Diner",cn:"66 号公路复古餐厅"},
   {id:"A18",en:"Sunset Dream Loom",cn:"晚霞织梦染坊"},
   {id:"A22",en:"Floating Lava Glacier",cn:"浮空熔岩 · 冰川断崖箱庭"},
-  {id:"A23",en:"Summer Night Carnival",cn:"夏夜游乐园 · 掌上八音盒"}
+  {id:"A31",en:"Lakeside Shrine — Gaius",cn:"湖畔祭坛 · 盖乌斯"},
+  {id:"A23",en:"Summer Night Carnival",cn:"夏夜游乐园 · 掌上八音盒"},
 ];
-var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"_extracted/a04-autumn-farm/index.html","A05":"_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"_extracted/a13-mori-mart/mori-mart/index.html","A14":"_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"_extracted/a16-route66-diner/route66-diner/index.html","A17":"_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html","A22":"_extracted/a22-floating-lava-glacier/index.html","A23":"_extracted/a23-carnival/carnival-miniature/carnival.html"};
+var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"_extracted/a04-autumn-farm/index.html","A05":"_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"_extracted/a13-mori-mart/mori-mart/index.html","A14":"_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"_extracted/a16-route66-diner/route66-diner/index.html","A17":"_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html","A22":"_extracted/a22-floating-lava-glacier/index.html","A23":"_extracted/a23-carnival/carnival-miniature/carnival.html","A24":"_extracted/a24-jiangnan-garden/jiangnan-garden/index.html","A25":"_extracted/a25-las-vegas/las-vegas-diorama/index.html","A26":"_extracted/a26-tulou/tulou/index.html","A27":"_extracted/a27-cat-cafe/cat-cafe/index.html","A28":"_extracted/a28-arrival/arrival/index.html","A29":"_extracted/a29-orbital-station/orbital-station/index.html","A30":"_extracted/a30-wandering-earth/wandering-earth/index.html","A31":"_extracted/a31-shadow-colossus/shadow-colossus/index.html","A32":"_extracted/a32-area51/area51/index.html"};
 
 var track = document.getElementById('track');
 var cards = [];
@@ -1085,17 +1151,29 @@ function layout() {
     document.querySelector('.bar').classList.toggle('fwd', best > barPos);
   }
   barPos = best;
+  schedulePrewarm(cards[best].w.id);
 }
 
+var titleSwapTimer = 0;
 function setCurrent(i) {
   current = i;
   var t = document.getElementById('title');
-  t.classList.add('swap');
-  setTimeout(function () {
-    document.getElementById('tEn').textContent = cards[i].w.en;
-    document.getElementById('tCn').textContent = cards[i].w.cn;
+  var en = document.getElementById('tEn'), cn = document.getElementById('tCn');
+  var w = cards[i].w;
+  /* 连续换卡时只保留最后一次：先淡出，等淡出走完再换字、再淡入。
+     淡出 320ms、淡入 600ms；定时器 360ms 比淡出多一点余量——transition 要等下一帧
+     才开始，留足余量才能保证换字那一刻是真的透明。 */
+  clearTimeout(titleSwapTimer);
+  if (en.textContent === w.en && cn.textContent === w.cn) {
     t.classList.remove('swap');
-  }, 140);
+    return;
+  }
+  t.classList.add('swap');
+  titleSwapTimer = setTimeout(function () {
+    en.textContent = w.en;
+    cn.textContent = w.cn;
+    t.classList.remove('swap');
+  }, 360);
 }
 
 function nearestIndex() {
@@ -1423,12 +1501,179 @@ document.addEventListener('keydown', function (e) {
   if (e.key === prevKey) { e.preventDefault(); center(Math.max(nearestIndex() - 1, 0)); }
 });
 
+/* ---------- 随机看一件 ----------
+   卡片列表来自 WORKS，以后新增的作品自动进池子，不用改这里。
+   打开过的作品不排除，只是降权：没看过权重 5、看过 1 —— 大约 83% 会落到没看过的；
+   权重是现算的，新作品一进来就是"没看过"，天然占优势。 */
+var SEEN_KEY = 'gallery-seen';
+function seenList() {
+  try {
+    var a = JSON.parse(localStorage.getItem(SEEN_KEY) || '[]');
+    return Object.prototype.toString.call(a) === '[object Array]' ? a : [];
+  } catch (e) { return []; }
+}
+function markSeen(id) {
+  var a = seenList();
+  if (a.indexOf(id) >= 0) return;
+  a.push(id);
+  try { localStorage.setItem(SEEN_KEY, JSON.stringify(a)); } catch (e) {}
+}
+function pickRandomWork() {
+  var seen = seenList();
+  var here = current >= 0 ? current : nearestIndex();
+  var entries = [], total = 0;
+  for (var i = 0; i < cards.length; i++) {
+    if (i === here) continue;                       // 不抽当前这张
+    var w = seen.indexOf(cards[i].w.id) >= 0 ? 1 : 5;   // 看过降权
+    entries.push({ i: i, w: w });
+    total += w;
+  }
+  if (!total) return null;
+  /* 加权抽签：在总权重上取一个随机点，看落在哪一段 */
+  var r = Math.random() * total, acc = 0;
+  for (var k = 0; k < entries.length; k++) {
+    acc += entries[k].w;
+    if (r <= acc) return { i: entries[k].i };
+  }
+  return { i: entries[entries.length - 1].i };
+}
+document.getElementById('ghostBtn').addEventListener('click', function () {
+  if (transitioning || performance.now() < settleAt) return;   // 转场中不抢
+  var r = pickRandomWork();
+  if (!r) return;
+  if (overview) {
+    setMode(false, r.i);             // 总览里点：直接退出总览并落在抽到的那件
+  } else {
+    /* 不管抽到多远都滑过去：之前按距离分了两套（近的滑、远的瞬移），
+       随机大概率落在 2 张以外，所以经常"没有动画"、偶尔才有，观感不一致。 */
+    center(r.i);
+  }
+});
+
+/* ---------- 品牌字：点一下回到开头 ----------
+   卡片流里回到第 1 件；总览里滚回第一行。 */
+function goHome() {
+  if (document.getElementById('viewer').classList.contains('on')) return;
+  if (overview) {
+    try { track.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); }
+    catch (e) { track.scrollTop = 0; }
+    return;
+  }
+  center(0);
+}
+var brandHome = document.getElementById('brandHome');
+function brandTap() {
+  if (reduce || !brandHome) return;
+  try {
+    brandHome.animate([
+      { transform: 'scale(1)' },
+      { transform: 'scale(1.09)', offset: .38 },
+      { transform: 'scale(.985)', offset: .74 },
+      { transform: 'scale(1)' }
+    ], { duration: 280, easing: 'cubic-bezier(.3,.7,.4,1)' });
+  } catch (e) {}
+}
+if (brandHome) {
+  brandHome.addEventListener('click', function () { brandTap(); goHome(); });
+  brandHome.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); brandTap(); goHome(); }
+  });
+}
+
+/* ---------- 拖小鲸鱼：横向拖动翻页 ----------
+   鲸鱼的热区在进度条填充的右端（.grab），拖动时直接跳卡片，松手吸附到最近一张。 */
+var barTrack = document.querySelector('.bar');
+var barGrab = document.getElementById('barGrab');
+var barDrag = null;
+
+function barIndexAt(x) {
+  var r = barTrack.getBoundingClientRect();
+  var p = (x - r.left) / Math.max(1, r.width);
+  p = Math.max(0, Math.min(1, p));
+  return Math.round(p * (cards.length - 1));
+}
+
+if (barGrab) {
+  barGrab.addEventListener('pointerdown', function (e) {
+    if (e.button !== undefined && e.button !== 0) return;
+    e.preventDefault();
+    barDrag = { id: e.pointerId, x0: e.clientX, moved: false, index: -1 };
+    try { barGrab.setPointerCapture(e.pointerId); } catch (x) {}
+    document.body.classList.add('scrubbing');
+    track.style.scrollSnapType = 'none';
+  });
+
+  barGrab.addEventListener('pointermove', function (e) {
+    if (!barDrag || e.pointerId !== barDrag.id) return;
+    if (Math.abs(e.clientX - barDrag.x0) > 3) barDrag.moved = true;
+    if (!barDrag.moved) return;
+    var i = barIndexAt(e.clientX);
+    if (i === barDrag.index) return;
+    barDrag.index = i;
+    jumpTo(i);
+    current = -1;
+    layout();
+  });
+
+  function barDragEnd(e) {
+    if (!barDrag) return;
+    var moved = barDrag.moved, idx = barDrag.index;
+    barDrag = null;
+    document.body.classList.remove('scrubbing');
+    try { barGrab.releasePointerCapture(e.pointerId); } catch (x) {}
+    if (moved && idx >= 0) center(idx);      // 松手吸附
+    else track.style.scrollSnapType = '';
+  }
+  barGrab.addEventListener('pointerup', barDragEnd);
+  barGrab.addEventListener('pointercancel', barDragEnd);
+}
+
 /* ---------- 进入 / 退出 ---------- */
 var viewer = document.getElementById('viewer');
 var frame = document.getElementById('frame');
 var veil = document.getElementById('veil');
 var vIndex = 0;
 var openedFromGrid = false;   // 是从总览点开的吗
+
+/* ---------- 预热：空闲时先把当前这张的场景在隐藏的 viewer 里跑起来 ---------- */
+var warmId = '', warmReady = false, warmTimer = 0;
+function schedulePrewarm(id) {
+  if (!id || !SRC[id]) return;
+  if (viewer.classList.contains('on')) return;
+  if (warmId === id && warmReady) return;
+  clearTimeout(warmTimer);
+  warmTimer = setTimeout(function () { startPrewarm(id); }, 1100);
+}
+function startPrewarm(id) {
+  if (!id || !SRC[id] || viewer.classList.contains('on')) return;
+  if (warmId === id && warmReady) return;
+  warmId = id; warmReady = false;
+  viewer.classList.add('warm');
+  frame.onload = function () {
+    if (warmId !== id) return;
+    warmReady = true;
+    lockSceneLongPress();
+  };
+  frame.src = SRC[id];
+}
+
+function onSceneLoaded(launchDone) {
+  lockSceneLongPress();
+  setTimeout(function () {
+    if (launchDone) {
+      /* 场景已就绪，加载页直接撤掉（不要和克隆层交叉淡出，否则会透出底色） */
+      veil.style.transition = 'none';
+      veil.classList.add('off');
+      viewer.classList.remove('veil-on');   // 场景已在克隆层下面，立刻交给场景色
+      setTimeout(launchDone, 80);
+    } else {
+      veil.classList.add('off');
+      /* 等淡出走到大半再换色，避免黑字/白字在浅色加载页上闪一下 */
+      setTimeout(function () { viewer.classList.remove('veil-on'); }, 380);
+    }
+  }, 240);
+  if (soundOn) setTimeout(applySoundToScene, 600);   // 场景就绪后再尝试起声
+}
 
 function open(id) {
   var i = WORKS.findIndex(function (x) { return x.id === id; });
@@ -1437,6 +1682,7 @@ function open(id) {
     console.warn('[diorama] 缺少源码路径：', id);
     return;
   }
+  markSeen(id);                         // 打开过就算看过，随机时跳过
   var wasOpen = viewer.classList.contains('on');
   vIndex = i;
   openedFromGrid = overview;
@@ -1446,22 +1692,23 @@ function open(id) {
   paintViewer();
   veil.style.transition = '';
   veil.classList.remove('off');
+  /* 手机是从卡片图放大进来的，那一帧的背景就是卡片图本身，直接按场景色走；
+     桌面/减弱动效时加载页是主题实色，先跟主题，等场景露出来再切。 */
+  if (!launchDone) viewer.classList.add('veil-on');
+  var warmHit = (!wasOpen && warmId === id && warmReady);
+  viewer.classList.remove('warm');
   viewer.classList.add('on');
   requestAnimationFrame(function () { viewer.classList.add('shown'); });
-  frame.src = SRC[id];
-  frame.onload = function () {
-    setTimeout(function () {
-      if (launchDone) {
-        /* 场景已就绪，加载页直接撤掉（不要和克隆层交叉淡出，否则会透出底色） */
-        veil.style.transition = 'none';
-        veil.classList.add('off');
-        setTimeout(launchDone, 80);
-      } else {
-        veil.classList.add('off');
-      }
-    }, 240);
-    if (soundOn) setTimeout(applySoundToScene, 600);   // 场景就绪后再尝试起声
-  };
+  if (warmHit) {
+    /* 预热过的场景已经在隐藏的 iframe 里跑起来了：直接交棒，不再重新加载 */
+    warmId = ''; warmReady = false;
+    frame.onload = null;
+    requestAnimationFrame(function () { onSceneLoaded(launchDone); });
+  } else {
+    warmId = ''; warmReady = false;
+    frame.onload = function () { onSceneLoaded(launchDone); };
+    frame.src = SRC[id];
+  }
   if (launchDone) setTimeout(launchDone, 4200);   // 兜底：场景迟迟不全也不一直挡着
   if (history.replaceState) history.replaceState(null, '', '#' + id);
 }
@@ -1507,7 +1754,12 @@ function launchFromCard(cardEl) {
   if (light) clone.classList.add('light');
   var launchTitle = document.createElement('div');
   launchTitle.className = 'launch-title';
-  launchTitle.textContent = titleText;
+  var launchLabel = document.createElement('span');
+  launchLabel.textContent = titleText;
+  var launchRing = document.createElement('span');
+  launchRing.className = 'ring';
+  launchTitle.appendChild(launchLabel);
+  launchTitle.appendChild(launchRing);
   launchTitle.style.color = light ? '#171a21' : '#ffffff';
   if (light) launchTitle.classList.add('light');
   document.body.appendChild(launchTitle);
@@ -1558,11 +1810,77 @@ function launchFromCard(cardEl) {
   };
 }
 
+/* ---------- 场景内标题：亮底黑字、暗底白字 ----------
+   读不到 iframe 里的 WebGL 像素（preserveDrawingBuffer 关着），
+   所以用卡片上那张同源的墙面图，量它顶部一条的亮度来定方案。 */
+var toneCache = {};
+function cardImageOf(id) {
+  for (var i = 0; i < cards.length; i++) {
+    if (cards[i].w.id === id) return cards[i].el.querySelector('img');
+  }
+  return null;
+}
+function measureTone(img) {
+  try {
+    var c = document.createElement('canvas');
+    c.width = 64; c.height = 8;
+    var x = c.getContext('2d');
+    var sh = Math.max(1, Math.round(img.naturalHeight * 0.12));   // 标题所在的那一条
+    x.drawImage(img, 0, 0, img.naturalWidth, sh, 0, 0, 64, 8);
+    var d = x.getImageData(0, 0, 64, 8).data, sum = 0;
+    for (var i = 0; i < d.length; i += 4) {
+      sum += 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
+    }
+    return sum / (d.length / 4) / 255;
+  } catch (e) { return 0; }
+}
+function paintTitleTone(id) {
+  var tone = toneCache[id];
+  if (tone === undefined) {
+    toneCache[id] = null;                 // 占位：墙面图还在路上
+    var img = cardImageOf(id);
+    if (img && img.complete && img.naturalWidth) {
+      tone = toneCache[id] = measureTone(img);
+    } else {
+      var im = new Image();
+      im.onload = function () {
+        toneCache[id] = measureTone(im);
+        if (viewer.classList.contains('on') && WORKS[vIndex] && WORKS[vIndex].id === id) paintTitleTone(id);
+      };
+      im.src = previewSrc(id);
+      tone = null;
+    }
+  }
+  var light = typeof tone === 'number' && tone > 0.5;
+  viewer.classList.toggle('tone-light', light);
+  viewer.classList.toggle('tone-dark', !light);
+}
+
+/* 场景是 same-origin 的，直接把长按屏蔽写进它的文档：
+   禁系统 callout、禁选中、禁右键菜单。场景自己的交互不受影响。 */
+function lockSceneLongPress() {
+  try {
+    var d = frame.contentDocument;
+    if (!d) return;
+    if (d.documentElement) d.documentElement.style.webkitTouchCallout = 'none';
+    if (d.body) {
+      d.body.style.webkitTouchCallout = 'none';
+      d.body.style.webkitUserSelect = 'none';
+      d.body.style.userSelect = 'none';
+    }
+    if (!d.__longPressLocked) {
+      d.__longPressLocked = true;
+      d.addEventListener('contextmenu', function (e) { e.preventDefault(); }, { passive: false });
+    }
+  } catch (e) {}
+}
+
 function paintViewer() {
   var w = WORKS[vIndex];
   document.getElementById('vEn').textContent = w.en;
   document.getElementById('vname').textContent = w.en;
   document.getElementById('vCn').textContent = w.cn;
+  paintTitleTone(w.id);
   syncSceneCover();
 }
 
@@ -1605,6 +1923,8 @@ function closeViewer() {
       layout();
     }
     openedFromGrid = false;
+    /* 回到展厅后，等停稳再把这一件的场景预热起来 */
+    setTimeout(function () { schedulePrewarm(WORKS[backTo].id); }, 1200);
   }, 400);
 }
 
@@ -2143,6 +2463,7 @@ paintSound();
 var cardveil = document.getElementById('cardveil');
 
 function openCard() {
+  bigCloudRestore();
   var btn = document.getElementById('creditBtn');
   var r = btn.getBoundingClientRect();
   var vr = cardveil.getBoundingClientRect();
@@ -2161,6 +2482,7 @@ function openCard() {
 }
 
 function closeCard() {
+  bigCloudRestore();
   cardveil.classList.add('closing');
   cardveil.classList.remove('open');
   setTimeout(function () {
@@ -2168,6 +2490,95 @@ function closeCard() {
     cardveil.classList.remove('on');
     cardveil.classList.remove('closing');
   }, 620);
+}
+
+/* ---------- 名片里的大云朵：待机浮动 / 受击 / 连点五下飘走 ----------
+   待机浮动是 CSS 动画，挂在 .bigcloud-wrap 上；
+   受击和起飞是 WAAPI，打在 <svg class="bigcloud"> 上，两者不抢同一个 transform。 */
+var bigCloud = document.querySelector('.cardbox .bigcloud');
+var bigHits = 0, bigHitTimer = 0, bigFlyTimer = 0, bigBackTimer = 0, bigFlying = false, bigAnim = null;
+
+function bigCloudHit() {
+  if (!bigCloud) return;
+  try {
+    if (bigCloud.__hit) bigCloud.__hit.cancel();
+    bigCloud.__hit = bigCloud.animate([
+      { transform: 'scale(1,1)' },
+      { transform: 'scale(.82,.7) translateY(2px)', offset: .35 },
+      { transform: 'scale(1.1,1.12)', offset: .7 },
+      { transform: 'scale(1,1)' }
+    ], { duration: 330, easing: 'cubic-bezier(.3,.7,.4,1)' });
+  } catch (e) {}
+}
+
+function bigCloudRestore() {
+  if (!bigCloud) return;
+  clearTimeout(bigHitTimer); clearTimeout(bigFlyTimer); clearTimeout(bigBackTimer);
+  if (bigAnim) { try { bigAnim.cancel(); } catch (e) {} bigAnim = null; }
+  bigFlying = false; bigHits = 0;
+  bigCloud.style.pointerEvents = '';
+}
+
+function bigCloudReturn() {
+  if (!bigCloud) return;
+  var dx = (Math.random() - .5) * 140;
+  try {
+    if (reduce) {
+      if (bigAnim) { bigAnim.cancel(); bigAnim = null; }
+      var fin = bigCloud.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300 });
+      fin.onfinish = function () { fin.cancel(); bigCloudRestore(); };
+      return;
+    }
+    var back = bigCloud.animate([
+      { transform: 'translate(' + dx.toFixed(1) + 'px,' + (-window.innerHeight) + 'px) rotate(' + ((Math.random() - .5) * 24).toFixed(1) + 'deg)', opacity: 0 },
+      { transform: 'translate(0px,0px) rotate(0deg)', opacity: 1 }
+    ], { duration: 1300, easing: 'cubic-bezier(.2,.7,.3,1)' });
+    if (bigAnim) { bigAnim.cancel(); bigAnim = null; }
+    back.onfinish = function () { back.cancel(); bigCloudRestore(); };
+  } catch (e) { bigCloudRestore(); }
+}
+
+function bigCloudFly() {
+  if (!bigCloud) return;
+  var rc = bigCloud.getBoundingClientRect();
+  var cy = rc.top + rc.height / 2;
+  var w = window.innerWidth, h = window.innerHeight;
+  var dx1 = (Math.random() - .5) * w * .45;
+  var dx2 = (Math.random() - .5) * w * .9;
+  var r1 = (Math.random() - .5) * 40;
+  var rot = (Math.random() < .5 ? -1 : 1) * (130 + Math.random() * 170);
+  var dur = 1300 + Math.random() * 600;
+  bigCloud.style.pointerEvents = 'none';
+  try {
+    if (reduce) {
+      bigAnim = bigCloud.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, fill: 'forwards' });
+      bigAnim.onfinish = function () { bigBackTimer = setTimeout(bigCloudReturn, 2200); };
+      return;
+    }
+    bigAnim = bigCloud.animate([
+      { transform: 'translate(0px,0px) rotate(0deg)', opacity: 1, offset: 0 },
+      { transform: 'translate(' + dx1.toFixed(1) + 'px,' + (-h * .3).toFixed(1) + 'px) rotate(' + r1.toFixed(1) + 'deg)', opacity: 1, offset: .45 },
+      { transform: 'translate(' + dx2.toFixed(1) + 'px,' + (-(cy + 140)).toFixed(1) + 'px) rotate(' + rot.toFixed(1) + 'deg)', opacity: .85, offset: 1 }
+    ], { duration: dur, easing: 'cubic-bezier(.38,.12,.62,1)', fill: 'forwards' });
+    bigAnim.onfinish = function () { bigBackTimer = setTimeout(bigCloudReturn, 3000); };
+  } catch (e) { bigCloudReturn(); }
+}
+
+if (bigCloud) {
+  bigCloud.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (bigFlying) return;
+    bigHits++;
+    bigCloudHit();
+    clearTimeout(bigHitTimer);
+    if (bigHits >= 5) {                 // 五连点：起飞
+      bigHits = 0;
+      bigFlying = true;
+      bigFlyTimer = setTimeout(bigCloudFly, 170);
+      return;
+    }
+    bigHitTimer = setTimeout(function () { bigHits = 0; }, 900);   // 0.9 秒不点就重新计数
+  });
 }
 
 document.getElementById('creditBtn').addEventListener('click', openCard);
@@ -2223,6 +2634,52 @@ document.addEventListener('dblclick', function (e) {
   if (e.target && /input|textarea/i.test(e.target.tagName)) return;
   e.preventDefault();
 }, { passive: false });
+
+/* ---------- 长按：不弹系统菜单，也不当成一次点击 ----------
+   系统菜单由 CSS 的 -webkit-touch-callout 关掉；这里补两件事：
+   1) 长按后松手浏览器仍会补发一次 click，吞掉它，避免长按误开作品；
+   2) 场景 iframe 是同源文档，把同样的规则写进去（见 lockSceneLongPress）。 */
+var lpTimer = 0, lpFired = false, lpUntil = 0, lpX = 0, lpY = 0;
+document.addEventListener('touchstart', function (e) {
+  clearTimeout(lpTimer);
+  if (e.touches.length !== 1) { lpFired = false; return; }
+  var t = e.touches[0];
+  lpX = t.clientX; lpY = t.clientY; lpFired = false;
+  lpTimer = setTimeout(function () {
+    lpFired = true;
+    lpUntil = performance.now() + 900;   // 长按松手后的那次 click 落在这个窗口里
+  }, 500);
+}, { passive: true });
+document.addEventListener('touchmove', function (e) {
+  if (lpFired || e.touches.length !== 1) return;
+  var t = e.touches[0];
+  /* 手指挪动超过 10px 就算滑动，不是长按 */
+  if (Math.abs(t.clientX - lpX) > 10 || Math.abs(t.clientY - lpY) > 10) clearTimeout(lpTimer);
+}, { passive: true });
+document.addEventListener('touchend', function () { clearTimeout(lpTimer); }, { passive: true });
+document.addEventListener('touchcancel', function () { clearTimeout(lpTimer); lpFired = false; }, { passive: true });
+document.addEventListener('click', function (e) {
+  if (!lpFired || performance.now() > lpUntil) { lpFired = false; return; }
+  lpFired = false;
+  if (e.target && /input|textarea/i.test(e.target.tagName)) return;
+  e.preventDefault();
+  e.stopPropagation();
+}, true);
+
+/* ---------- 控制台彩蛋 ----------
+   只给会打开 DevTools 的人看：一只鲸鱼、一句问候、仓库地址。
+   作品数用 WORKS.length 现算，以后加作品这行也不会过期。 */
+(function () {
+  try {
+    console.log('%c🐋', 'font-size:56px;line-height:1.1;');
+    console.log('%cDEEPSEEK GALLERY',
+      'font:600 18px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#4d6bfe;letter-spacing:.22em;');
+    console.log('%c' + WORKS.length + ' worlds, every pixel computed in the browser.\n' +
+      'You found the whale — it rides the progress bar.\n' +
+      'github.com/Cl0ud-99/deepseek-gallery',
+      'font:12px/1.8 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#8a92a6;');
+  } catch (e) {}
+})();
 
 /* ---------- 启动 ---------- */
 /* 进场：整个展廊淡入放大，卡片按离中心的距离依次浮现 */
