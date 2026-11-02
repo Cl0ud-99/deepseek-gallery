@@ -2922,6 +2922,20 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
   let previousY = 0;
   let pinchStartDistance = 0;
   let pinchStartRadius = orbit.targetRadius;
+  let panCX = null, panCY = null;
+  const _panR = new THREE.Vector3(), _panU = new THREE.Vector3();
+  /* 双指拖动 = 平移场景 */
+  function panScene(dx, dy) {
+    const h = canvas.clientHeight || window.innerHeight || 1;
+    const wpp = 2 * orbit.radius * Math.tan((camera.fov * Math.PI) / 360) / h;
+    _panR.setFromMatrixColumn(camera.matrix, 0);
+    _panU.setFromMatrixColumn(camera.matrix, 1);
+    orbitTarget.addScaledVector(_panR, -dx * wpp);
+    orbitTarget.addScaledVector(_panU, dy * wpp);
+    orbitTarget.x = clamp(orbitTarget.x, -8, 8);
+    orbitTarget.y = clamp(orbitTarget.y, 0, 12);
+    orbitTarget.z = clamp(orbitTarget.z, -8, 8);
+  }
 
   function pointerDistance() {
     const values = [...pointers.values()];
@@ -2940,6 +2954,9 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
     } else if (pointers.size === 2) {
       pinchStartDistance = pointerDistance();
       pinchStartRadius = orbit.targetRadius;
+      const values = [...pointers.values()];
+      panCX = (values[0].x + values[1].x) / 2;
+      panCY = (values[0].y + values[1].y) / 2;
     }
   });
 
@@ -2947,7 +2964,11 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
     if (!pointers.has(event.pointerId)) return;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointers.size === 2) {
+      const values = [...pointers.values()];
       const distance = pointerDistance();
+      const cx = (values[0].x + values[1].x) / 2, cy = (values[0].y + values[1].y) / 2;
+      if (panCX !== null) panScene(cx - panCX, cy - panCY);
+      panCX = cx; panCY = cy;
       if (pinchStartDistance > 0) {
         orbit.targetRadius = clamp(pinchStartRadius * (pinchStartDistance / Math.max(distance, 1)), 12, 38);
         userAdjustedDistance = true;
@@ -2974,7 +2995,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
         previousY = next.y;
       }
     }
-    if (pointers.size < 2) pinchStartDistance = 0;
+    if (pointers.size < 2) { pinchStartDistance = 0; panCX = null; panCY = null; }
     if (pointers.size === 0) canvas.classList.remove("is-dragging");
   }
 

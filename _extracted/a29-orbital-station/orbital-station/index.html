@@ -2267,6 +2267,20 @@ const CAM_MIN = fitRadius * 0.52;
 const CAM_MAX = fitRadius * 2.5;
 let lastInteraction = -6;
 let pinchLast = 0;
+let panCX = null, panCY = null;
+const _panR = new THREE.Vector3(), _panU = new THREE.Vector3();
+/* 双指拖动 = 平移场景 */
+function panByPixels(dx, dy) {
+  const h = canvasEl.clientHeight || window.innerHeight || 1;
+  const wpp = 2 * orbit.radius * Math.tan((camera.fov * Math.PI) / 360) / h;
+  _panR.setFromMatrixColumn(camera.matrix, 0);
+  _panU.setFromMatrixColumn(camera.matrix, 1);
+  camTarget.addScaledVector(_panR, -dx * wpp);
+  camTarget.addScaledVector(_panU, dy * wpp);
+  camTarget.x = Math.max(-7, Math.min(7, camTarget.x));
+  camTarget.y = Math.max(-1, Math.min(6, camTarget.y));
+  camTarget.z = Math.max(-7, Math.min(7, camTarget.z));
+}
 
 const canvasEl = renderer.domElement;
 
@@ -2281,6 +2295,8 @@ canvasEl.addEventListener('pointerdown', (e) => {
   if (pointerMap.size === 2) {
     const arr = [...pointerMap.values()];
     pinchLast = Math.hypot(arr[0].x - arr[1].x, arr[0].y - arr[1].y);
+    panCX = (arr[0].x + arr[1].x) / 2;
+    panCY = (arr[0].y + arr[1].y) / 2;
   }
 });
 canvasEl.addEventListener('pointermove', (e) => {
@@ -2296,6 +2312,9 @@ canvasEl.addEventListener('pointermove', (e) => {
   } else if (pointerMap.size === 2) {
     const arr = [...pointerMap.values()];
     const d = Math.hypot(arr[0].x - arr[1].x, arr[0].y - arr[1].y);
+    const cx = (arr[0].x + arr[1].x) / 2, cy = (arr[0].y + arr[1].y) / 2;
+    if (panCX !== null) panByPixels(cx - panCX, cy - panCY);
+    panCX = cx; panCY = cy;
     if (pinchLast > 0 && d > 0) {
       orbit.destRadius = clamp(orbit.destRadius * (pinchLast / d), CAM_MIN, CAM_MAX);
     }
@@ -2304,7 +2323,7 @@ canvasEl.addEventListener('pointermove', (e) => {
 });
 function endPointer(e) {
   pointerMap.delete(e.pointerId);
-  if (pointerMap.size < 2) pinchLast = 0;
+  if (pointerMap.size < 2) { pinchLast = 0; panCX = null; panCY = null; }
   if (pointerMap.size === 0) canvasEl.classList.remove('dragging');
 }
 canvasEl.addEventListener('pointerup', endPointer);

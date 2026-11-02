@@ -453,11 +453,27 @@ canvas.addEventListener('wheel', e => {
 }, { passive: false });
 
 let touchMode = 0, tx = 0, ty = 0;
+let touchCX = null, touchCY = null;
+/* 双指拖动 = 平移场景 */
+function panByPixels(dx, dy) {
+  const d = ctrl.fitDist * ctrl.zoom;
+  const h = canvas.clientHeight || window.innerHeight || 1;
+  const wpp = 2 * d * Math.tan((camera.fov * Math.PI) / 360) / h;
+  const right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0);
+  const up = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1);
+  ctrl.target.addScaledVector(right, -dx * wpp);
+  ctrl.target.addScaledVector(up, dy * wpp);
+  ctrl.target.x = Math.max(-7, Math.min(7, ctrl.target.x));
+  ctrl.target.y = Math.max(-5, Math.min(6, ctrl.target.y));
+  ctrl.target.z = Math.max(-7, Math.min(7, ctrl.target.z));
+}
 canvas.addEventListener('touchstart', e => {
   if (e.touches.length === 1) { touchMode = 1; tx = e.touches[0].clientX; ty = e.touches[0].clientY; }
   else if (e.touches.length === 2) {
     touchMode = 2;
     pinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    touchCX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    touchCY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
   }
 }, { passive: true });
 canvas.addEventListener('touchmove', e => {
@@ -468,12 +484,16 @@ canvas.addEventListener('touchmove', e => {
     ctrl.tPhi = Math.max(PHI_MIN, Math.min(PHI_MAX, ctrl.tPhi - dy * 0.005));
   } else if (touchMode === 2 && e.touches.length === 2) {
     const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    if (touchCX !== null) panByPixels(cx - touchCX, cy - touchCY);
+    touchCX = cx; touchCY = cy;
     ctrl.tZoom = Math.max(0.45, Math.min(1.55, ctrl.tZoom * (pinchDist / d)));
     pinchDist = d;
   }
   ctrl.idle = 0;
 }, { passive: true });
-canvas.addEventListener('touchend', () => { touchMode = 0; });
+canvas.addEventListener('touchend', (e) => { touchMode = e.touches.length; if (e.touches.length < 2) { touchCX = null; touchCY = null; } });
 
 addEventListener('resize', syncSize);
 addEventListener('orientationchange', () => setTimeout(syncSize, 120));

@@ -194,6 +194,7 @@ function applyCam(dt){
 let idleTimer = 0, interacting = false;
 const ptrs = new Map();
 let lastPinch = 0;
+let panCX = null, panCY = null;
 
 canvasEl.addEventListener('contextmenu', e => e.preventDefault());
 
@@ -202,9 +203,15 @@ canvasEl.addEventListener('pointerdown', e => {
   ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY, b: e.button });
   interacting = true; idleTimer = 0;
   canvasEl.classList.add('grabbing');
+  if (ptrs.size === 2) {
+    const arr = [...ptrs.values()];
+    panCX = (arr[0].x + arr[1].x) / 2;
+    panCY = (arr[0].y + arr[1].y) / 2;
+  }
 });
 canvasEl.addEventListener('pointerup', e => {
   ptrs.delete(e.pointerId);
+  if (ptrs.size < 2){ panCX = null; panCY = null; }
   if (ptrs.size === 0){ interacting = false; canvasEl.classList.remove('grabbing'); }
 });
 canvasEl.addEventListener('pointercancel', e => { ptrs.delete(e.pointerId); interacting = false; canvasEl.classList.remove('grabbing'); });
@@ -218,6 +225,18 @@ canvasEl.addEventListener('pointermove', e => {
   if (ptrs.size >= 2){
     const arr = [...ptrs.values()];
     const d = Math.hypot(arr[0].x - arr[1].x, arr[0].y - arr[1].y);
+    const cx = (arr[0].x + arr[1].x) / 2, cy = (arr[0].y + arr[1].y) / 2;
+    if (panCX !== null){
+      const scale = cam.r * 0.0016;
+      const right = new V3().setFromMatrixColumn(camera.matrix, 0);
+      const up = new V3().setFromMatrixColumn(camera.matrix, 1);
+      cam.tTarget.addScaledVector(right, -(cx - panCX) * scale);
+      cam.tTarget.addScaledVector(up, (cy - panCY) * scale);
+      cam.tTarget.x = Math.max(-70, Math.min(70, cam.tTarget.x));
+      cam.tTarget.y = Math.max(-14, Math.min(120, cam.tTarget.y));
+      cam.tTarget.z = Math.max(-70, Math.min(70, cam.tTarget.z));
+    }
+    panCX = cx; panCY = cy;
     if (lastPinch > 0){
       cam.tr *= 1 - (d - lastPinch) * 0.0065;
       cam.tr = Math.max(cam.minR, Math.min(cam.maxR, cam.tr));

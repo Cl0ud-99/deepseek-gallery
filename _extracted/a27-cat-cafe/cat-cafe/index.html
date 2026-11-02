@@ -2847,6 +2847,20 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 
   const el = renderer.domElement;
   const pointers = new Map();
+  let panCX = null, panCY = null;
+  const _panR = new THREE.Vector3(), _panU = new THREE.Vector3();
+  /* 双指拖动 = 平移场景 */
+  function panScene(dx, dy) {
+    const h = el.clientHeight || window.innerHeight || 1;
+    const wpp = 2 * cam.r * Math.tan((camera.fov * Math.PI) / 360) / h;
+    _panR.setFromMatrixColumn(camera.matrix, 0);
+    _panU.setFromMatrixColumn(camera.matrix, 1);
+    target.addScaledVector(_panR, -dx * wpp);
+    target.addScaledVector(_panU, dy * wpp);
+    target.x = THREE.MathUtils.clamp(target.x, -6, 6);
+    target.y = THREE.MathUtils.clamp(target.y, -1, 7);
+    target.z = THREE.MathUtils.clamp(target.z, -6, 6);
+  }
 
   el.addEventListener('pointerdown', e => {
     el.setPointerCapture(e.pointerId);
@@ -2858,6 +2872,8 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
     } else if (pointers.size === 2) {
       const p = [...pointers.values()];
       cam.pinchDist = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+      panCX = (p[0].x + p[1].x) / 2;
+      panCY = (p[0].y + p[1].y) / 2;
     }
     cam.last = performance.now();
   });
@@ -2868,6 +2884,9 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
     if (pointers.size === 2) {
       const p = [...pointers.values()];
       const d = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+      const cx = (p[0].x + p[1].x) / 2, cy = (p[0].y + p[1].y) / 2;
+      if (panCX !== null) panScene(cx - panCX, cy - panCY);
+      panCX = cx; panCY = cy;
       if (cam.pinchDist > 0) {
         cam.tR = THREE.MathUtils.clamp(cam.tR * (cam.pinchDist / d), cam.minR, cam.maxR);
       }
@@ -2888,7 +2907,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
   function endPointer(e) {
     pointers.delete(e.pointerId);
     if (pointers.size === 0) cam.drag = false;
-    if (pointers.size < 2) cam.pinchDist = 0;
+    if (pointers.size < 2) { cam.pinchDist = 0; panCX = null; panCY = null; }
     cam.last = performance.now();
   }
   el.addEventListener('pointerup', endPointer);

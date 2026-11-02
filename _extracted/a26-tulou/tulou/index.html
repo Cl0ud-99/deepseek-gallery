@@ -2018,6 +2018,20 @@ const {ACESFilmicToneMapping,AddEquation,AddOperation,AdditiveAnimationBlendMode
   let dragging = false, idle = 0, lastX = 0, lastY = 0, userZoom = false;
   const pointers = new Map();
   let pinchDist = 0;
+  let panCX = null, panCY = null;
+  /* 双指拖动 = 平移场景（沿相机右/上方向推 target） */
+  const _panR = new Vector3(), _panU = new Vector3();
+  function panScene(dx, dy) {
+    const h = canvasEl.clientHeight || window.innerHeight || 1;
+    const wpp = 2 * dist * Math.tan(15 * D2R) / h;
+    _panR.setFromMatrixColumn(camera.matrix, 0);
+    _panU.setFromMatrixColumn(camera.matrix, 1);
+    target.addScaledVector(_panR, -dx * wpp);
+    target.addScaledVector(_panU, dy * wpp);
+    target.x = Math.max(-8, Math.min(8, target.x));
+    target.y = Math.max(-1, Math.min(7, target.y));
+    target.z = Math.max(-8, Math.min(8, target.z));
+  }
 
   function initControls() {
     const qs = new URLSearchParams(location.search);
@@ -2036,6 +2050,8 @@ const {ACESFilmicToneMapping,AddEquation,AddOperation,AdditiveAnimationBlendMode
       } else if (pointers.size === 2) {
         const p = Array.from(pointers.values());
         pinchDist = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+        panCX = (p[0].x + p[1].x) / 2;
+        panCY = (p[0].y + p[1].y) / 2;
       }
     });
     canvasEl.addEventListener('pointermove', function (e) {
@@ -2044,11 +2060,15 @@ const {ACESFilmicToneMapping,AddEquation,AddOperation,AdditiveAnimationBlendMode
       if (pointers.size >= 2) {
         const p = Array.from(pointers.values());
         const d = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+        const cx = (p[0].x + p[1].x) / 2, cy = (p[0].y + p[1].y) / 2;
+        if (panCX !== null) panScene(cx - panCX, cy - panCY);
+        panCX = cx; panCY = cy;
         if (pinchDist > 0) {
           distT = Math.max(17, Math.min(maxDist, distT * (pinchDist / d)));
           userZoom = true;
         }
         pinchDist = d;
+        idle = 0;
         return;
       }
       if (!dragging) return;
@@ -2061,6 +2081,7 @@ const {ACESFilmicToneMapping,AddEquation,AddOperation,AdditiveAnimationBlendMode
     function up(e) {
       pointers.delete(e.pointerId);
       if (pointers.size === 0) { dragging = false; pinchDist = 0; }
+      if (pointers.size < 2) { panCX = null; panCY = null; }
     }
     canvasEl.addEventListener('pointerup', up);
     canvasEl.addEventListener('pointercancel', up);
