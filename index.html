@@ -1635,9 +1635,13 @@ var veil = document.getElementById('veil');
 var vIndex = 0;
 var openedFromGrid = false;   // 是从总览点开的吗
 
-/* ---------- 预热：空闲时先把当前这张的场景在隐藏的 viewer 里跑起来 ---------- */
+/* ---------- 预热：空闲时先把当前这张的场景在隐藏的 viewer 里跑起来 ----------
+   先关掉：手机上首次打开时后台在建 WebGL，会和开场动画抢资源，反而更卡。
+   想再开把 PREWARM_ON 改成 true。 */
+var PREWARM_ON = false;
 var warmId = '', warmReady = false, warmTimer = 0;
 function schedulePrewarm(id) {
+  if (!PREWARM_ON) return;
   if (!id || !SRC[id]) return;
   if (viewer.classList.contains('on')) return;
   if (warmId === id && warmReady) return;
@@ -1645,6 +1649,7 @@ function schedulePrewarm(id) {
   warmTimer = setTimeout(function () { startPrewarm(id); }, 1100);
 }
 function startPrewarm(id) {
+  if (!PREWARM_ON) return;
   if (!id || !SRC[id] || viewer.classList.contains('on')) return;
   if (warmId === id && warmReady) return;
   warmId = id; warmReady = false;
