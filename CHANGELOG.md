@@ -20,7 +20,8 @@ existing entries rather than appended.
   it hands over instantly. Disabled for 0.2.0: on phones the background build made the
   first open laggier.
 - Returning from the viewer no longer destroys the scene: reopening the same work is
-  instant (≈45 ms); switching to a different work still loads it normally.
+  instant (≈45 ms) and skips the card-zoom animation; switching to a different work still
+  loads it normally.
 - Buttons now scale up slightly on press (1.15 on hover devices, 1.06 on touch).
 - Every scene page title is now English.
 

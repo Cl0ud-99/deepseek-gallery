@@ -1694,13 +1694,15 @@ function open(id) {
   var wasOpen = viewer.classList.contains('on');
   vIndex = i;
   openedFromGrid = overview;
-  /* 竖屏手机保留 iOS 式卡片放大；横屏与桌面一致，直接淡入查看器。
-     横屏的 iframe 是 cover 裁切尺寸，再叠克隆放大容易产生一帧抽搐。 */
-  var launchDone = (!wasOpen && isTouch && VERT && !reduce) ? launchFromCard(cards[i].el) : null;
-  paintViewer();
   var warmHit = (!wasOpen && warmId === id && warmReady);
   var cached = (!wasOpen && loadedSrc && frame.getAttribute('src') === SRC[id]);
-  if (warmHit || cached) {
+  var instant = warmHit || cached;
+  /* 竖屏手机保留 iOS 式卡片放大；横屏与桌面一致，直接淡入查看器。
+     横屏的 iframe 是 cover 裁切尺寸，再叠克隆放大容易产生一帧抽搐。
+     复用的场景已经是"开着的"，不要再播放大动画。 */
+  var launchDone = (!wasOpen && !instant && isTouch && VERT && !reduce) ? launchFromCard(cards[i].el) : null;
+  paintViewer();
+  if (instant) {
     /* 场景已经在 iframe 里跑着：不亮加载页，直接露场景 */
     veil.classList.add('off');
     viewer.classList.remove('veil-on');
@@ -1714,7 +1716,7 @@ function open(id) {
   viewer.classList.remove('warm');
   viewer.classList.add('on');
   requestAnimationFrame(function () { viewer.classList.add('shown'); });
-  if (warmHit || cached) {
+  if (instant) {
     /* 场景已经在 iframe 里跑着（预热过，或上次打开后没销毁）：直接交棒 */
     warmId = ''; warmReady = false;
     frame.onload = null;
