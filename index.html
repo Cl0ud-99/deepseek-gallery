@@ -1640,6 +1640,8 @@ var openedFromGrid = false;   // 是从总览点开的吗
    想再开把 PREWARM_ON 改成 true。 */
 var PREWARM_ON = false;
 var warmId = '', warmReady = false, warmTimer = 0;
+/* 关掉查看器时不销毁场景：同一件再打开直接复用，秒开 */
+var loadedSrc = '';
 function schedulePrewarm(id) {
   if (!PREWARM_ON) return;
   if (!id || !SRC[id]) return;
@@ -1663,6 +1665,7 @@ function startPrewarm(id) {
 }
 
 function onSceneLoaded(launchDone) {
+  loadedSrc = frame.getAttribute('src') || '';
   lockSceneLongPress();
   setTimeout(function () {
     if (launchDone) {
@@ -1695,22 +1698,30 @@ function open(id) {
      横屏的 iframe 是 cover 裁切尺寸，再叠克隆放大容易产生一帧抽搐。 */
   var launchDone = (!wasOpen && isTouch && VERT && !reduce) ? launchFromCard(cards[i].el) : null;
   paintViewer();
-  veil.style.transition = '';
-  veil.classList.remove('off');
-  /* 手机是从卡片图放大进来的，那一帧的背景就是卡片图本身，直接按场景色走；
-     桌面/减弱动效时加载页是主题实色，先跟主题，等场景露出来再切。 */
-  if (!launchDone) viewer.classList.add('veil-on');
   var warmHit = (!wasOpen && warmId === id && warmReady);
+  var cached = (!wasOpen && loadedSrc && frame.getAttribute('src') === SRC[id]);
+  if (warmHit || cached) {
+    /* 场景已经在 iframe 里跑着：不亮加载页，直接露场景 */
+    veil.classList.add('off');
+    viewer.classList.remove('veil-on');
+  } else {
+    veil.style.transition = '';
+    veil.classList.remove('off');
+    /* 手机是从卡片图放大进来的，那一帧的背景就是卡片图本身，直接按场景色走；
+       桌面/减弱动效时加载页是主题实色，先跟主题，等场景露出来再切。 */
+    if (!launchDone) viewer.classList.add('veil-on');
+  }
   viewer.classList.remove('warm');
   viewer.classList.add('on');
   requestAnimationFrame(function () { viewer.classList.add('shown'); });
-  if (warmHit) {
-    /* 预热过的场景已经在隐藏的 iframe 里跑起来了：直接交棒，不再重新加载 */
+  if (warmHit || cached) {
+    /* 场景已经在 iframe 里跑着（预热过，或上次打开后没销毁）：直接交棒 */
     warmId = ''; warmReady = false;
     frame.onload = null;
     requestAnimationFrame(function () { onSceneLoaded(launchDone); });
   } else {
     warmId = ''; warmReady = false;
+    loadedSrc = '';
     frame.onload = function () { onSceneLoaded(launchDone); };
     frame.src = SRC[id];
   }
@@ -1899,6 +1910,11 @@ function syncSceneCover() {
 
 function stepViewer(d) {
   vIndex = (vIndex + d + WORKS.length) % WORKS.length;
+  loadedSrc = '';
+  frame.onload = function () {
+    loadedSrc = frame.getAttribute('src') || '';
+    lockSceneLongPress();
+  };
   frame.src = SRC[WORKS[vIndex].id];
   paintViewer();
   if (history.replaceState) history.replaceState(null, '', '#' + WORKS[vIndex].id);
@@ -1914,7 +1930,7 @@ function closeViewer() {
   if (history.replaceState) history.replaceState(null, '', location.pathname);
   setTimeout(function () {
     viewer.classList.remove('on');
-    frame.src = 'about:blank';
+    /* 不销毁 iframe：场景留着，同一件再打开时直接复用，秒开 */
     veil.classList.remove('off');
     lastFocus = backTo;
     if (openedFromGrid) {
