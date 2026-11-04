@@ -849,19 +849,20 @@
     body.mode-grid .edge.top{height:calc(67px + env(safe-area-inset-top))}
     /* 横屏个人名片：限制在可视高度内，内容多时内部滚动，不能顶出屏幕 */
     .cardbox{
-      width:min(86vw, 520px); max-height:calc(100% - 24px);
-      gap:8px; padding:8px 4px;
+      width:min(76vw, 420px); max-height:calc(100% - 24px);
+      gap:6px; padding:6px 4px;
       overflow-y:auto; overscroll-behavior:contain;
       -webkit-overflow-scrolling:touch; touch-action:pan-y;
       scrollbar-width:none;
     }
     .cardbox::-webkit-scrollbar{display:none}
-    .cardbox .bigcloud{width:34px; height:34px}
-    .cname{font-size:22px}
-    .crole{font-size:11px; margin-top:-4px}
-    .crow{padding:8px 12px; font-size:11.5px}
+    .cardbox .bigcloud{width:28px; height:28px}
+    .bigcloud-wrap{top:0}
+    .cname{font-size:19px}
+    .crole{font-size:10.5px; margin-top:-4px}
+    .crow{padding:6px 12px; font-size:11.5px; border-radius:10px}
     .crow .ck{font-size:9.5px}
-    .cclose{margin-top:2px; padding:6px 16px; font-size:10.5px}
+    .cclose{margin-top:2px; padding:5px 15px; font-size:10.5px}
     /* 横屏：底部按钮收进 X 那一列，右侧纵向排列 */
     .vctl{
       left:auto; right:calc(clamp(15px,2.4vw,30px) + env(safe-area-inset-right));
@@ -910,13 +911,6 @@
   <header class="head">
     <div class="eyebrow" id="brandHome" role="button" tabindex="0" title="Back to the first work">DeepSeek Gallery</div>
     <!-- LIVE VIEW 不在展示页露出，入口统一放在右下角个人名片里 -->
-    <!--
-    <div class="live-links">
-    <a class="live-link" href="https://cl0ud-99.github.io/harvester-pv/?deck=stone3" target="_blank" rel="noopener" title="Open The Harvester live scene">
-      <span class="pulse" aria-hidden="true"></span> LIVE VIEW · THE HARVESTER / WORLD'S EDGE <span aria-hidden="true">↗</span>
-    </a>
-    </div>
-    -->
   </header>
 
   <div class="dock">
@@ -971,14 +965,9 @@
     <a class="crow" href="https://t.me/Cl0ud_99" target="_blank" rel="noopener">
       <span class="ck">Telegram</span><span class="cv">@Cl0ud_99</span>
     </a>
-    <a class="crow" href="https://cl0ud-99.github.io/harvester-pv/?deck=stone3" target="_blank" rel="noopener">
-      <span class="ck">Live</span><span class="cv">The Harvester · World's Edge</span>
-    </a>
-    <a class="crow" href="https://cl0ud-99.github.io/big-earls/" target="_blank" rel="noopener">
-      <span class="ck">Live</span><span class="cv">Big Earl's · Route 66</span>
-    </a>
-    <a class="crow" href="https://cl0ud-99.github.io/neon-district/" target="_blank" rel="noopener">
-      <span class="ck">Live</span><span class="cv">Neon District · Sector 07</span>
+    <!-- 每次打开随机抽一个 live 场景，入口固定只有这一行 -->
+    <a class="crow" id="liveRow" href="https://cl0ud-99.github.io/big-earls/" target="_blank" rel="noopener">
+      <span class="ck">Live</span><span class="cv" id="liveName">Big Earl's · Route 66</span>
     </a>
     <button class="cclose" id="cclose">Close</button>
   </div>
@@ -1030,7 +1019,6 @@
 </script>
 <script>
 var WORKS = [
-  {id:"A33",en:"The Harvester — World's Edge",cn:"收割机 · 世界边缘"},
   {id:"A30",en:"Wandering Earth — Planetary Engine",cn:"流浪地球 · 行星发动机"},
   {id:"A07",en:"FBC Quarry 07",cn:"倒悬巨构采石场"},
   {id:"A12",en:"Stutter Lab",cn:"时间断裂实验舱"},
@@ -1064,7 +1052,7 @@ var WORKS = [
   {id:"A31",en:"Lakeside Shrine — Gaius",cn:"湖畔祭坛 · 盖乌斯"},
   {id:"A23",en:"Summer Night Carnival",cn:"夏夜游乐园 · 掌上八音盒"},
 ];
-var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"_extracted/a04-autumn-farm/index.html","A05":"_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"_extracted/a13-mori-mart/mori-mart/index.html","A14":"_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"_extracted/a16-route66-diner/route66-diner/index.html","A17":"_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html","A22":"_extracted/a22-floating-lava-glacier/index.html","A23":"_extracted/a23-carnival/carnival-miniature/carnival.html","A24":"_extracted/a24-jiangnan-garden/jiangnan-garden/index.html","A25":"_extracted/a25-las-vegas/las-vegas-diorama/index.html","A26":"_extracted/a26-tulou/tulou/index.html","A27":"_extracted/a27-cat-cafe/cat-cafe/index.html","A28":"_extracted/a28-arrival/arrival/index.html","A29":"_extracted/a29-orbital-station/orbital-station/index.html","A30":"_extracted/a30-wandering-earth/wandering-earth/index.html","A31":"_extracted/a31-shadow-colossus/shadow-colossus/index.html","A32":"_extracted/a32-area51/area51/index.html","A33":"https://cl0ud-99.github.io/harvester-pv/?deck=stone3"};
+var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"_extracted/a04-autumn-farm/index.html","A05":"_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"_extracted/a13-mori-mart/mori-mart/index.html","A14":"_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"_extracted/a16-route66-diner/route66-diner/index.html","A17":"_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html","A22":"_extracted/a22-floating-lava-glacier/index.html","A23":"_extracted/a23-carnival/carnival-miniature/carnival.html","A24":"_extracted/a24-jiangnan-garden/jiangnan-garden/index.html","A25":"_extracted/a25-las-vegas/las-vegas-diorama/index.html","A26":"_extracted/a26-tulou/tulou/index.html","A27":"_extracted/a27-cat-cafe/cat-cafe/index.html","A28":"_extracted/a28-arrival/arrival/index.html","A29":"_extracted/a29-orbital-station/orbital-station/index.html","A30":"_extracted/a30-wandering-earth/wandering-earth/index.html","A31":"_extracted/a31-shadow-colossus/shadow-colossus/index.html","A32":"_extracted/a32-area51/area51/index.html"};
 
 var track = document.getElementById('track');
 var cards = [];
@@ -2517,7 +2505,25 @@ paintSound();
 /* ---------- 名片：点击云朵，以它为圆心展开 ---------- */
 var cardveil = document.getElementById('cardveil');
 
+/* 名片里的 LIVE 入口：每次打开随机换一个场景，只保留一行 */
+var LIVE_WORKS = [
+  { name: "Big Earl's · Route 66", url: "https://cl0ud-99.github.io/big-earls/" },
+  { name: "Neon District · Sector 07", url: "https://cl0ud-99.github.io/neon-district/" }
+];
+var lastLive = -1;
+function rotateLive() {
+  if (!LIVE_WORKS.length) return;
+  var i = Math.floor(Math.random() * LIVE_WORKS.length);
+  if (LIVE_WORKS.length > 1 && i === lastLive) i = (i + 1) % LIVE_WORKS.length;
+  lastLive = i;
+  var a = document.getElementById('liveRow');
+  var label = document.getElementById('liveName');
+  if (a) a.href = LIVE_WORKS[i].url;
+  if (label) label.textContent = LIVE_WORKS[i].name;
+}
+
 function openCard() {
+  rotateLive();
   bigCloudRestore();
   var btn = document.getElementById('creditBtn');
   var r = btn.getBoundingClientRect();
