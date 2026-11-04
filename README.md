@@ -1,11 +1,11 @@
 # DeepSeek Gallery
 
 **DeepSeek V4.1 Flash 1017 的 3D 微缩场景作品集。**
-33 件小世界，全部由代码生成——没有模型文件，没有贴图。
+32 件小世界，全部由代码生成——没有模型文件，没有贴图。
 
 *A gallery of code-built 3D dioramas by DeepSeek V4.1 Flash 1017.*
 
-**[在线画廊 →](https://cl0ud-99.github.io/deepseek-gallery/)** · **[可筛选的归档页 →](https://cl0ud-99.github.io/deepseek-gallery/archive.html)** · **[LIVE VIEW · THE HARVESTER →](https://cl0ud-99.github.io/harvester-pv/?deck=stone3)**
+**[在线画廊 →](https://cl0ud-99.github.io/deepseek-gallery/)** · **[可筛选的归档页 →](https://cl0ud-99.github.io/deepseek-gallery/archive.html)**
 
 ---
 
