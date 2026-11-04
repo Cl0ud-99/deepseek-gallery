@@ -127,6 +127,14 @@
     transition:opacity .34s ease}
   body.is-moving .head{opacity:0}      /* 转场时先让位，避免文字压在飞行的卡片上 */
   .eyebrow{font-size:10.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--accent); opacity:.85}
+  .live-link{display:flex; width:max-content; align-items:center; gap:8px; margin:10px auto 0; padding-bottom:3px;
+    font-size:9.5px; letter-spacing:.24em; text-transform:uppercase; text-decoration:none;
+    color:var(--accent); border-bottom:1px solid rgba(77,107,254,.32);
+    pointer-events:auto; transition:color .2s, border-color .2s}
+  .live-link:hover{color:var(--ink); border-color:var(--accent)}
+  .live-link .pulse{width:5px; height:5px; border-radius:50%; background:var(--accent);
+    box-shadow:0 0 8px var(--accent); animation:livePulse 2.2s ease-in-out infinite}
+  @keyframes livePulse{0%,100%{opacity:.55; transform:scale(.8)} 50%{opacity:1; transform:scale(1.15)}}
   /* 品牌字可以点：回到第一件作品 / 总览第一行 */
   #brandHome{cursor:pointer; pointer-events:auto; display:inline-block; transform-origin:50% 50%}
   #brandHome:hover{opacity:1}
@@ -895,6 +903,9 @@
   <div class="edge bottom" aria-hidden="true"></div>
   <header class="head">
     <div class="eyebrow" id="brandHome" role="button" tabindex="0" title="Back to the first work">DeepSeek Gallery</div>
+    <a class="live-link" href="https://cl0ud-99.github.io/big-earls/" target="_blank" rel="noopener" title="Open Big Earl's live scene">
+      <span class="pulse" aria-hidden="true"></span> LIVE VIEW · BIG EARL'S / ROUTE 66 <span aria-hidden="true">↗</span>
+    </a>
   </header>
 
   <div class="dock">
