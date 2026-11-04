@@ -905,16 +905,11 @@
   <div class="edge bottom" aria-hidden="true"></div>
   <header class="head">
     <div class="eyebrow" id="brandHome" role="button" tabindex="0" title="Back to the first work">DeepSeek Gallery</div>
-    <!-- LIVE VIEW 先隐藏，恢复时把下面这段的注释去掉即可
     <div class="live-links">
-    <a class="live-link" href="https://cl0ud-99.github.io/big-earls/" target="_blank" rel="noopener" title="Open Big Earl's live scene">
-      <span class="pulse" aria-hidden="true"></span> LIVE VIEW · BIG EARL'S / ROUTE 66 <span aria-hidden="true">↗</span>
-    </a>
-    <a class="live-link" href="https://cl0ud-99.github.io/neon-district/" target="_blank" rel="noopener" title="Open Neon District live scene">
-      <span class="pulse" aria-hidden="true"></span> LIVE VIEW · NEON DISTRICT / SECTOR 07 <span aria-hidden="true">↗</span>
+    <a class="live-link" href="https://cl0ud-99.github.io/harvester-pv/?deck=stone3" target="_blank" rel="noopener" title="Open The Harvester live scene">
+      <span class="pulse" aria-hidden="true"></span> LIVE VIEW · THE HARVESTER / WORLD'S EDGE <span aria-hidden="true">↗</span>
     </a>
     </div>
-    -->
   </header>
 
   <div class="dock">
@@ -1019,6 +1014,7 @@
 </script>
 <script>
 var WORKS = [
+  {id:"A33",en:"The Harvester — World's Edge",cn:"收割机 · 世界边缘"},
   {id:"A30",en:"Wandering Earth — Planetary Engine",cn:"流浪地球 · 行星发动机"},
   {id:"A07",en:"FBC Quarry 07",cn:"倒悬巨构采石场"},
   {id:"A12",en:"Stutter Lab",cn:"时间断裂实验舱"},
@@ -1052,7 +1048,7 @@ var WORKS = [
   {id:"A31",en:"Lakeside Shrine — Gaius",cn:"湖畔祭坛 · 盖乌斯"},
   {id:"A23",en:"Summer Night Carnival",cn:"夏夜游乐园 · 掌上八音盒"},
 ];
-var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"_extracted/a04-autumn-farm/index.html","A05":"_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"_extracted/a13-mori-mart/mori-mart/index.html","A14":"_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"_extracted/a16-route66-diner/route66-diner/index.html","A17":"_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html","A22":"_extracted/a22-floating-lava-glacier/index.html","A23":"_extracted/a23-carnival/carnival-miniature/carnival.html","A24":"_extracted/a24-jiangnan-garden/jiangnan-garden/index.html","A25":"_extracted/a25-las-vegas/las-vegas-diorama/index.html","A26":"_extracted/a26-tulou/tulou/index.html","A27":"_extracted/a27-cat-cafe/cat-cafe/index.html","A28":"_extracted/a28-arrival/arrival/index.html","A29":"_extracted/a29-orbital-station/orbital-station/index.html","A30":"_extracted/a30-wandering-earth/wandering-earth/index.html","A31":"_extracted/a31-shadow-colossus/shadow-colossus/index.html","A32":"_extracted/a32-area51/area51/index.html"};
+var SRC = {"A01":"_extracted/a01-twin-peaks-lodge/TwinPeaks-BlackLodge/TwinPeaks-BlackLodge.html","A02":"_extracted/a02-ashtray-maze/ashtray-maze/standalone/ashtray-maze.html","A03":"_extracted/a03-aurora-hourglass/aurora-hourglass/index.html","A04":"_extracted/a04-autumn-farm/index.html","A05":"_extracted/a05-cliff-lighthouse-cafe/cliff-lighthouse-cafe/index.html","A06":"_extracted/a06-cloud-post-office/cloud-post-office/index.html","A07":"_extracted/a07-fbc-quarry/fbc-quarry/standalone/fbc-quarry-07.html","A08":"_extracted/a08-fbc-redshift/fbc-redshift-archive/dist/FBC-Redshift-Archive.html","A09":"_extracted/a09-grand-hotel/grand-hotel-diorama/grand-hotel-diorama.html","A10":"_extracted/a10-lighthouse/lighthouse-scene/lighthouse.html","A11":"_extracted/a11-lunar-outpost/lunar-outpost/index-offline.html","A12":"_extracted/a12-monach-stutter-lab/monach_stutter_lab/monach_stutter_lab.html","A13":"_extracted/a13-mori-mart/mori-mart/index.html","A14":"_extracted/a14-polar-icebreaker/polar-icebreaker/polar-icebreaker.html","A15":"_extracted/a15-qipao-diorama/qipao-diorama/standalone/qipao-diorama.html","A16":"_extracted/a16-route66-diner/route66-diner/index.html","A17":"_extracted/a17-twin-peaks-red-room/twin-peaks-red-room/standalone/twin-peaks-red-room.html","A18":"_extracted/a18-whale-dream-atelier/whale-dream-atelier/dist/dream-weaver-atelier.html","A19":"_extracted/a19-stranger-things/hawkins-mirror/hawkins-mirror.html","A20":"_extracted/a20-moonlit-perfume-atelier/moonlit-perfume-atelier/index.html","A21":"_extracted/a21-ice-fire-mine-station/ice-fire-mine-station/index.html","A22":"_extracted/a22-floating-lava-glacier/index.html","A23":"_extracted/a23-carnival/carnival-miniature/carnival.html","A24":"_extracted/a24-jiangnan-garden/jiangnan-garden/index.html","A25":"_extracted/a25-las-vegas/las-vegas-diorama/index.html","A26":"_extracted/a26-tulou/tulou/index.html","A27":"_extracted/a27-cat-cafe/cat-cafe/index.html","A28":"_extracted/a28-arrival/arrival/index.html","A29":"_extracted/a29-orbital-station/orbital-station/index.html","A30":"_extracted/a30-wandering-earth/wandering-earth/index.html","A31":"_extracted/a31-shadow-colossus/shadow-colossus/index.html","A32":"_extracted/a32-area51/area51/index.html","A33":"https://cl0ud-99.github.io/harvester-pv/?deck=stone3"};
 
 var track = document.getElementById('track');
 var cards = [];
