@@ -135,7 +135,8 @@
   .live-link .pulse{width:5px; height:5px; border-radius:50%; background:var(--accent);
     box-shadow:0 0 8px var(--accent); animation:livePulse 2.2s ease-in-out infinite}
   @keyframes livePulse{0%,100%{opacity:.55; transform:scale(.8)} 50%{opacity:1; transform:scale(1.15)}}
-  .live-links{display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:2px 18px; margin-top:10px}
+  /* 展示页不显示 LIVE VIEW（入口在个人名片里）；保留样式方便以后恢复 */
+  .live-links{display:none; justify-content:center; align-items:center; flex-wrap:wrap; gap:2px 18px; margin-top:10px}
   .live-links .live-link{margin:0}
   /* 品牌字可以点：回到第一件作品 / 总览第一行 */
   #brandHome{cursor:pointer; pointer-events:auto; display:inline-block; transform-origin:50% 50%}
@@ -329,8 +330,11 @@
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
     width:min(90vw,420px); text-align:center; color:#f2f3f6;
     display:flex; flex-direction:column; align-items:center; gap:14px;
+    max-height:calc(var(--vvh,100vh) - 32px);
+    overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none;
     opacity:0; transition:opacity .16s ease;
   }
+  .cardbox::-webkit-scrollbar{display:none}
   .cardveil.open .cardbox{opacity:1; transition:opacity .3s ease .2s}
   /* 关闭时文字立即撤掉，只保留圆形擦除动画，避免残留 */
   .cardveil.closing .cardbox{opacity:0!important; transition:none!important}
@@ -905,11 +909,14 @@
   <div class="edge bottom" aria-hidden="true"></div>
   <header class="head">
     <div class="eyebrow" id="brandHome" role="button" tabindex="0" title="Back to the first work">DeepSeek Gallery</div>
+    <!-- LIVE VIEW 不在展示页露出，入口统一放在右下角个人名片里 -->
+    <!--
     <div class="live-links">
     <a class="live-link" href="https://cl0ud-99.github.io/harvester-pv/?deck=stone3" target="_blank" rel="noopener" title="Open The Harvester live scene">
       <span class="pulse" aria-hidden="true"></span> LIVE VIEW · THE HARVESTER / WORLD'S EDGE <span aria-hidden="true">↗</span>
     </a>
     </div>
+    -->
   </header>
 
   <div class="dock">
@@ -963,6 +970,15 @@
     </a>
     <a class="crow" href="https://t.me/Cl0ud_99" target="_blank" rel="noopener">
       <span class="ck">Telegram</span><span class="cv">@Cl0ud_99</span>
+    </a>
+    <a class="crow" href="https://cl0ud-99.github.io/harvester-pv/?deck=stone3" target="_blank" rel="noopener">
+      <span class="ck">Live</span><span class="cv">The Harvester · World's Edge</span>
+    </a>
+    <a class="crow" href="https://cl0ud-99.github.io/big-earls/" target="_blank" rel="noopener">
+      <span class="ck">Live</span><span class="cv">Big Earl's · Route 66</span>
+    </a>
+    <a class="crow" href="https://cl0ud-99.github.io/neon-district/" target="_blank" rel="noopener">
+      <span class="ck">Live</span><span class="cv">Neon District · Sector 07</span>
     </a>
     <button class="cclose" id="cclose">Close</button>
   </div>
