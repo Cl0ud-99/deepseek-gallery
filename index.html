@@ -894,6 +894,17 @@
     .vbtn:active,.vclose:active,.cclose:active,.crow:active{transform:scale(1.06)}
     .nav:active{transform:translateY(-50%) scale(1.06)}
   }
+
+  /* 连续曲率：Chrome 139+ 的 corner-shape。只作用于矩形/胶囊，
+     真圆按钮（50%）保持圆形；不支持的浏览器自动保持普通圆弧。 */
+  @supports (corner-shape: superellipse(3)){
+    .card,
+    .card img{ border-radius:24px }
+    .crow{ border-radius:16px }
+    .card,
+    .card img,
+    .crow{ corner-shape: superellipse(3); }
+  }
 </style>
 </head>
 <body class="booting">
